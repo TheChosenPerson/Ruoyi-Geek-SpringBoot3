@@ -1,0 +1,132 @@
+<template>
+  <view>
+    <uni-card :is-shadow="false" is-full v-for="(item,index) in ${businessName}List" :key="index">
+#foreach($column in $columns)
+#set($javaField=$column.javaField)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+#if($column.pk)
+      <uni-section title="${comment}" :sub-title="item.${javaField}" type="line"></uni-section>
+#elseif($column.list && $column.htmlType == "time")
+      <uni-section title="${comment}" :sub-title="item.${javaField}" type="line"></uni-section>
+#elseif($column.list && $column.htmlType == "date")
+      <uni-section title="${comment}" :sub-title="item.${javaField}" type="line"></uni-section>
+#elseif($column.list && $column.htmlType == "datetime")
+      <uni-section title="${comment}" :sub-title="item.${javaField}" type="line"></uni-section>
+#elseif($column.list && $column.htmlType == "imageUpload")
+      <uni-section title="${comment}" type="line">
+        <u-album :urls="addBaseUrl(item.${javaField}.split(','))"></u-album>
+      </uni-section>
+#elseif($column.list && "" != $column.dictType)
+#if($column.htmlType == "checkbox")
+      <dict-tag :options="${javaField}Options" :value="item.${javaField} ? item.${javaField}.split(',') : []"/>
+#else
+      <dict-tag :options="${javaField}Options" :value="item.${javaField}"/>
+#end
+#elseif($column.list && "" != $javaField)
+      <uni-section title="${comment}" :sub-title="item.${javaField}" type="line"></uni-section>
+#end
+#end
+    </uni-card>
+  </view>
+</template>
+
+<script>
+import  config  from "@/config"
+import { list${BusinessName}} from "@/api/${moduleName}/${businessName}";
+#if(${dicts} != '')
+import DictTag from "@/components/dict-tag/dict-tag; 
+import { getDicts } from "@/api/system/dict/data";
+#end
+
+export default {
+#if(${dicts} != '')
+  components:{ DictTag },
+#end
+  name: "${BusinessName}List",
+  data() {
+    return {
+#foreach($column in $columns)    
+#set($javaField=$column.javaField)
+#if($column.list && "" != $column.dictType)
+      ${javaField}Options:[],
+#end
+#end      
+      // 总条数
+      total: 0,
+      // ${functionName}表格数据
+      ${businessName}List: [],
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+#foreach ($column in $columns)
+#if($column.query)
+        $column.javaField: null#if($foreach.count != $columns.size()),#end
+#end
+#end
+      },
+
+    };
+  },
+  created() {
+#foreach($column in $columns)   
+#set($javaField=$column.javaField) 
+#if($column.list && "" != $column.dictType)  
+    getDicts(${column.dictType}).then(response => {
+      this.${javaField}Options = response.data;
+    });
+#end
+#end  
+  },
+  onShow() {
+    this.getList();
+  },
+  methods: {
+    addBaseUrl(arr){
+		  return arr.map(item => config.baseUrl+item)
+	  },
+    /** 查询${functionName}列表 */
+    getList() {
+#foreach ($column in $columns)
+#if(($column.htmlType == "datetime" || $column.htmlType == "date" || $column.htmlType == "time") && $column.queryType == "BETWEEN")
+      this.queryParams.params = {};
+#break
+#end
+#end
+#foreach ($column in $columns)
+#if(($column.htmlType == "datetime" || $column.htmlType == "date" || $column.htmlType == "time") && $column.queryType == "BETWEEN")
+#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+      if (null != this.daterange${AttrName} && '' != this.daterange${AttrName}) {
+        this.queryParams.params["begin${AttrName}"] = this.daterange${AttrName}[0];
+        this.queryParams.params["end${AttrName}"] = this.daterange${AttrName}[1];
+      }
+#end
+#end
+      list${BusinessName}(this.queryParams).then(response => {
+        this.${businessName}List = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
+    },
+    /** 查看详情按钮操作 */
+    handleShow(${pkColumn.javaField}) {
+      this.navigateTo("/pages/${moduleName}/${businessName}/show?${pkColumn.javaField}=" + ${pkColumn.javaField})
+    },
+  /** 查看详情按钮操作 */
+    handleEdit(${pkColumn.javaField}) {
+        this.navigateTo("/pages/${moduleName}/${businessName}/edit?${pkColumn.javaField}=" + ${pkColumn.javaField})
+    },
+    handleAdd(${pkColumn.javaField}) {
+        this.navigateTo("/pages/${moduleName}/${businessName}/edit")
+    },
+    navigateTo(url){
+       this.$tab.navigateTo(url)
+    }
+  }
+};
+</script>
