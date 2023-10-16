@@ -6,7 +6,7 @@
 
     <groupId>com.ruoyi</groupId>
     <artifactId>ruoyi</artifactId>
-    <version>3.8.5</version>
+    <version>3.8.5.3</version>
 
     <name>ruoyi</name>
     <url>http://www.ruoyi.vip</url>
@@ -19,10 +19,10 @@
     </parent>
 
     <properties>
-        <ruoyi.version>3.8.5</ruoyi.version>
+        <ruoyi.version>3.8.5.3</ruoyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
         <druid.version>1.2.18</druid.version>
         <bitwalker.version>1.21</bitwalker.version>
