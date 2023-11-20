@@ -51,7 +51,7 @@ user:
 spring:
   mvc:
     pathmatch:
-      matching-strategy: ant_path_matcher
+      matching-strategy: ANT_PATH_MATCHER
   # 资源信息
   messages:
     # 国际化资源文件路径
