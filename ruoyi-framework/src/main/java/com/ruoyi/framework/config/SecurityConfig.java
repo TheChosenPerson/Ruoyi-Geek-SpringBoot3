@@ -1,7 +1,6 @@
 package com.ruoyi.framework.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -100,12 +99,12 @@ public class SecurityConfig {
                 // CSRF禁用，因为不使用session
                 .csrf(csrf -> csrf.disable())
                 // 禁用HTTP响应标头
-                .headers(headersCustomizer -> headersCustomizer.cacheControl().disable())
+                .headers(headersCustomizer -> headersCustomizer.cacheControl(cache -> cache.disable()))
                 // 认证失败处理类
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 // 基于token，所以不需要session
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .headers(headers -> headers.cacheControl().disable())
+                .headers(headers -> headers.cacheControl(cache -> cache.disable()))
                 // 注解标记允许匿名访问的url
                 .authorizeHttpRequests((requests) -> {
                     permitAllUrl.getUrls().forEach(url -> requests.requestMatchers(url).permitAll());
