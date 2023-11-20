@@ -67,14 +67,13 @@ public class SecurityConfig {
     private PermitAllUrlProperties permitAllUrl;
 
     /**
-     * 解决 无法直接注入 AuthenticationManager
-     *
      * @return
      * @throws Exception
      */
     @Bean
     AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        // 身份认证接口
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         return new ProviderManager(daoAuthenticationProvider);
@@ -139,13 +138,4 @@ public class SecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    /**
-     * 身份认证接口
-     */
-    // @Override
-    // protected void configure(AuthenticationManagerBuilder auth) throws Exception
-    // {
-    // auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    // }
 }
