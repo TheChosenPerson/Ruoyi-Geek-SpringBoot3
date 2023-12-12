@@ -13,8 +13,7 @@ import com.ruoyi.common.utils.StringUtils;
  * 
  * @author ruoyi
  */
-public class GenTable extends BaseEntity
-{
+public class GenTable extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 编号 */
@@ -40,6 +39,9 @@ public class GenTable extends BaseEntity
 
     /** 使用的模板（crud单表操作 tree树表操作 sub主子表操作） */
     private String tplCategory;
+
+    /** 前端类型（element-ui模版 element-plus模版） */
+    private String tplWebType;
 
     /** 生成包路径 */
     @NotBlank(message = "生成包路径不能为空")
@@ -95,275 +97,228 @@ public class GenTable extends BaseEntity
     /** 上级菜单名称字段 */
     private String parentMenuName;
 
-    public Long getTableId()
-    {
+    public Long getTableId() {
         return tableId;
     }
 
-    public void setTableId(Long tableId)
-    {
+    public void setTableId(Long tableId) {
         this.tableId = tableId;
     }
 
-    public String getTableName()
-    {
+    public String getTableName() {
         return tableName;
     }
 
-    public void setTableName(String tableName)
-    {
+    public void setTableName(String tableName) {
         this.tableName = tableName;
     }
 
-    public String getTableComment()
-    {
+    public String getTableComment() {
         return tableComment;
     }
 
-    public void setTableComment(String tableComment)
-    {
+    public void setTableComment(String tableComment) {
         this.tableComment = tableComment;
     }
 
-    public String getSubTableName()
-    {
+    public String getSubTableName() {
         return subTableName;
     }
 
-    public void setSubTableName(String subTableName)
-    {
+    public void setSubTableName(String subTableName) {
         this.subTableName = subTableName;
     }
 
-    public String getSubTableFkName()
-    {
+    public String getSubTableFkName() {
         return subTableFkName;
     }
 
-    public void setSubTableFkName(String subTableFkName)
-    {
+    public void setSubTableFkName(String subTableFkName) {
         this.subTableFkName = subTableFkName;
     }
 
-    public String getClassName()
-    {
+    public String getClassName() {
         return className;
     }
 
-    public void setClassName(String className)
-    {
+    public void setClassName(String className) {
         this.className = className;
     }
 
-    public String getTplCategory()
-    {
+    public String getTplCategory() {
         return tplCategory;
     }
 
-    public void setTplCategory(String tplCategory)
-    {
+    public void setTplCategory(String tplCategory) {
         this.tplCategory = tplCategory;
     }
 
-    public String getPackageName()
-    {
+    public String getTplWebType() {
+        return tplWebType;
+    }
+
+    public void setTplWebType(String tplWebType) {
+        this.tplWebType = tplWebType;
+    }
+
+    public String getPackageName() {
         return packageName;
     }
 
-    public void setPackageName(String packageName)
-    {
+    public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 
-    public String getModuleName()
-    {
+    public String getModuleName() {
         return moduleName;
     }
 
-    public void setModuleName(String moduleName)
-    {
+    public void setModuleName(String moduleName) {
         this.moduleName = moduleName;
     }
 
-    public String getBusinessName()
-    {
+    public String getBusinessName() {
         return businessName;
     }
 
-    public void setBusinessName(String businessName)
-    {
+    public void setBusinessName(String businessName) {
         this.businessName = businessName;
     }
 
-    public String getFunctionName()
-    {
+    public String getFunctionName() {
         return functionName;
     }
 
-    public void setFunctionName(String functionName)
-    {
+    public void setFunctionName(String functionName) {
         this.functionName = functionName;
     }
 
-    public String getFunctionAuthor()
-    {
+    public String getFunctionAuthor() {
         return functionAuthor;
     }
 
-    public void setFunctionAuthor(String functionAuthor)
-    {
+    public void setFunctionAuthor(String functionAuthor) {
         this.functionAuthor = functionAuthor;
     }
 
-    public String getGenType()
-    {
+    public String getGenType() {
         return genType;
     }
 
-    public void setGenType(String genType)
-    {
+    public void setGenType(String genType) {
         this.genType = genType;
     }
 
-    public String getGenPath()
-    {
+    public String getGenPath() {
         return genPath;
     }
 
-    public void setGenPath(String genPath)
-    {
+    public void setGenPath(String genPath) {
         this.genPath = genPath;
     }
 
-    public GenTableColumn getPkColumn()
-    {
+    public GenTableColumn getPkColumn() {
         return pkColumn;
     }
 
-    public void setPkColumn(GenTableColumn pkColumn)
-    {
+    public void setPkColumn(GenTableColumn pkColumn) {
         this.pkColumn = pkColumn;
     }
 
-    public GenTable getSubTable()
-    {
+    public GenTable getSubTable() {
         return subTable;
     }
 
-    public void setSubTable(GenTable subTable)
-    {
+    public void setSubTable(GenTable subTable) {
         this.subTable = subTable;
     }
 
-    public List<GenTableColumn> getColumns()
-    {
+    public List<GenTableColumn> getColumns() {
         return columns;
     }
 
-    public void setColumns(List<GenTableColumn> columns)
-    {
+    public void setColumns(List<GenTableColumn> columns) {
         this.columns = columns;
     }
 
-    public String getOptions()
-    {
+    public String getOptions() {
         return options;
     }
 
-    public void setOptions(String options)
-    {
+    public void setOptions(String options) {
         this.options = options;
     }
 
-    public String getTreeCode()
-    {
+    public String getTreeCode() {
         return treeCode;
     }
 
-    public void setTreeCode(String treeCode)
-    {
+    public void setTreeCode(String treeCode) {
         this.treeCode = treeCode;
     }
 
-    public String getTreeParentCode()
-    {
+    public String getTreeParentCode() {
         return treeParentCode;
     }
 
-    public void setTreeParentCode(String treeParentCode)
-    {
+    public void setTreeParentCode(String treeParentCode) {
         this.treeParentCode = treeParentCode;
     }
 
-    public String getTreeName()
-    {
+    public String getTreeName() {
         return treeName;
     }
 
-    public void setTreeName(String treeName)
-    {
+    public void setTreeName(String treeName) {
         this.treeName = treeName;
     }
 
-    public String getParentMenuId()
-    {
+    public String getParentMenuId() {
         return parentMenuId;
     }
 
-    public void setParentMenuId(String parentMenuId)
-    {
+    public void setParentMenuId(String parentMenuId) {
         this.parentMenuId = parentMenuId;
     }
 
-    public String getParentMenuName()
-    {
+    public String getParentMenuName() {
         return parentMenuName;
     }
 
-    public void setParentMenuName(String parentMenuName)
-    {
+    public void setParentMenuName(String parentMenuName) {
         this.parentMenuName = parentMenuName;
     }
 
-    public boolean isSub()
-    {
+    public boolean isSub() {
         return isSub(this.tplCategory);
     }
 
-    public static boolean isSub(String tplCategory)
-    {
+    public static boolean isSub(String tplCategory) {
         return tplCategory != null && StringUtils.equals(GenConstants.TPL_SUB, tplCategory);
     }
 
-    public boolean isTree()
-    {
+    public boolean isTree() {
         return isTree(this.tplCategory);
     }
 
-    public static boolean isTree(String tplCategory)
-    {
+    public static boolean isTree(String tplCategory) {
         return tplCategory != null && StringUtils.equals(GenConstants.TPL_TREE, tplCategory);
     }
 
-    public boolean isCrud()
-    {
+    public boolean isCrud() {
         return isCrud(this.tplCategory);
     }
 
-    public static boolean isCrud(String tplCategory)
-    {
+    public static boolean isCrud(String tplCategory) {
         return tplCategory != null && StringUtils.equals(GenConstants.TPL_CRUD, tplCategory);
     }
 
-    public boolean isSuperColumn(String javaField)
-    {
+    public boolean isSuperColumn(String javaField) {
         return isSuperColumn(this.tplCategory, javaField);
     }
 
-    public static boolean isSuperColumn(String tplCategory, String javaField)
-    {
-        if (isTree(tplCategory))
-        {
+    public static boolean isSuperColumn(String tplCategory, String javaField) {
+        if (isTree(tplCategory)) {
             return StringUtils.equalsAnyIgnoreCase(javaField,
                     ArrayUtils.addAll(GenConstants.TREE_ENTITY, GenConstants.BASE_ENTITY));
         }

@@ -126,8 +126,13 @@ public class VelocityUtils
      *
      * @return 模板列表
      */
-    public static List<String> getTemplateList(String tplCategory)
+    public static List<String> getTemplateList(String tplCategory, String tplWebType)
     {
+        String useWebType = "vm/vue/v2";
+        if ("element-plus".equals(tplWebType))
+        {
+            useWebType = "vm/vue/v3";
+        }
         List<String> templates = new ArrayList<String>();
         templates.add("vm/java/domain.java.vm");
         templates.add("vm/java/mapper.java.vm");
@@ -142,15 +147,15 @@ public class VelocityUtils
         templates.add("vm/uniapp/show.vue.vm");
         if (GenConstants.TPL_CRUD.equals(tplCategory))
         {
-            templates.add("vm/vue/index.vue.vm");
+            templates.add(useWebType + "/index.vue.vm");
         }
         else if (GenConstants.TPL_TREE.equals(tplCategory))
         {
-            templates.add("vm/vue/index-tree.vue.vm");
+            templates.add(useWebType + "/index-tree.vue.vm");
         }
         else if (GenConstants.TPL_SUB.equals(tplCategory))
         {
-            templates.add("vm/vue/index.vue.vm");
+            templates.add(useWebType + "/index.vue.vm");
             templates.add("vm/java/sub-domain.java.vm");
         }
         return templates;
