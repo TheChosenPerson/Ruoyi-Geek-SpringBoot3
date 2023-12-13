@@ -1,3 +1,8 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "files.associations": {
+        "*.yml": "yaml"
+    },
+    "java.compile.nullAnalysis.mode": "disabled",
+    // "java.compile.nullAnalysis.mode": "automatic"
 }
