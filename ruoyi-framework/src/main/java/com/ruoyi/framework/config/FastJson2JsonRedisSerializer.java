@@ -49,6 +49,7 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T>
         }
         String str = new String(bytes, DEFAULT_CHARSET);
 
+        // TODO 自动类型，官方说不安全，所以弃用了，代替方案是autoTypeFilter；
         return JSON.parseObject(str, clazz, JSONReader.Feature.SupportAutoType);
         // return JSON.parseObject(str, clazz, autoTypeFilter);
     }
