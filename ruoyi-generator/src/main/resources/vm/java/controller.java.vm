@@ -117,7 +117,7 @@ public class ${ClassName}Controller extends BaseController
     @Log(title = "${functionName}", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{${pkColumn.javaField}s}")
     @ApiOperation("删除${functionName}")
-    public AjaxResult remove(@PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s)
+    public AjaxResult remove(@PathVariable( name = "${pkColumn.javaField}s" ) ${pkColumn.javaType}[] ${pkColumn.javaField}s) 
     {
         return toAjax(${className}Service.delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaField}s));
     }

@@ -5,9 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +13,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.utils.StringUtils;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * swagger 用户测试方法
@@ -46,7 +48,7 @@ public class TestController extends BaseController
 
     @Operation(summary = "获取用户详细")
     @GetMapping("/{userId}")
-    public R<UserEntity> getUser(@PathVariable Integer userId)
+    public R<UserEntity> getUser(@PathVariable( name = "userId" ) Integer userId) 
     {
         if (!users.isEmpty() && users.containsKey(userId))
         {
@@ -89,7 +91,7 @@ public class TestController extends BaseController
 
     @Operation(summary = "删除用户信息")
     @DeleteMapping("/{userId}")
-    public R<String> delete(@PathVariable Integer userId)
+    public R<String> delete(@PathVariable( name = "userId" ) Integer userId) 
     {
         if (!users.isEmpty() && users.containsKey(userId))
         {
