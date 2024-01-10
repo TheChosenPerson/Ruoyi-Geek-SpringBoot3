@@ -13,6 +13,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.domain.TreeEntity;
 #end
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * ${functionName}对象 ${tableName}
  * 
@@ -24,6 +26,7 @@ import com.ruoyi.common.core.domain.TreeEntity;
 #elseif($table.tree)
 #set($Entity="TreeEntity")
 #end
+@Schema(description = "${functionName}对象")
 public class ${ClassName} extends ${Entity}
 {
     private static final long serialVersionUID = 1L;
@@ -32,7 +35,7 @@ public class ${ClassName} extends ${Entity}
 
 #if(!$table.isSuperColumn($column.javaField))
     /** $column.columnComment */
-    @ApiModelProperty(value = "$column.columnComment")
+    @Schema(defaultValue = "$column.columnComment")
 #if($column.list)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
