@@ -21,6 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="genType" column="gen_type" />
 		<result property="genPath" column="gen_path" />
 		<result property="options" column="options" />
+		<result property="haveSubColumn" column="have_sub_column" />
 		<result property="createBy" column="create_by" />
 		<result property="createTime" column="create_time" />
 		<result property="updateBy" column="update_by" />
@@ -48,6 +49,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="htmlType" column="html_type" />
 		<result property="dictType" column="dict_type" />
 		<result property="sort" column="sort" />
+		<result property="subColumnTableName"     column="sub_column_table_name"    />
+		<result property="subColumnFkName"     column="sub_column_fk_name"    />
+		<result property="subColumnName"     column="sub_column_name"    />
+		<result property="subColumnJavaField"     column="sub_column_java_field"    />
+		<result property="subColumnJavaType"     column="sub_column_java_type"    />
 		<result property="createBy" column="create_by" />
 		<result property="createTime" column="create_time" />
 		<result property="updateBy" column="update_by" />
@@ -55,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<sql id="selectGenTableVo">
-        select table_id, table_name, table_comment, sub_table_name, sub_table_fk_name, class_name, tpl_category, tpl_web_type, package_name, module_name, business_name, function_name, function_author, gen_type, gen_path, options, create_by, create_time, update_by, update_time, remark from gen_table
+        select table_id, table_name, table_comment, sub_table_name, sub_table_fk_name, class_name, tpl_category, tpl_web_type, package_name, module_name, business_name, function_name, function_author, gen_type, gen_path, options, have_sub_column,create_by, create_time, update_by, update_time, remark from gen_table
 	</sql>
 
 	<select id="selectGenTableList" parameterType="GenTable" resultMap="GenTableResult">
@@ -112,8 +118,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectGenTableById" parameterType="Long" resultMap="GenTableResult">
-	     SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.tpl_web_type, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.options, t.remark,
-			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
+	     SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.tpl_web_type, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.options, t.remark,t.have_sub_column,
+			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort,c.sub_column_table_name,c.sub_column_fk_name,c.sub_column_name,c.sub_column_java_type,c.sub_column_java_field
 		FROM gen_table t
 			 LEFT JOIN gen_table_column c ON t.table_id = c.table_id
 		where t.table_id = #{tableId} order by c.sort
@@ -121,7 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectGenTableByName" parameterType="String" resultMap="GenTableResult">
 	     SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.tpl_web_type, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.options, t.remark,
-			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
+			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort,c.sub_column_table_name,c.sub_column_fk_name,c.sub_column_name,c.sub_column_java_type,c.sub_column_java_field
 		FROM gen_table t
 			 LEFT JOIN gen_table_column c ON t.table_id = c.table_id
 		where t.table_name = #{tableName} order by c.sort
@@ -129,7 +135,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectGenTableAll" parameterType="String" resultMap="GenTableResult">
 	     SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.tpl_web_type, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.options, t.remark,
-			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
+			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort,c.sub_column_table_name,c.sub_column_fk_name,c.sub_column_name,c.sub_column_java_type,c.sub_column_java_field
 		FROM gen_table t
 			 LEFT JOIN gen_table_column c ON t.table_id = c.table_id
 		order by c.sort
@@ -151,6 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="genPath != null and genPath != ''">gen_path,</if>
 		<if test="remark != null and remark != ''">remark,</if>
 		<if test="createBy != null and createBy != ''">create_by,</if>
+		<if test="haveSubColumn != null and haveSubColumn != ''">have_sub_column,</if>
 			create_time
          )values(
 		<if test="tableName != null">#{tableName},</if>
@@ -166,6 +173,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="genType != null and genType != ''">#{genType},</if>
 		<if test="genPath != null and genPath != ''">#{genPath},</if>
 		<if test="remark != null and remark != ''">#{remark},</if>
+		<if test="haveSubColumn != null and haveSubColumn != ''">#{haveSubColumn},</if>
 		<if test="createBy != null and createBy != ''">#{createBy},</if>
 			sysdate()
          )
@@ -191,6 +199,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="options != null and options != ''">options = #{options},</if>
 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
 			<if test="remark != null">remark = #{remark},</if>
+			<if test="haveSubColumn != null and haveSubColumn != ''">have_sub_column = #{haveSubColumn},</if>
             update_time = sysdate()
 		</set>
         where table_id = #{tableId}

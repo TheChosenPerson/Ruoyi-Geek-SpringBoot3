@@ -12,17 +12,17 @@
 #set($comment=$column.columnComment)
 #end
 #if($column.htmlType == "input")
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end">
         <el-input
-          v-model="queryParams.${column.javaField}"
+          v-model="queryParams.#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end"
           placeholder="请输入${comment}"
           clearable
           @keyup.enter="handleQuery"
         />
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
-      <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end">
+        <el-select v-model="queryParams.#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end" placeholder="请选择${comment}" clearable>
           <el-option
             v-for="dict in ${dictType}"
             :key="dict.value"
@@ -32,15 +32,15 @@
         </el-select>
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
-      <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end">
+        <el-select v-model="queryParams.#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end" placeholder="请选择${comment}" clearable>
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
 #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end">
         <el-date-picker clearable
-          v-model="queryParams.${column.javaField}"
+          v-model="queryParams.#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end"
           type="date"
           value-format="YYYY-MM-DD"
           placeholder="请选择${comment}">
@@ -111,7 +111,11 @@
     <el-table v-loading="loading" :data="${businessName}List" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 #foreach($column in $columns)
+#if($column.subColumnTableName && $table.haveSubColumn  == '1')
+#set($javaField=$column.subColumnJavaField)
+#else
 #set($javaField=$column.javaField)
+#end
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
 #set($comment=$column.columnComment.substring(0, $parentheseIndex))
@@ -167,6 +171,7 @@
       <el-form ref="${businessName}Ref" :model="form" :rules="rules" label-width="80px">
 #foreach($column in $columns)
 #set($field=$column.javaField)
+#set($Field = $column.javaField.substring(0, 1).toUpperCase() + $column.javaField.substring(1))
 #if($column.insert && !$column.pk)
 #if(($column.usableColumn) || (!$column.superColumn))
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
@@ -178,7 +183,19 @@
 #set($dictType=$column.dictType)
 #if($column.htmlType == "input")
         <el-form-item label="${comment}" prop="${field}">
+#if($column.subColumnTableName && $table.haveSubColumn  == '1')
+          <el-select v-model="form.${field}" multiple filterable remote reserve-keyword
+            placeholder="请输入${comment}"
+            :remote-method="remoteMethod${Field}"
+            :loading="loading${Field}"
+          >
+            <el-option v-for="item in options${Field}" :key="item.value"
+              :label="item.label" :value="item.value"
+            />
+          </el-select>
+#else
           <el-input v-model="form.${field}" placeholder="请输入${comment}" />
+#end
         </el-form-item>
 #elseif($column.htmlType == "imageUpload")
         <el-form-item label="${comment}" prop="${field}">
@@ -191,6 +208,18 @@
 #elseif($column.htmlType == "editor")
         <el-form-item label="${comment}">
           <editor v-model="form.${field}" :min-height="192"/>
+        </el-form-item>
+#elseif($column.htmlType == "select" && "" != $column.subColumnTableName)
+        <el-form-item label="${comment}" prop="${field}">
+          <el-select v-model="form.${field}" multiple filterable remote reserve-keyword remote-show-suffix
+            placeholder="请选择${comment}"
+            :remote-method="remoteMethod${Field}"
+            :loading="loading${Field}"
+          >
+            <el-option v-for="item in options${Field}" :key="item.value"
+              :label="item.label" :value="item.value"
+            />
+          </el-select>
         </el-form-item>
 #elseif($column.htmlType == "select" && "" != $dictType)
         <el-form-item label="${comment}" prop="${field}">
@@ -491,7 +520,7 @@ function handleUpdate(row) {
     form.value = response.data;
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
-    form.value.$column.javaField = form.value.${column.javaField}.split(",");
+    form.value.$column.javaField = form.value.#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end.split(",");
 #end
 #end
 #if($table.sub)
@@ -508,7 +537,7 @@ function submitForm() {
     if (valid) {
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
-      form.value.$column.javaField = form.value.${column.javaField}.join(",");
+      form.value.$column.javaField = form.value.#if($column.subColumnTableName && $table.haveSubColumn  == '1')${column.subColumnJavaField}#else${column.javaField}#end.join(",");
 #end
 #end
 #if($table.sub)
@@ -579,6 +608,28 @@ function handle${subClassName}SelectionChange(selection) {
 }
 
 #end
+
+#if($table.haveSubColumn  == '1')
+#foreach($column in $columns)
+#if($column.subColumnTableName)
+#set($JavaField = $column.javaField.substring(0, 1).toUpperCase() + $column.javaField.substring(1))
+/** 映射字段选中操作 */
+const loading${column.javaField} = ref(false)
+function remoteMethod${JavaField}(query){
+  if (query) {
+      loading${JavaField}.value = true
+      list目标业务名().then(res=>{
+        loading${JavaField}.value = false
+        options.value = res.rows.map(item=>({label:item.${column.subColumnJavaField},value:item.${column.subColumnFkName}}))
+      })
+    } else {
+      options.value = []
+  }
+}
+#end
+#end
+#end
+
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download('${moduleName}/${businessName}/export', {

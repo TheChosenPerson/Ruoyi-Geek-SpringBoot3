@@ -1,8 +1,9 @@
 package com.ruoyi.generator.domain;
 
-import jakarta.validation.constraints.NotBlank;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
+
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 代码生成业务字段表 gen_table_column
@@ -67,6 +68,62 @@ public class GenTableColumn extends BaseEntity
 
     /** 排序 */
     private Integer sort;
+
+    /** 关联表名称 */
+    private String subColumnTableName;
+
+    /** 关联字段名称 */
+    private String subColumnFkName;
+
+    /** 映射字段名称 */
+    private String subColumnName;
+
+
+    /** 映射字段Java字段名 */
+    private String subColumnJavaField;
+
+    /** 映射字段Java类型 */
+    private String subColumnJavaType;
+
+    public String getSubColumnJavaField() {
+        return subColumnJavaField;
+    }
+
+    public void setSubColumnJavaField(String subColumnJavaField) {
+        this.subColumnJavaField = subColumnJavaField;
+    }
+
+    public String getSubColumnJavaType() {
+        return subColumnJavaType;
+    }
+
+    public void setSubColumnJavaType(String subColumnJavaType) {
+        this.subColumnJavaType = subColumnJavaType;
+    }
+
+    public String getSubColumnTableName() {
+        return subColumnTableName;
+    }
+
+    public void setSubColumnTableName(String subColumnTableName) {
+        this.subColumnTableName = subColumnTableName;
+    }
+
+    public String getSubColumnFkName() {
+        return subColumnFkName;
+    }
+
+    public void setSubColumnFkName(String subColumnFkName) {
+        this.subColumnFkName = subColumnFkName;
+    }
+
+    public String getSubColumnName() {
+        return subColumnName;
+    }
+
+    public void setSubColumnName(String subColumnName) {
+        this.subColumnName = subColumnName;
+    }
 
     public void setColumnId(Long columnId)
     {

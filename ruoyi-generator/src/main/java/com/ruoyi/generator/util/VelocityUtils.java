@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.velocity.VelocityContext;
+
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.ruoyi.generator.constant.GenConstants;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.generator.constant.GenConstants;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
 
@@ -142,9 +144,6 @@ public class VelocityUtils
         templates.add("vm/xml/mapper.xml.vm");
         templates.add("vm/sql/sql.vm");
         templates.add("vm/js/api.js.vm");
-        templates.add("vm/uniapp/edit.vue.vm");
-        templates.add("vm/uniapp/list.vue.vm");
-        templates.add("vm/uniapp/show.vue.vm");
         if (GenConstants.TPL_CRUD.equals(tplCategory))
         {
             templates.add(useWebType + "/index.vue.vm");
@@ -158,6 +157,10 @@ public class VelocityUtils
             templates.add(useWebType + "/index.vue.vm");
             templates.add("vm/java/sub-domain.java.vm");
         }
+
+        templates.add("vm/uniapp/edit.vue.vm");
+        templates.add("vm/uniapp/list.vue.vm");
+        templates.add("vm/uniapp/show.vue.vm");
         return templates;
     }
 

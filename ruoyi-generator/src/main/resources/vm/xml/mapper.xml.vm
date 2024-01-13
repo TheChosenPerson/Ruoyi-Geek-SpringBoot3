@@ -23,7 +23,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
 
     <sql id="select${ClassName}Vo">
+#if($table.haveSubColumn=="1")
+        select#foreach($column in $columns) #if($column.subColumnTableName)${column.subColumnTableName}.${column.subColumnName}#else${tableName}.${column.columnName}#end#if($foreach.count != $columns.size()),#end#end from ${tableName}
+#foreach($column in $columns)
+#if($column.subColumnTableName)
+            left join ${column.subColumnTableName} on ${column.subColumnTableName}.${column.subColumnName}=${tableName}.${column.columnName}
+#end
+#end
+#else
         select#foreach($column in $columns) $column.columnName#if($foreach.count != $columns.size()),#end#end from ${tableName}
+#end
     </sql>
 
     <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
@@ -31,9 +40,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
 #foreach($column in $columns)
 #set($queryType=$column.queryType)
-#set($javaField=$column.javaField)
-#set($javaType=$column.javaType)
-#set($columnName=$column.columnName)
+#if($column.subColumnTableName)
+    #set($javaField=$column.subColumnJavaField)
+    #set($javaType=$column.subColumnJavaType)
+    #set($columnName=$column.subColumnName)
+#else
+    #set($javaField=$column.javaField)
+    #set($javaType=$column.javaType)
+    #set($columnName=$column.columnName)
+#end
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
 #if($column.query)
 #if($column.queryType == "EQ")

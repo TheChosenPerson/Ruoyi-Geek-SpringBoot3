@@ -1,12 +1,15 @@
 package com.ruoyi.generator.domain;
 
 import java.util.List;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+
 import org.apache.commons.lang3.ArrayUtils;
-import com.ruoyi.generator.constant.GenConstants;
+
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.generator.constant.GenConstants;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 业务表 gen_table
@@ -96,6 +99,18 @@ public class GenTable extends BaseEntity {
 
     /** 上级菜单名称字段 */
     private String parentMenuName;
+
+
+    /** 是否含有关联字段 */
+    private String haveSubColumn;
+
+    public String getHaveSubColumn() {
+        return haveSubColumn;
+    }
+
+    public void setHaveSubColumn(String haveSubColumn) {
+        this.haveSubColumn = haveSubColumn;
+    }
 
     public Long getTableId() {
         return tableId;

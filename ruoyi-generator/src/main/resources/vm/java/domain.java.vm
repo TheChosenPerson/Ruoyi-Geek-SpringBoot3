@@ -60,6 +60,12 @@ public class ${ClassName} extends ${Entity}
 #end
     private $column.javaType $column.javaField;
 
+    
+#if($column.subColumnTableName && $table.haveSubColumn == '1')
+    /** $column.javaField 到 $column.subColumnTableName 映射 */
+    private $column.subColumnJavaType $column.subColumnJavaField;
+#end
+
 #end
 #end
 #if($table.sub)
@@ -83,6 +89,24 @@ public class ${ClassName} extends ${Entity}
     {
         return $column.javaField;
     }
+
+#if($column.subColumnTableName && $table.haveSubColumn  == '1')
+#if($column.subColumnJavaField.length() > 2 && $column.subColumnJavaField.substring(1,2).matches("[A-Z]"))
+#set($AttrName=$column.subColumnJavaField)
+#else
+#set($AttrName=$column.subColumnJavaField.substring(0,1).toUpperCase() + ${column.subColumnJavaField.substring(1)})
+#end
+    public void set${AttrName}($column.subColumnJavaType $column.subColumnJavaField) 
+    {
+        this.$column.subColumnJavaField = $column.subColumnJavaField;
+    }
+
+    public $column.subColumnJavaType get${AttrName}() 
+    {
+        return $column.subColumnJavaField;
+    }
+#end
+
 #end
 #end
 
@@ -108,6 +132,14 @@ public class ${ClassName} extends ${Entity}
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
 #end
             .append("${column.javaField}", get${AttrName}())
+#if($column.subColumnTableName && $table.haveSubColumn  == '1')
+#if($column.javaField.length() > 2 && $column.javaField.substring(1,2).matches("[A-Z]"))
+#set($AttrName=$column.subColumnJavaField)
+#else
+#set($AttrName=$column.subColumnJavaField.substring(0,1).toUpperCase() + ${column.subColumnJavaField.substring(1)})
+#end
+            .append("${column.subColumnJavaField}", get${AttrName}())
+#end
 #end
 #if($table.sub)
             .append("${subclassName}List", get${subClassName}List())

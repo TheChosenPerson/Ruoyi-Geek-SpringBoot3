@@ -12,17 +12,17 @@
 #set($comment=$column.columnComment)
 #end
 #if($column.htmlType == "input")
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end">
         <el-input
-          v-model="queryParams.${column.javaField}"
+          v-model="queryParams.#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end"
           placeholder="请输入${comment}"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
-      <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end">
+        <el-select v-model="queryParams.#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end" placeholder="请选择${comment}" clearable>
           <el-option
             v-for="dict in dict.type.${dictType}"
             :key="dict.value"
@@ -32,15 +32,15 @@
         </el-select>
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
-      <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end">
+        <el-select v-model="queryParams.#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end" placeholder="请选择${comment}" clearable>
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
 #elseif($column.htmlType == "date" && $column.queryType != "BETWEEN")
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end">
         <el-date-picker clearable
-          v-model="queryParams.${column.javaField}"
+          v-model="queryParams.#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end"
           type="date"
           value-format="yyyy-MM-dd"
           placeholder="请选择${comment}">
@@ -58,9 +58,9 @@
           end-placeholder="结束日期"
         ></el-date-picker>
 #elseif($column.htmlType == "time" && $column.queryType != "BETWEEN")
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end">
         <el-time-picker clearable
-          v-model="queryParams.${column.javaField}"
+          v-model="queryParams.#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end"
           format="HH:mm:ss"
           :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
           placeholder="请选择${comment}">
@@ -78,9 +78,9 @@
           end-placeholder="结束时间"
         ></el-time-picker>
 #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
-      <el-form-item label="${comment}" prop="${column.javaField}">
+      <el-form-item label="${comment}" prop="#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end">
         <el-date-picker clearable
-          v-model="queryParams.${column.javaField}"
+          v-model="queryParams.#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end"
           type="datetime"
           value-format="yyyy-MM-dd HH:mm:ss"
           placeholder="请选择${comment}">
@@ -580,7 +580,7 @@ export default {
         this.form = response.data;
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
-        this.form.$column.javaField = this.form.${column.javaField}.split(",");
+        this.form.$column.javaField = this.form.#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end.split(",");
 #end
 #end
 #if($table.sub)
@@ -596,7 +596,7 @@ export default {
         if (valid) {
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
-          this.form.$column.javaField = this.form.${column.javaField}.join(",");
+          this.form.$column.javaField = this.form.#if($column.subColumnTableName)${column.subColumnJavaField}#else${column.javaField}#end.join(",");
 #end
 #end
 #if($table.sub)
