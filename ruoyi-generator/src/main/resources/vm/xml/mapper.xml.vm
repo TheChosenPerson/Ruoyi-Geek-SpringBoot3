@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="select${ClassName}Vo">
 #if($table.haveSubColumn=="1")
-        select#foreach($column in $columns) #if($column.subColumnTableName)${column.subColumnTableName}.${column.subColumnName}#else${tableName}.${column.columnName}#end#if($foreach.count != $columns.size()),#end#end from ${tableName}
+        select#foreach($column in $columns) #if($column.subColumnTableName)${column.subColumnTableName}.${column.subColumnName},#end${tableName}.${column.columnName}#if($foreach.count != $columns.size()),#end#end from ${tableName}
 #foreach($column in $columns)
 #if($column.subColumnTableName)
             left join ${column.subColumnTableName} on ${column.subColumnTableName}.${column.subColumnName}=${tableName}.${column.columnName}
@@ -76,7 +76,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="select${ClassName}By${pkColumn.capJavaField}" parameterType="${pkColumn.javaType}" resultMap="#if($table.sub)${ClassName}${subClassName}Result#else${ClassName}Result#end">
 #if($table.crud || $table.tree)
         <include refid="select${ClassName}Vo"/>
+#if($table.haveSubColumn  == '1')
         where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+#else
+        where ${tableName}.${pkColumn.columnName} = #{${pkColumn.javaField}}
+#end
 #elseif($table.sub)
         select#foreach($column in $columns) a.$column.columnName#if($foreach.count != $columns.size()),#end#end,
            #foreach($column in $subTable.columns) b.$column.columnName as sub_$column.columnName#if($foreach.count != $subTable.columns.size()),#end#end
@@ -114,7 +118,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
 #end
         </trim>
+#if($table.haveSubColumn  == '1')
         where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+#else
+        where ${tableName}.${pkColumn.columnName} = #{${pkColumn.javaField}}
+#end
     </update>
 
     <delete id="delete${ClassName}By${pkColumn.capJavaField}" parameterType="${pkColumn.javaType}">
