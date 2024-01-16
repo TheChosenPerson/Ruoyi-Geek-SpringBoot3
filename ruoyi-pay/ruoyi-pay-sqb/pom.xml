@@ -3,13 +3,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ruoyi</artifactId>
+        <artifactId>ruoyi-pay</artifactId>
         <groupId>com.ruoyi</groupId>
         <version>3.8.7.3.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ruoyi-oauth</artifactId>
+    <artifactId>ruoyi-pay-sqb</artifactId>
 
     <description>
         system系统模块
@@ -21,6 +21,13 @@
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common</artifactId>
+        </dependency>
+
+        <!--httpclient-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
         </dependency>
 
     </dependencies>

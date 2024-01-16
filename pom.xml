@@ -207,6 +207,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 集成支付 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-pay</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>jakarta.servlet</groupId>
                 <artifactId>jakarta.servlet-api</artifactId>
@@ -231,6 +238,7 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>ruoyi-oauth</module>
+        <module>ruoyi-pay</module>
     </modules>
     <packaging>pom</packaging>
 
