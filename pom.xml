@@ -203,7 +203,7 @@
             <!-- 集成第三方登录 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-third-auth</artifactId>
+                <artifactId>ruoyi-oauth</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
@@ -230,7 +230,7 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
-        <module>ruoyi-third-auth</module>
+        <module>ruoyi-oauth</module>
     </modules>
     <packaging>pom</packaging>
 

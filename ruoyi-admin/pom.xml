@@ -57,7 +57,8 @@
         <!-- 集成第三方登录 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-third-auth</artifactId>
+            <artifactId>ruoyi-oauth-wx</artifactId>
+            <version>3.8.7.3.1</version>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,12 @@
+# 请输入自己的appid和appsecret
+wx:
+  miniapp:
+    open: true
+    appId: miniAppid
+    appSecret: miniAppSercret
+    url: https://api.weixin.qq.com/sns/jscode2session
+  h5:
+    open: true
+    appId: wx98501e665b0f0596
+    appSecret: wx98501e665b0f0596
+    url: https://api.weixin.qq.com/sns/oauth2/access_token
