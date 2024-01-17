@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WxH5Constant {
-    @Value("${wx.h5.appId}")
+public class WxPubConstant {
+    @Value("${wx.pub.appId}")
     private String appId;
 
-    @Value("${wx.h5.appSecret}")
+    @Value("${wx.pub.appSecret}")
     private String appSecret;
 
-    @Value("${wx.h5.url}")
+    @Value("${wx.pub.url}")
     private String url;
 
-    @Value("${wx.h5.open}")
+    @Value("${wx.pub.open}")
     private Boolean open;
 
     public String getUrl() {

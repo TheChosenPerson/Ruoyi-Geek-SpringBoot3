@@ -2,10 +2,10 @@
 wx:
   miniapp:
     open: true
-    appId: miniAppid
-    appSecret: miniAppSercret
+    appId: wx2dd450adc727b59e
+    appSecret: 471e9abe00b93460d6a8654a30b4c85f
     url: https://api.weixin.qq.com/sns/jscode2session
-  h5:
+  pub:
     open: true
     appId: wx98501e665b0f0596
     appSecret: wx98501e665b0f0596

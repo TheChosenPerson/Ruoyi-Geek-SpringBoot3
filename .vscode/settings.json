@@ -4,5 +4,6 @@
         "*.yml": "yaml"
     },
     "java.compile.nullAnalysis.mode": "disabled",
+    "maven.view": "hierarchical",
     // "java.compile.nullAnalysis.mode": "automatic"
 }
