@@ -23,7 +23,7 @@ CREATE TABLE oauth_user (
 
 -- 菜单 SQL
 insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values('第三方认证', '1', '1', 'oauth', 'system/oauth/index', 1, 0, 'C', '0', '0', 'system:oauth:list', '#', 'admin', sysdate(), '', null, '第三方认证菜单');
+values('第三方认证', '1', '1', 'oauth', 'system/oauth/index', 1, 0, 'C', '0', '0', 'system:oauth:list', 'checkbox', 'admin', sysdate(), '', null, '第三方认证菜单');
 
 -- 按钮父菜单ID
 SELECT @parentId := LAST_INSERT_ID();

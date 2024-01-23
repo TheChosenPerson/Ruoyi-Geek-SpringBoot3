@@ -129,7 +129,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                 oauthUser.getCode());
         oauthUser.setOpenId(doAuth.get("openid"));
         oauthUser.setUuid(doAuth.get("openid"));
-        oauthUser.setSource("WXPub");
+        oauthUser.setSource("WXMiniApp");
         oauthUser.setAccessToken(doAuth.get("sessionKey"));
         oauthUserService.insertOauthUser(oauthUser);
         return "";
