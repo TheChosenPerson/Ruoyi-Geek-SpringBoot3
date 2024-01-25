@@ -25,6 +25,7 @@ import com.ruoyi.framework.config.ServerConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -85,7 +86,7 @@ public class CommonController {
      */
     @Operation(summary = "通用上传请求（单个）")
     @PostMapping("/upload")
-    public AjaxResult uploadFile(MultipartFile file) throws Exception {
+    public AjaxResult uploadFile(@RequestBody MultipartFile file) throws Exception {
         try {
             // 上传文件路径
             String filePath = RuoYiConfig.getUploadPath();
@@ -108,7 +109,7 @@ public class CommonController {
      */
     @Operation(summary = "通用上传请求（多个）")
     @PostMapping("/uploads")
-    public AjaxResult uploadFiles(List<MultipartFile> files)
+    public AjaxResult uploadFiles(@RequestBody List<MultipartFile> files)
             throws Exception {
         try {
             // 上传文件路径
