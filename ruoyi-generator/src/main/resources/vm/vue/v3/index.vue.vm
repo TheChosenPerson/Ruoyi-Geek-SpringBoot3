@@ -209,7 +209,7 @@
         <el-form-item label="${comment}">
           <editor v-model="form.${field}" :min-height="192"/>
         </el-form-item>
-#elseif($column.htmlType == "select" && "" != $column.subColumnTableName)
+#elseif($column.htmlType == "select" && "" != $column.subColumnTableName && "" == $dictType)
         <el-form-item label="${comment}" prop="${field}">
           <el-select v-model="form.${field}" multiple filterable remote reserve-keyword remote-show-suffix
             placeholder="请选择${comment}"
