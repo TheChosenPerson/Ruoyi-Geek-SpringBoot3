@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +29,7 @@ public class OnLineController extends BaseController {
     @Autowired
     private IOnlineMbService onlineMbService;
 
-    @PostMapping("/api/**")
+    @RequestMapping("/api/**")
     public Object api(@RequestBody(required = false) Map<String, Object> data, HttpServletResponse response,
             HttpServletRequest request) {
         OnlineMb selectOnlineMb = new OnlineMb();
@@ -51,7 +50,7 @@ public class OnLineController extends BaseController {
             return error("存在多个接口");
         } else {
             OnlineMb onlineMb = selectOnlineMbList.get(0);
-            String sql = "<script>" + onlineMb.getSql() + "</script>";
+            String sql = "<script>\n" + onlineMb.getSql() + "\n</script>";
             SqlSession sqlSession = sqlSessionFactory.openSession();
             SqlMapper sqlMapper = new SqlMapper(sqlSession);
             return switch (onlineMb.getActuator()) {
