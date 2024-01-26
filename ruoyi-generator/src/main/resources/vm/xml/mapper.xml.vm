@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select#foreach($column in $columns) #if($column.subColumnTableName)${column.subColumnTableName}.${column.subColumnName},#end${tableName}.${column.columnName}#if($foreach.count != $columns.size()),#end#end from ${tableName}
 #foreach($column in $columns)
 #if($column.subColumnTableName)
-            left join ${column.subColumnTableName} on ${column.subColumnTableName}.${column.subColumnName}=${tableName}.${column.columnName}
+            left join ${column.subColumnTableName} on ${column.subColumnTableName}.${column.subColumnFkName}=${tableName}.${column.columnName}
 #end
 #end
 #else

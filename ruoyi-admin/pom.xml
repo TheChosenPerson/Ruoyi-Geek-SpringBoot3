@@ -15,13 +15,11 @@
         web服务入口
     </description>
 
-    <dependencies>
-        <!-- 注入冲突 -->
-        <!-- <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency> -->
+    <properties>
+        <ruoyi.version>3.8.7.3.1</ruoyi.version>
+    </properties>
 
+    <dependencies>
 
         <!-- spring-boot-devtools -->
         <dependency>
@@ -58,7 +56,13 @@
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-oauth-wx</artifactId>
-            <version>3.8.7.3.1</version>
+            <version>${ruoyi.version}</version>
+        </dependency>
+
+         <!-- 在线接口 -->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-online</artifactId>
         </dependency>
     </dependencies>
 

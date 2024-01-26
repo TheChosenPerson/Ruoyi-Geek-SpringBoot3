@@ -24,7 +24,7 @@
         <kaptcha.version>2.3.3</kaptcha.version>
         <pagehelper.boot.version>1.4.7</pagehelper.boot.version>
         <fastjson.version>2.0.45</fastjson.version>
-        <oshi.version>6.4.10</oshi.version>
+        <oshi.version>6.4.11</oshi.version>
         <commons.io.version>2.11.0</commons.io.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <poi.version>4.1.2</poi.version>
@@ -200,6 +200,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- knife4j -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
             <!-- 集成第三方登录 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -220,11 +227,11 @@
                 <version>6.0.0</version>
             </dependency>
 
-            <!-- knife4j -->
+            <!-- 在线接口 -->
             <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-online</artifactId>
+                <version>${ruoyi.version}</version>
             </dependency>
 
         </dependencies>
@@ -239,6 +246,7 @@
         <module>ruoyi-common</module>
         <module>ruoyi-oauth</module>
         <module>ruoyi-pay</module>
+        <module>ruoyi-online</module>
     </modules>
     <packaging>pom</packaging>
 

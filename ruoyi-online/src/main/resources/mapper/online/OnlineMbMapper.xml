@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.online.mapper.OnlineMbMapper">
+    
+    <resultMap type="OnlineMb" id="OnlineMbResult">
+        <result property="mbId"    column="mb_id"    />
+        <result property="tag"    column="tag"    />
+        <result property="tagId"    column="tag_id"    />
+        <result property="parameterType"    column="parameterType"    />
+        <result property="resultMap"    column="resultMap"    />
+        <result property="sql"    column="sql"    />
+        <result property="path"    column="path"    />
+        <result property="method"    column="method"    />
+        <result property="resultType"    column="resultType"    />
+        <result property="actuator"    column="actuator"    />
+    </resultMap>
+
+    <sql id="selectOnlineMbVo">
+        select mb_id, tag, tag_id, parameterType, resultMap, `sql`, `path`, method, resultType, actuator from online_mb
+    </sql>
+
+    <select id="selectOnlineMbList" parameterType="OnlineMb" resultMap="OnlineMbResult">
+        <include refid="selectOnlineMbVo"/>
+        <where>  
+            <if test="tag != null  and tag != ''"> and tag = #{tag}</if>
+            <if test="tagId != null  and tagId != ''"> and tag_id = #{tagId}</if>
+            <if test="parameterType != null  and parameterType != ''"> and parameterType = #{parameterType}</if>
+            <if test="resultMap != null  and resultMap != ''"> and resultMap = #{resultMap}</if>
+            <if test="sql != null  and sql != ''"> and `sql` = #{sql}</if>
+            <if test="path != null  and path != ''"> and `path` = #{path}</if>
+            <if test="method != null  and method != ''"> and method = #{method}</if>
+            <if test="resultType != null  and resultType != ''"> and resultType = #{resultType}</if>
+            <if test="actuator != null  and actuator != ''"> and actuator = #{actuator}</if>
+        </where>
+    </select>
+    
+    <select id="selectOnlineMbByMbId" parameterType="Long" resultMap="OnlineMbResult">
+        <include refid="selectOnlineMbVo"/>
+        where online_mb.mb_id = #{mbId}
+    </select>
+        
+    <insert id="insertOnlineMb" parameterType="OnlineMb">
+        insert into online_mb
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mbId != null">mb_id,</if>
+            <if test="tag != null">tag,</if>
+            <if test="tagId != null">tag_id,</if>
+            <if test="parameterType != null">parameterType,</if>
+            <if test="resultMap != null">resultMap,</if>
+            <if test="sql != null">sql,</if>
+            <if test="path != null and path != ''">path,</if>
+            <if test="method != null and method != ''">method,</if>
+            <if test="resultType != null">resultType,</if>
+            <if test="actuator != null and actuator != ''">actuator,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mbId != null">#{mbId},</if>
+            <if test="tag != null">#{tag},</if>
+            <if test="tagId != null">#{tagId},</if>
+            <if test="parameterType != null">#{parameterType},</if>
+            <if test="resultMap != null">#{resultMap},</if>
+            <if test="sql != null">#{sql},</if>
+            <if test="path != null and path != ''">#{path},</if>
+            <if test="method != null and method != ''">#{method},</if>
+            <if test="resultType != null">#{resultType},</if>
+            <if test="actuator != null and actuator != ''">#{actuator},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOnlineMb" parameterType="OnlineMb">
+        update online_mb
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tag != null">tag = #{tag},</if>
+            <if test="tagId != null">tag_id = #{tagId},</if>
+            <if test="parameterType != null">parameterType = #{parameterType},</if>
+            <if test="resultMap != null">resultMap = #{resultMap},</if>
+            <if test="sql != null">`sql` = #{sql},</if>
+            <if test="path != null and path != ''">`path` = #{path},</if>
+            <if test="method != null and method != ''">method = #{method},</if>
+            <if test="resultType != null">resultType = #{resultType},</if>
+            <if test="actuator != null and actuator != ''">actuator = #{actuator},</if>
+        </trim>
+        where online_mb.mb_id = #{mbId}
+    </update>
+
+    <delete id="deleteOnlineMbByMbId" parameterType="Long">
+        delete from online_mb where mb_id = #{mbId}
+    </delete>
+
+    <delete id="deleteOnlineMbByMbIds" parameterType="String">
+        delete from online_mb where mb_id in 
+        <foreach item="mbId" collection="array" open="(" separator="," close=")">
+            #{mbId}
+        </foreach>
+    </delete>
+</mapper>
