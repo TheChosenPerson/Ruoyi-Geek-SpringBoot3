@@ -614,12 +614,12 @@ function handle${subClassName}SelectionChange(selection) {
 #if($column.subColumnTableName)
 #set($JavaField = $column.javaField.substring(0, 1).toUpperCase() + $column.javaField.substring(1))
 /** 映射字段选中操作 */
-const loading${column.javaField} = ref(false)
+const loading${column.JavaField} = ref(false)
 const options${JavaField} = ref([])
 function remoteMethod${JavaField}(query){
   if (query) {
       loading${JavaField}.value = true
-      list目标业务名().then(res=>{
+      list目标业务名({${column.subColumnJavaField}:query}).then(res=>{
         loading${JavaField}.value = false
         options${JavaField}.value = res.rows.map(item=>({label:item.${column.subColumnJavaField},value:item.${column.subColumnFkName}}))
       })
