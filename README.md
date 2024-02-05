@@ -1,4 +1,3 @@
-
 <p align="center">
 	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
 </p>
@@ -10,8 +9,15 @@
 	<a href="https://gitee.com/y_project/RuoYi-Vue/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
 </p>
 
-
 # 当前版本是3.8.7.3
+
+
+本人的其他两个推荐搭配的项目
+
+1. [RuoYi-App-Geek: 这是若依极客生态的小程序版本 (gitee.com)](https://gitee.com/geek-xd/geek-uniapp-vue3-uview-plus-uchart)
+2. [RuoYi-Vue3-Geek: 这是若依极客生态的Vue3版本 (gitee.com)](https://gitee.com/geek-xd/ruo-yi-vue3-geek)
+
+与本项目同为一个作者开发，兼容性最好，学习成本最低
 
 ## 平台简介
 
@@ -32,14 +38,55 @@
 ## 本项目与原项目的区别
 
 1. 改用SpringBoot3+java17的更新的技术栈
-2. 改用最新版本的SpringSecurity安全框架，以及采用最新的lambda 表达式的配置方式
-3. 自动Api文档以springfox替代springdoc来适配knife4j框架的4.x版本
-4. 引入mybatis-plus增强mybatis
-5. RedisConfig实现CachingConfigurer接口代替继承CachingConfigurerSupport类
-6. CacheController中RedisCallback的connection.info() 和connection.dbSize()方法已经被弃用，改成通过connection.serverCommands()调用info和db方法，如connection.serverCommands().info()。
-7. ExcelUtil中 .newInstance()方法已被弃用，改成.getDeclaredConstructor().newInstance()
-8. Excel中roundingMode方法BigDecimal.ROUND_HALF_EVEN改成RoundingMode.HALF_EVEN，用枚举代替常量
-9. ReflectUtils中isAccessible在java9中被弃用，建议通过canAccess(null)来代替
+2. 升级了代码生成器（配合本项目的vue3版本才可用）
+3. 改用最新版本的SpringSecurity安全框架，以及采用最新的lambda 表达式的配置方式
+4. 自动Api文档以springfox替代springdoc来适配knife4j框架的4.x版本
+5. 引入mybatis-plus增强mybatis
+6. RedisConfig实现CachingConfigurer接口代替继承CachingConfigurerSupport类
+7. CacheController中RedisCallback的connection.info() 和connection.dbSize()方法已经被弃用，改成通过connection.serverCommands()调用info和db方法，如connection.serverCommands().info()。
+8. ExcelUtil中 .newInstance()方法已被弃用，改成.getDeclaredConstructor().newInstance()
+9. Excel中roundingMode方法BigDecimal.ROUND_HALF_EVEN改成RoundingMode.HALF_EVEN，用枚举代替常量
+10. ReflectUtils中isAccessible在java9中被弃用，建议通过canAccess(null)来代替
+
+## 模块介绍（简单开发必看）
+
+* 最简单的开发就是删除所有的可移除模块，按需添加模块。
+* 测试中的模块请自己使用的时候一定要测试一下。
+* 开发中的模块请直接删除。
+
+```
+com.ruoyi   
+├── common            // 工具类
+│       └── annotation                    // 自定义注解
+│       └── config                        // 全局配置
+│       └── constant                      // 通用常量
+│       └── core                          // 核心控制
+│       └── enums                         // 通用枚举
+│       └── exception                     // 通用异常
+│       └── filter                        // 过滤器处理
+│       └── utils                         // 通用类处理
+├── framework         // 框架核心
+│       └── aspectj                       // 注解实现
+│       └── config                        // 系统配置
+│       └── datasource                    // 数据权限
+│       └── interceptor                   // 拦截器
+│       └── manager                       // 异步处理
+│       └── security                      // 权限控制
+│       └── web                           // 前端控制
+├── ruoyi-generator   // 代码生成（可移除）
+├── ruoyi-quartz      // 定时任务（可移除）
+├── ruoyi-system      // 系统代码
+├── ruoyi-admin       // 后台服务
+├── ruoyi-pay         // 支付框架（开发中）
+│       └── sqb	                           // 收钱吧支付模块（开发中）
+├── ruoyi-online      // 在线开发模块（可移除）
+├── ruoyi-oauth       // 第三方认证框架（测试中）
+│       └── common                         // 第三方认证基础模块（测试中）
+│       └── justauth                       // 网站第三方认证模块（测试中）
+│       └── wx                             // 微信小程序认证模块（测试中）
+```
+
+
 
 ## 内置功能
 
