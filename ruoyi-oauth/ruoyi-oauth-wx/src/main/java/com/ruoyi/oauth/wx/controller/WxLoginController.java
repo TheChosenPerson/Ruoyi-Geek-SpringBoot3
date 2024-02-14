@@ -18,7 +18,7 @@ import com.ruoyi.oauth.wx.constant.WxPubConstant;
 import com.ruoyi.oauth.wx.service.Impl.WxLoginServiceImpl;
 
 @RestController
-@RequestMapping("/wx")
+@RequestMapping("/oauth/wx")
 public class WxLoginController extends BaseController {
     @Autowired
     public WxPubConstant wxH5AppConstant;

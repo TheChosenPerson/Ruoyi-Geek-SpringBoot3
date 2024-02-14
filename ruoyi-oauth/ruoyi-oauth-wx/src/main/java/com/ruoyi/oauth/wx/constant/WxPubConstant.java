@@ -5,16 +5,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WxPubConstant {
-    @Value("${wx.pub.appId}")
+    @Value("${oauth.wx.pub.appId}")
     private String appId;
 
-    @Value("${wx.pub.appSecret}")
+    @Value("${oauth.wx.pub.appSecret}")
     private String appSecret;
 
-    @Value("${wx.pub.url}")
+    @Value("${oauth.wx.pub.url}")
     private String url;
 
-    @Value("${wx.pub.open}")
+    @Value("${oauth.wx.pub.open}")
     private Boolean open;
 
     public String getUrl() {

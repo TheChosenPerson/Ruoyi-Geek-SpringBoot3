@@ -210,14 +210,14 @@
             <!-- 集成第三方登录 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-oauth</artifactId>
+                <artifactId>ruoyi-oauth-start</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
             <!-- 集成支付 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-pay</artifactId>
+                <artifactId>ruoyi-pay-start</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 

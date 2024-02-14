@@ -5,16 +5,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WxMiniAppConstant {
-    @Value("${wx.miniapp.appId}")
+    @Value("${oauth.wx.miniapp.appId}")
     private String appId;
 
-    @Value("${wx.miniapp.appSecret}")
+    @Value("${oauth.wx.miniapp.appSecret}")
     private String appSecret;
 
-    @Value("${wx.miniapp.url}")
+    @Value("${oauth.wx.miniapp.url}")
     private String url;
 
-    @Value("${wx.miniapp.open}")
+    @Value("${oauth.wx.miniapp.open}")
     private Boolean open;
 
     public Boolean getOpen() {

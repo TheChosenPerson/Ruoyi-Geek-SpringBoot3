@@ -1,0 +1,8 @@
+pay:
+  sqb:
+    apiDomain: "apiDomain"
+    terminalSn: "terminalSn"
+    terminalKey: "terminalKey"
+    appId: "appId"
+    vendorSn: "vendorSn"
+    vendorKey: "vendorKey"

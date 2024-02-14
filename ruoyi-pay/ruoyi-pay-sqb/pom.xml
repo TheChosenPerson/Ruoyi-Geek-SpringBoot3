@@ -12,7 +12,7 @@
     <artifactId>ruoyi-pay-sqb</artifactId>
 
     <description>
-        system系统模块
+        收钱吧支付模块
     </description>
 
     <dependencies>

@@ -15,7 +15,7 @@ import com.ruoyi.pay.sqb.utils.HttpUtil;
 @Service
 public class SQBServiceImpl {
     @Autowired
-    SqbConstant sqbConstant;
+    private SqbConstant sqbConstant;
 
     /**
      * 计算字符串的MD5值

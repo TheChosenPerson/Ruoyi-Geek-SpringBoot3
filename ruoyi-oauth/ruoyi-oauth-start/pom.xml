@@ -3,110 +3,66 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ruoyi</artifactId>
+        <artifactId>ruoyi-oauth</artifactId>
         <groupId>com.ruoyi</groupId>
         <version>3.8.7.3.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ruoyi-oauth</artifactId>
-
-    <properties>
-        <ruoyi.version>3.8.7.3.1</ruoyi.version>
-    </properties>
+    <artifactId>ruoyi-oauth-start</artifactId>
 
     <description>
         第三方认证模块
     </description>
-    <dependencyManagement>
-        <dependencies>
 
+    <dependencies>
             <!-- 通用工具-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common</artifactId>
-                <version>${ruoyi.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-framework</artifactId>
-                <version>${ruoyi.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-system</artifactId>
-                <version>${ruoyi.version}</version>
             </dependency>
 
             <!-- 第三方认证通用工具-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-oauth-common</artifactId>
-                <version>${ruoyi.version}</version>
             </dependency>
-
-            <!--httpclient-->
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>4.5.2</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>me.zhyd.oauth</groupId>
-                <artifactId>JustAuth</artifactId>
-                <version>1.16.6</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alipay.sdk</groupId>
-                <artifactId>alipay-sdk-java</artifactId>
-                <version>3.7.4.ALL</version>
-            </dependency>
-
 
             <!-- justauth通用认证 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-oauth-justauth</artifactId>
-                <version>${ruoyi.version}</version>
             </dependency>
 
             <!-- 微信小程序和公众号认证 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-oauth-wx</artifactId>
-                <version>${ruoyi.version}</version>
             </dependency>
 
             <!-- 手机号认证 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-oauth-phone</artifactId>
-                <version>${ruoyi.version}</version>
             </dependency>
 
             <!-- 邮箱认证 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-oauth-email</artifactId>
-                <version>${ruoyi.version}</version>
             </dependency>
-        </dependencies>
-    </dependencyManagement>
+    </dependencies>
 
-
-    <modules>
-        <module>ruoyi-oauth-common</module>
-        <module>ruoyi-oauth-justauth</module>
-        <module>ruoyi-oauth-wx</module>
-        <module>ruoyi-oauth-phone</module>
-        <module>ruoyi-oauth-email</module>
-        <module>ruoyi-oauth-start</module>
-    </modules>
-    <packaging>pom</packaging>
 </project>

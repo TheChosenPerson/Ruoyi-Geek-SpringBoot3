@@ -1,11 +1,13 @@
 package com.ruoyi.pay.sqb.constant;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 @Component
 public class SqbConstant {
     @Value("${pay.sqb.apiDomain}")
     private String apiDomain;
-    
+
     @Value("${pay.sqb.terminalSn}")
     private String terminalSn;
 
@@ -14,6 +16,12 @@ public class SqbConstant {
 
     @Value("${pay.sqb.appId}")
     private String appId;
+
+    @Value("${pay.sqb.vendorSn}")
+    private String vendorSn;
+
+    @Value("${pay.sqb.vendorKey}")
+    private String vendorKey;
 
     public String getApiDomain() {
         return apiDomain;
@@ -62,10 +70,4 @@ public class SqbConstant {
     public void setVendorKey(String vendorKey) {
         this.vendorKey = vendorKey;
     }
-
-    @Value("${pay.sqb.vendorSn}")
-    private String vendorSn;
-
-    @Value("${pay.sqb.vendorKey}")
-    private String vendorKey;
 }

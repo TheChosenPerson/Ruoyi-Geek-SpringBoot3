@@ -5,6 +5,7 @@ import java.net.Proxy;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.redis.RedisCache;
@@ -61,6 +62,7 @@ import me.zhyd.oauth.request.AuthWeiboRequest;
 import me.zhyd.oauth.request.AuthXmlyRequest;
 import me.zhyd.oauth.utils.AuthScopeUtils;
 
+@Service
 public class OAuthServiceImpl implements OAuthService {
 
     @Autowired

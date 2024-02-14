@@ -16,7 +16,7 @@
     </properties>
 
     <description>
-        第三方认证模块
+        支付模块
     </description>
     <dependencyManagement>
         <dependencies>
@@ -27,10 +27,30 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- 通用工具-->
+            <!-- 收钱吧支付 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-pay-sqb</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <!-- 支付宝支付 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-pay-alipay</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <!-- 微信支付 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-pay-wx</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-pay-start</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
         </dependencies>
@@ -39,6 +59,9 @@
 
     <modules>
         <module>ruoyi-pay-sqb</module>
+        <module>ruoyi-pay-alipay</module>
+        <module>ruoyi-pay-wx</module>
+        <module>ruoyi-pay-start</module>
     </modules>
     <packaging>pom</packaging>
 </project>

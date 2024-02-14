@@ -9,10 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ruoyi-oauth-justauth</artifactId>
+    <artifactId>ruoyi-oauth-email</artifactId>
 
     <description>
-        justauth框架认证模块
+        邮箱认证模块
     </description>
 
     <dependencies>
@@ -21,16 +21,6 @@
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-oauth-common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>me.zhyd.oauth</groupId>
-            <artifactId>JustAuth</artifactId>
-            <version>1.16.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
         </dependency>
 
     </dependencies>
