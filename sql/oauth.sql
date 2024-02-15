@@ -19,7 +19,7 @@ CREATE TABLE oauth_user (
     code VARCHAR(255) COMMENT '用户的授权code，部分平台可能没有',
     oauth_token VARCHAR(255) COMMENT 'Twitter平台用户的附带属性，部分平台可能没有',
     oauth_token_secret VARCHAR(255) COMMENT 'Twitter平台用户的附带属性，部分平台可能没有'
-);
+) ENGINE = InnoDB  COMMENT = '第三方登录';
 
 -- 菜单 SQL
 insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)

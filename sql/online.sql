@@ -12,7 +12,7 @@ CREATE TABLE `online_mb` (
     `resultType` varchar(255) NULL COMMENT '响应类型',
     `actuator` varchar(255) NULL COMMENT '执行器',
     PRIMARY KEY (`mb_id`)
-);
+) ENGINE = InnoDB  COMMENT = '在线接口';
 
 -- 菜单 SQL
 insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)

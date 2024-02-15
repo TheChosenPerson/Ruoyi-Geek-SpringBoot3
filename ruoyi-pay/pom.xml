@@ -27,6 +27,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 支付基础模块 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-pay-common</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
             <!-- 收钱吧支付 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -61,6 +68,7 @@
         <module>ruoyi-pay-sqb</module>
         <module>ruoyi-pay-alipay</module>
         <module>ruoyi-pay-wx</module>
+        <module>ruoyi-pay-common</module>
         <module>ruoyi-pay-start</module>
     </modules>
     <packaging>pom</packaging>
