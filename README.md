@@ -11,7 +11,6 @@
 
 # 当前版本是3.8.7.3
 
-
 本人的其他两个推荐搭配的项目
 
 1. [RuoYi-App-Geek: 这是若依极客生态的小程序版本 (gitee.com)](https://gitee.com/geek-xd/geek-uniapp-vue3-uview-plus-uchart)
@@ -28,8 +27,6 @@
 * 权限认证使用Jwt，支持多终端认证系统。
 * 支持加载动态权限菜单，多方式轻松权限控制。
 * 高效率开发，使用代码生成器可以一键生成前后端代码。
-* 提供了技术栈（[Vue3](https://v3.cn.vuejs.org) [Element Plus](https://element-plus.org/zh-CN) [Vite](https://cn.vitejs.dev)）版本[RuoYi-Vue3](https://github.com/yangzongzhuan/RuoYi-Vue3)，保持同步更新。
-* 提供了单应用版本[RuoYi-Vue-fast](https://github.com/yangzongzhuan/RuoYi-Vue-fast)，Oracle版本[RuoYi-Vue-Oracle](https://github.com/yangzongzhuan/RuoYi-Vue-Oracle)，保持同步更新。
 * 不分离版本，请移步[RuoYi](https://gitee.com/y_project/RuoYi)，微服务版本，请移步[RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud)
 * 特别鸣谢：[element](https://github.com/ElemeFE/element)，[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)，[eladmin-web](https://github.com/elunez/eladmin-web)。
 * 阿里云折扣场：[点我进入](http://aly.ruoyi.vip)，腾讯云秒杀场：[点我进入](http://txy.ruoyi.vip)&nbsp;&nbsp;
@@ -55,6 +52,10 @@
 * 开发中的模块请直接删除。
 
 ```
+
+
+
+
 com.ruoyi   
 ├── common            // 工具类
 │       └── annotation                    // 自定义注解
@@ -78,15 +79,20 @@ com.ruoyi
 ├── ruoyi-system      // 系统代码
 ├── ruoyi-admin       // 后台服务
 ├── ruoyi-pay         // 支付框架（开发中）
+│       └── common                         // 支付框架基础模块（测试中）
 │       └── sqb	                           // 收钱吧支付模块（开发中）
+│       └── wx	                           // 微信支付模块（待开发）
+│       └── alipay	                   // 支付宝支付模块（待开发）
+│       └── start	                   // 支付框架整合模块
 ├── ruoyi-online      // 在线开发模块（可移除）
 ├── ruoyi-oauth       // 第三方认证框架（测试中）
-│       └── common                         // 第三方认证基础模块（测试中）
+│       └── common                         // 第三方认证基础模块（开发中）
 │       └── justauth                       // 网站第三方认证模块（测试中）
 │       └── wx                             // 微信小程序认证模块（测试中）
+│       └── phone                          // 微信小程序认证模块（开发中）
+│       └── email                          // 微信小程序认证模块（待开发）
+│       └── start                          // 第三方认证整合模块
 ```
-
-
 
 ## 内置功能
 

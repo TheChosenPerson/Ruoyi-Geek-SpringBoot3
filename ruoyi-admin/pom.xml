@@ -52,16 +52,16 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
-        <!-- 集成第三方登录 -->
+        <!-- 集成第三方登录启动器 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-oauth-start</artifactId>
+            <artifactId>ruoyi-oauth-starter</artifactId>
         </dependency>
 
-        <!-- 集成第三方支付 -->
+        <!-- 集成第三方支付启动器 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-pay-start</artifactId>
+            <artifactId>ruoyi-pay-starter</artifactId>
         </dependency>
 
         <!-- 在线接口 -->

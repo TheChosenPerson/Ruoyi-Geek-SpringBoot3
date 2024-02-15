@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ruoyi-pay-start</artifactId>
+    <artifactId>ruoyi-pay-starter</artifactId>
 
     <description>
         第三方支付模块

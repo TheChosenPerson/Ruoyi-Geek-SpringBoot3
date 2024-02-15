@@ -96,6 +96,13 @@
                 <artifactId>ruoyi-oauth-email</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+
+            <!-- 第三方登录启动器 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-oauth-starter</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -106,7 +113,7 @@
         <module>ruoyi-oauth-wx</module>
         <module>ruoyi-oauth-phone</module>
         <module>ruoyi-oauth-email</module>
-        <module>ruoyi-oauth-start</module>
+        <module>ruoyi-oauth-starter</module>
     </modules>
     <packaging>pom</packaging>
 </project>

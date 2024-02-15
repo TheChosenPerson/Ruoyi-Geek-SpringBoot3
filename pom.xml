@@ -207,24 +207,24 @@
                 <version>${knife4j.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>6.0.0</version>
+            </dependency>
+
             <!-- 集成第三方登录 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-oauth-start</artifactId>
+                <artifactId>ruoyi-oauth-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
             <!-- 集成支付 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-pay-start</artifactId>
+                <artifactId>ruoyi-pay-starter</artifactId>
                 <version>${ruoyi.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>jakarta.servlet</groupId>
-                <artifactId>jakarta.servlet-api</artifactId>
-                <version>6.0.0</version>
             </dependency>
 
             <!-- 在线接口 -->
@@ -233,7 +233,6 @@
                 <artifactId>ruoyi-online</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
