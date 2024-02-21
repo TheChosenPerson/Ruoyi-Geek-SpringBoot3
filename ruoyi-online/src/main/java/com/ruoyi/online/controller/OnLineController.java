@@ -3,12 +3,15 @@ package com.ruoyi.online.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ruoyi.common.annotation.Anonymous;
@@ -30,19 +33,32 @@ public class OnLineController extends BaseController {
     private IOnlineMbService onlineMbService;
 
     @RequestMapping("/api/**")
-    public Object api(@RequestBody(required = false) Map<String, Object> data, HttpServletResponse response,
-            HttpServletRequest request) {
+    public Object api(@RequestParam(required = false) HashMap<String,Object> params,@RequestBody(required = false) HashMap<String,Object> data,HttpServletRequest request,HttpServletResponse response) {
         OnlineMb selectOnlineMb = new OnlineMb();
         selectOnlineMb.setPath(request.getRequestURI().replace("/online/api", ""));
         selectOnlineMb.setMethod(request.getMethod());
         Map<String, Object> object = new HashMap<>();
-        Map<String, String[]> params = request.getParameterMap();
+        HashMap<String, Object> object_params = new HashMap<String, Object>();
+        String keyregex = "params\\[(.*?)\\]";
+        Pattern pattern = Pattern.compile(keyregex);
         if (params != null) {
-            object.putAll(params);
+            params.keySet().forEach(key -> {
+                Matcher matcher = pattern.matcher(key);
+                if(matcher.find()){
+                    object_params.put(matcher.group(1), object.get(key));
+                }else{
+                    object.put(key, params.get(key));
+                }
+            });
         }
         if (data != null) {
+            if(data.containsKey("params")){
+                object_params.putAll((HashMap<String, Object>) object.get("params"));
+                data.remove("params");
+            }
             object.putAll(data);
         }
+        object.put("params", object_params);
         List<OnlineMb> selectOnlineMbList = onlineMbService.selectOnlineMbList(selectOnlineMb);
         if (selectOnlineMbList.size() == 0) {
             return error("没有相关接口");
