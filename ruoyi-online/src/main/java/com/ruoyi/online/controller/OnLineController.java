@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.framework.web.service.PermissionService;
 import com.ruoyi.online.domain.OnlineMb;
 import com.ruoyi.online.service.IOnlineMbService;
 import com.ruoyi.online.utils.SqlMapper;
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -31,9 +35,13 @@ public class OnLineController extends BaseController {
     private SqlSessionFactory sqlSessionFactory;
     @Autowired
     private IOnlineMbService onlineMbService;
+    @Resource(name = "ss")
+    private PermissionService permissionService;
 
     @RequestMapping("/api/**")
-    public Object api(@RequestParam(required = false) HashMap<String,Object> params,@RequestBody(required = false) HashMap<String,Object> data,HttpServletRequest request,HttpServletResponse response) {
+    public Object api(@RequestParam(required = false) HashMap<String, Object> params,
+            @RequestBody(required = false) HashMap<String, Object> data, HttpServletRequest request,
+            HttpServletResponse response) {
         OnlineMb selectOnlineMb = new OnlineMb();
         selectOnlineMb.setPath(request.getRequestURI().replace("/online/api", ""));
         selectOnlineMb.setMethod(request.getMethod());
@@ -44,28 +52,50 @@ public class OnLineController extends BaseController {
         if (params != null) {
             params.keySet().forEach(key -> {
                 Matcher matcher = pattern.matcher(key);
-                if(matcher.find()){
+                if (matcher.find()) {
                     object_params.put(matcher.group(1), object.get(key));
-                }else{
+                } else {
                     object.put(key, params.get(key));
                 }
             });
         }
         if (data != null) {
-            if(data.containsKey("params")){
+            if (data.containsKey("params")) {
                 object_params.putAll((HashMap<String, Object>) object.get("params"));
                 data.remove("params");
             }
             object.putAll(data);
         }
         object.put("params", object_params);
+
         List<OnlineMb> selectOnlineMbList = onlineMbService.selectOnlineMbList(selectOnlineMb);
         if (selectOnlineMbList.size() == 0) {
-            return error("没有相关接口");
+            return AjaxResult.error("没有资源"+selectOnlineMb.getPath());
         } else if (selectOnlineMbList.size() > 1) {
-            return error("存在多个接口");
+            return AjaxResult.error(500,"系统错误，在线接口重复");
         } else {
             OnlineMb onlineMb = selectOnlineMbList.get(0);
+            boolean permissionFlag = true;
+            if (onlineMb.getPermissionType() != null) {
+                switch (onlineMb.getPermissionType()) {
+                    case "hasPermi" -> permissionFlag = permissionService.hasPermi(onlineMb.getPermissionValue());
+                    case "lacksPermi" -> permissionFlag = !permissionService.lacksPermi(onlineMb.getPermissionValue());
+                    case "hasAnyPermi" -> permissionFlag = permissionService.hasAnyPermi(onlineMb.getPermissionValue());
+                    case "hasRole" -> permissionFlag = permissionService.hasRole(onlineMb.getPermissionValue());
+                    case "lacksRole" -> permissionFlag = !permissionService.lacksRole(onlineMb.getPermissionValue());
+                    case "hasAnyRoles" -> permissionFlag = permissionService.hasAnyRoles(onlineMb.getPermissionValue());
+                }
+            }
+            if (!permissionFlag) {
+                return AjaxResult.error(403,"没有权限，请联系管理员授权");
+            }
+            if (onlineMb.getDeptId() != null && onlineMb.getDeptId().equals("1")) {
+                object.put("deptId", SecurityUtils.getDeptId());
+            }
+            if (onlineMb.getUserId() != null && onlineMb.getUserId().equals("1")) {
+                object.put("userId", SecurityUtils.getUserId());
+            }
+
             String sql = "<script>\n" + onlineMb.getSql() + "\n</script>";
             SqlSession sqlSession = sqlSessionFactory.openSession();
             SqlMapper sqlMapper = new SqlMapper(sqlSession);
@@ -75,7 +105,7 @@ public class OnLineController extends BaseController {
                 case "selectOne" -> success(sqlMapper.selectOne(sql, object));
                 case "update" -> toAjax(sqlMapper.update(sql, object));
                 case "delete" -> toAjax(sqlMapper.delete(sql, object));
-                default -> error("错误的执行器");
+                default -> AjaxResult.error(500,"系统错误，执行器错误");
             };
         }
     }

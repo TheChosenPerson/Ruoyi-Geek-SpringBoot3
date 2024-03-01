@@ -6,12 +6,14 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.framework.web.service.UserDetailsServiceImpl;
+import com.ruoyi.oauth.phone.enums.DySmsTemplate;
 import com.ruoyi.oauth.phone.service.DySmsService;
 import com.ruoyi.oauth.phone.utils.DySmsUtil;
 import com.ruoyi.system.service.ISysUserService;
@@ -31,7 +33,7 @@ public class DySmsServiceImpl implements DySmsService {
     private TokenService tokenService;
 
     public static String generateRandomString(int n) {
-        String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        String characters = "0123456789"; //ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
         StringBuilder result = new StringBuilder();
         Random random = new Random();
 
@@ -55,7 +57,9 @@ public class DySmsServiceImpl implements DySmsService {
             throw new ServiceException("该手机号未绑定用户");
         }
         try {
-            dySmsUtil.sendSms(null, null, phone);
+            JSONObject templateParams = new JSONObject();
+            templateParams.put("code", code);
+            dySmsUtil.sendSms(DySmsTemplate.Test_TEMPLATE_CODE, templateParams, phone);
             redisCache.setCacheObject("phone_codes_login" + phone, code, 1, TimeUnit.MINUTES);
         } catch (Exception e) {
             e.printStackTrace();

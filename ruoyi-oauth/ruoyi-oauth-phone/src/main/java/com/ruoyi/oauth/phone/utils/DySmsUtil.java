@@ -76,8 +76,11 @@ public class DySmsUtil {
         try {
             // 复制代码运行请自行打印 API 的返回值
             SendSmsResponse sendSmsResponse = client.sendSmsWithOptions(sendSmsRequest, new RuntimeOptions());
-            logger.info("短信接口返回的数据----------------");
-            logger.info(sendSmsResponse.toString());
+            if (sendSmsResponse.getBody().getCode().equals("OK")) {
+                logger.info("短信接口返回的数据---", sendSmsResponse.getBody().getMessage());
+            } else {
+                logger.error("短信接口返回的数据---", sendSmsResponse.getBody().getMessage());
+            }
         } catch (TeaException error) {
             // 错误 message
             System.out.println(error.getMessage());

@@ -15,213 +15,207 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @date 2024-01-26
  */
 @Schema(description = "mybatis在线接口对象")
-public class OnlineMb extends BaseEntity
-{
+public class OnlineMb extends BaseEntity {
     private static final long serialVersionUID = 1L;
-
 
     /** 主键 */
     @Schema(defaultValue = "主键")
     private Long mbId;
-
-    
-
 
     /** 标签名 */
     @Schema(defaultValue = "标签名")
     @Excel(name = "标签名")
     private String tag;
 
-    
-
-
     /** 标签id */
     @Schema(defaultValue = "标签id")
     @Excel(name = "标签id")
     private String tagId;
-
-    
-
 
     /** 参数类型 */
     @Schema(defaultValue = "参数类型")
     @Excel(name = "参数类型")
     private String parameterType;
 
-    
-
-
     /** 结果类型 */
     @Schema(defaultValue = "结果类型")
     @Excel(name = "结果类型")
     private String resultMap;
-
-    
-
 
     /** sql语句 */
     @Schema(defaultValue = "sql语句")
     @Excel(name = "sql语句")
     private String sql;
 
-    
-
-
     /** 请求路径 */
     @Schema(defaultValue = "请求路径")
     @Excel(name = "请求路径")
     private String path;
-
-    
-
 
     /** 请求方式 */
     @Schema(defaultValue = "请求方式")
     @Excel(name = "请求方式")
     private String method;
 
-    
-
-
     /** 响应类型 */
     @Schema(defaultValue = "响应类型")
     @Excel(name = "响应类型")
     private String resultType;
-
     
-
-
     /** 执行器 */
     @Schema(defaultValue = "执行器")
     @Excel(name = "执行器")
     private String actuator;
 
-    
+    /** 是否需要userId */
+    @Schema(defaultValue = "是否需要userId")
+    @Excel(name = "是否需要userId")
+    private String userId;
 
-    public void setMbId(Long mbId) 
-    {
+    /** 是否需要deptId */
+    @Schema(defaultValue = "是否需要deptId")
+    @Excel(name = "是否需要deptId")
+    private String deptId;
+
+    /** 许可类型 */
+    @Schema(defaultValue = "许可类型")
+    @Excel(name = "许可类型")
+    private String permissionType;
+
+    /** 许可值 */
+    @Schema(defaultValue = "许可值")
+    @Excel(name = "许可值")
+    private String permissionValue;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getPermissionType() {
+        return permissionType;
+    }
+
+    public void setPermissionType(String permissionType) {
+        this.permissionType = permissionType;
+    }
+
+    public String getPermissionValue() {
+        return permissionValue;
+    }
+
+    public void setPermissionValue(String permissionValue) {
+        this.permissionValue = permissionValue;
+    }
+
+    public void setMbId(Long mbId) {
         this.mbId = mbId;
     }
 
-    public Long getMbId() 
-    {
+    public Long getMbId() {
         return mbId;
     }
 
-
-    public void setTag(String tag) 
-    {
+    public void setTag(String tag) {
         this.tag = tag;
     }
 
-    public String getTag() 
-    {
+    public String getTag() {
         return tag;
     }
 
-
-    public void setTagId(String tagId) 
-    {
+    public void setTagId(String tagId) {
         this.tagId = tagId;
     }
 
-    public String getTagId() 
-    {
+    public String getTagId() {
         return tagId;
     }
 
-
-    public void setParameterType(String parameterType) 
-    {
+    public void setParameterType(String parameterType) {
         this.parameterType = parameterType;
     }
 
-    public String getParameterType() 
-    {
+    public String getParameterType() {
         return parameterType;
     }
 
-
-    public void setResultMap(String resultMap) 
-    {
+    public void setResultMap(String resultMap) {
         this.resultMap = resultMap;
     }
 
-    public String getResultMap() 
-    {
+    public String getResultMap() {
         return resultMap;
     }
 
-
-    public void setSql(String sql) 
-    {
+    public void setSql(String sql) {
         this.sql = sql;
     }
 
-    public String getSql() 
-    {
+    public String getSql() {
         return sql;
     }
 
-
-    public void setPath(String path) 
-    {
+    public void setPath(String path) {
         this.path = path;
     }
 
-    public String getPath() 
-    {
+    public String getPath() {
         return path;
     }
 
-
-    public void setMethod(String method) 
-    {
+    public void setMethod(String method) {
         this.method = method;
     }
 
-    public String getMethod() 
-    {
+    public String getMethod() {
         return method;
     }
 
-
-    public void setResultType(String resultType) 
-    {
+    public void setResultType(String resultType) {
         this.resultType = resultType;
     }
 
-    public String getResultType() 
-    {
+    public String getResultType() {
         return resultType;
     }
 
-
-    public void setActuator(String actuator) 
-    {
+    public void setActuator(String actuator) {
         this.actuator = actuator;
     }
 
-    public String getActuator() 
-    {
+    public String getActuator() {
         return actuator;
     }
 
-
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("mbId", getMbId())
-            .append("tag", getTag())
-            .append("tagId", getTagId())
-            .append("parameterType", getParameterType())
-            .append("resultMap", getResultMap())
-            .append("sql", getSql())
-            .append("path", getPath())
-            .append("method", getMethod())
-            .append("resultType", getResultType())
-            .append("actuator", getActuator())
-            .toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("mbId", getMbId())
+                .append("tag", getTag())
+                .append("tagId", getTagId())
+                .append("parameterType", getParameterType())
+                .append("resultMap", getResultMap())
+                .append("sql", getSql())
+                .append("path", getPath())
+                .append("method", getMethod())
+                .append("resultType", getResultType())
+                .append("actuator", getActuator())
+                .append("userId",getUserId())
+                .append("deptId",getDeptId())
+                .append("permissionType",getPermissionType())
+                .append("permissionValue",getPermissionValue())
+                .toString();
     }
 }
