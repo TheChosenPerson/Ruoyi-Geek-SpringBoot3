@@ -11,6 +11,10 @@ CREATE TABLE online_mb (
     method varchar(255) NULL COMMENT '请求方式',
     resultType varchar(255) NULL COMMENT '响应类型',
     actuator varchar(255) NULL COMMENT '执行器',
+    user_id char(1) NULL COMMENT '是否需要userId',
+    dept_id char(1) NULL COMMENT '是否需要deptId',
+    permission_type varchar(255) NULL COMMENT '许可类型',
+    permission_value varchar(255) NULL COMMENT '许可值',
     PRIMARY KEY (mb_id)
 ) ENGINE = InnoDB  COMMENT = '在线接口';
 
