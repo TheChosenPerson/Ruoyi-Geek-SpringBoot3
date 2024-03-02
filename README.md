@@ -34,6 +34,12 @@
 
 ## 本项目与原项目的区别
 
+### 核心
+
+**模块化架构设计，支持各个模块的快速安拆，对第三方认证、第三方支付模块设计了基础的规范和基础模块。**
+
+### 细节
+
 1. 改用SpringBoot3+java17的更新的技术栈
 2. 升级了代码生成器（配合本项目的vue3版本才可用）
 3. 改用最新版本的SpringSecurity安全框架，以及采用最新的lambda 表达式的配置方式
@@ -44,6 +50,8 @@
 8. ExcelUtil中 .newInstance()方法已被弃用，改成.getDeclaredConstructor().newInstance()
 9. Excel中roundingMode方法BigDecimal.ROUND_HALF_EVEN改成RoundingMode.HALF_EVEN，用枚举代替常量
 10. ReflectUtils中isAccessible在java9中被弃用，建议通过canAccess(null)来代替
+
+
 
 ## 模块介绍（简单开发必看）
 
@@ -125,6 +133,25 @@ com.ruoyi
 
 ## 演示图
 
+### 新加功能和增强功能演示
+
+<table>
+    <tr>
+        <td><img src="./doc/image/online-mb-list.png"/></td>
+        <td><img src="./doc/image/online-mb-edit.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="./doc/image/online-mb-code.png"/></td>
+        <td><img src="./doc/image/form-edit.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="./doc/image/code-edit.png"/></td>
+        <td><img src="./doc/image/code-show.png"/></td>
+    </tr>
+</table>
+
+### 原有功能演示
+
 <table>
     <tr>
         <td><img src="https://oscimg.oschina.net/oscnet/cd1f90be5f2684f4560c9519c0f2a232ee8.jpg"/></td>
@@ -159,7 +186,3 @@ com.ruoyi
         <td><img src="https://oscimg.oschina.net/oscnet/up-5e4daac0bb59612c5038448acbcef235e3a.png"/></td>
     </tr>
 </table>
-
-## 若依前后端分离交流群
-
-QQ群： [![加入QQ群](https://img.shields.io/badge/已满-937441-blue.svg)](https://jq.qq.com/?_wv=1027&k=5bVB1og) [![加入QQ群](https://img.shields.io/badge/已满-887144332-blue.svg)](https://jq.qq.com/?_wv=1027&k=5eiA4DH) [![加入QQ群](https://img.shields.io/badge/已满-180251782-blue.svg)](https://jq.qq.com/?_wv=1027&k=5AxMKlC) [![加入QQ群](https://img.shields.io/badge/已满-104180207-blue.svg)](https://jq.qq.com/?_wv=1027&k=51G72yr) [![加入QQ群](https://img.shields.io/badge/已满-186866453-blue.svg)](https://jq.qq.com/?_wv=1027&k=VvjN2nvu) [![加入QQ群](https://img.shields.io/badge/已满-201396349-blue.svg)](https://jq.qq.com/?_wv=1027&k=5vYAqA05) [![加入QQ群](https://img.shields.io/badge/已满-101456076-blue.svg)](https://jq.qq.com/?_wv=1027&k=kOIINEb5) [![加入QQ群](https://img.shields.io/badge/已满-101539465-blue.svg)](https://jq.qq.com/?_wv=1027&k=UKtX5jhs) [![加入QQ群](https://img.shields.io/badge/已满-264312783-blue.svg)](https://jq.qq.com/?_wv=1027&k=EI9an8lJ) [![加入QQ群](https://img.shields.io/badge/已满-167385320-blue.svg)](https://jq.qq.com/?_wv=1027&k=SWCtLnMz) [![加入QQ群](https://img.shields.io/badge/已满-104748341-blue.svg)](https://jq.qq.com/?_wv=1027&k=96Dkdq0k) [![加入QQ群](https://img.shields.io/badge/已满-160110482-blue.svg)](https://jq.qq.com/?_wv=1027&k=0fsNiYZt) [![加入QQ群](https://img.shields.io/badge/已满-170801498-blue.svg)](https://jq.qq.com/?_wv=1027&k=7xw4xUG1) [![加入QQ群](https://img.shields.io/badge/已满-108482800-blue.svg)](https://jq.qq.com/?_wv=1027&k=eCx8eyoJ) [![加入QQ群](https://img.shields.io/badge/101046199-blue.svg)](https://jq.qq.com/?_wv=1027&k=SpyH2875) 点击按钮入群。
