@@ -53,7 +53,7 @@ public class OnLineController extends BaseController {
             params.keySet().forEach(key -> {
                 Matcher matcher = pattern.matcher(key);
                 if (matcher.find()) {
-                    object_params.put(matcher.group(1), object.get(key));
+                    object_params.put(matcher.group(1), params.get(key));
                 } else {
                     object.put(key, params.get(key));
                 }
@@ -61,7 +61,7 @@ public class OnLineController extends BaseController {
         }
         if (data != null) {
             if (data.containsKey("params")) {
-                object_params.putAll((HashMap<String, Object>) object.get("params"));
+                object_params.putAll((HashMap<String, Object>) data.get("params"));
                 data.remove("params");
             }
             object.putAll(data);
