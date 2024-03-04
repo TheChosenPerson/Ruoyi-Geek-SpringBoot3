@@ -95,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sql != null">`sql` = #{sql},</if>
             <if test="path != null and path != ''">`path` = #{path},</if>
             <if test="method != null and method != ''">method = #{method},</if>
-            <if test="resultType != null">resul_type = #{resultType},</if>
+            <if test="resultType != null">result_type = #{resultType},</if>
             <if test="actuator != null and actuator != ''">actuator = #{actuator},</if>
             <if test="userId != null and userId != ''">user_id = #{userId},</if>
             <if test="deptId != null and deptId != ''">dept_id = #{deptId},</if>
