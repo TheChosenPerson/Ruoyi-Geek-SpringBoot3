@@ -32,7 +32,6 @@ public class ${ClassName} extends ${Entity}
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
-
 #if(!$table.isSuperColumn($column.javaField))
     /** $column.columnComment */
     @Schema(defaultValue = "$column.columnComment")
@@ -59,13 +58,10 @@ public class ${ClassName} extends ${Entity}
 #end
 #end
     private $column.javaType $column.javaField;
-
-    
 #if($column.subColumnTableName && $table.haveSubColumn == '1')
     /** $column.javaField 到 $column.subColumnTableName 映射 */
     private $column.subColumnJavaType $column.subColumnJavaField;
 #end
-
 #end
 #end
 #if($table.sub)

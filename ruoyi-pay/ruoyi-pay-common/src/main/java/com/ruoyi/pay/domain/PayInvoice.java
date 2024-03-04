@@ -1,8 +1,8 @@
 package com.ruoyi.pay.domain;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
@@ -15,173 +15,123 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @date 2024-02-15
  */
 @Schema(description = "发票对象")
-public class PayInvoice extends BaseEntity
-{
+public class PayInvoice extends BaseEntity {
     private static final long serialVersionUID = 1L;
-
 
     /** 发票id */
     @Schema(defaultValue = "发票id")
     private Long invoiceId;
-
-    
-
 
     /** 订单号 */
     @Schema(defaultValue = "订单号")
     @Excel(name = "订单号")
     private String orderNumber;
 
-    
-
-
     /** 发票类型 */
     @Schema(defaultValue = "发票类型")
     @Excel(name = "发票类型")
     private String invoiceType;
-
-    
-
 
     /** 发票抬头 */
     @Schema(defaultValue = "发票抬头")
     @Excel(name = "发票抬头")
     private String invoiceHeader;
 
-    
-
-
     /** 纳税人识别号 */
     @Schema(defaultValue = "纳税人识别号")
     @Excel(name = "纳税人识别号")
     private String invoiceNumber;
-
-    
-
 
     /** 收票人手机号 */
     @Schema(defaultValue = "收票人手机号")
     @Excel(name = "收票人手机号")
     private String invoicePhone;
 
-    
-
-
     /** 收票人邮箱 */
     @Schema(defaultValue = "收票人邮箱")
     @Excel(name = "收票人邮箱")
     private String invoiceEmail;
-
-    
-
 
     /** 发票备注 */
     @Schema(defaultValue = "发票备注")
     @Excel(name = "发票备注")
     private String invoiceRemark;
 
-    
-
-    public void setInvoiceId(Long invoiceId) 
-    {
+    public void setInvoiceId(Long invoiceId) {
         this.invoiceId = invoiceId;
     }
 
-    public Long getInvoiceId() 
-    {
+    public Long getInvoiceId() {
         return invoiceId;
     }
 
-
-    public void setOrderNumber(String orderNumber) 
-    {
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 
-    public String getOrderNumber() 
-    {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-
-    public void setInvoiceType(String invoiceType) 
-    {
+    public void setInvoiceType(String invoiceType) {
         this.invoiceType = invoiceType;
     }
 
-    public String getInvoiceType() 
-    {
+    public String getInvoiceType() {
         return invoiceType;
     }
 
-
-    public void setInvoiceHeader(String invoiceHeader) 
-    {
+    public void setInvoiceHeader(String invoiceHeader) {
         this.invoiceHeader = invoiceHeader;
     }
 
-    public String getInvoiceHeader() 
-    {
+    public String getInvoiceHeader() {
         return invoiceHeader;
     }
 
-
-    public void setInvoiceNumber(String invoiceNumber) 
-    {
+    public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public String getInvoiceNumber() 
-    {
+    public String getInvoiceNumber() {
         return invoiceNumber;
     }
 
-
-    public void setInvoicePhone(String invoicePhone) 
-    {
+    public void setInvoicePhone(String invoicePhone) {
         this.invoicePhone = invoicePhone;
     }
 
-    public String getInvoicePhone() 
-    {
+    public String getInvoicePhone() {
         return invoicePhone;
     }
 
-
-    public void setInvoiceEmail(String invoiceEmail) 
-    {
+    public void setInvoiceEmail(String invoiceEmail) {
         this.invoiceEmail = invoiceEmail;
     }
 
-    public String getInvoiceEmail() 
-    {
+    public String getInvoiceEmail() {
         return invoiceEmail;
     }
 
-
-    public void setInvoiceRemark(String invoiceRemark) 
-    {
+    public void setInvoiceRemark(String invoiceRemark) {
         this.invoiceRemark = invoiceRemark;
     }
 
-    public String getInvoiceRemark() 
-    {
+    public String getInvoiceRemark() {
         return invoiceRemark;
     }
 
-
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("invoiceId", getInvoiceId())
-            .append("orderNumber", getOrderNumber())
-            .append("invoiceType", getInvoiceType())
-            .append("invoiceHeader", getInvoiceHeader())
-            .append("invoiceNumber", getInvoiceNumber())
-            .append("invoicePhone", getInvoicePhone())
-            .append("invoiceEmail", getInvoiceEmail())
-            .append("invoiceRemark", getInvoiceRemark())
-            .toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("invoiceId", getInvoiceId())
+                .append("orderNumber", getOrderNumber())
+                .append("invoiceType", getInvoiceType())
+                .append("invoiceHeader", getInvoiceHeader())
+                .append("invoiceNumber", getInvoiceNumber())
+                .append("invoicePhone", getInvoicePhone())
+                .append("invoiceEmail", getInvoiceEmail())
+                .append("invoiceRemark", getInvoiceRemark())
+                .toString();
     }
 }
