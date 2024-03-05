@@ -3,7 +3,7 @@
 -- ----------------------------
 DROP TABLE IF EXISTS `pay_order`;
 CREATE TABLE `pay_order`  (
-  `order_id` bigint NOT NULL COMMENT '订单ID',
+  `order_id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单ID',
   `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
   `order_number` varchar(255) NULL DEFAULT NULL COMMENT '订单号',
   `order_status` varchar(255) NULL DEFAULT NULL COMMENT '订单状态',

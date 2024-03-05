@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS oauth_user;
 CREATE TABLE oauth_user (
-    id INT PRIMARY KEY COMMENT '主键',
+    id INT NOT NULL AUTO_INCREMENT COMMENT '主键',
     uuid VARCHAR(255) NOT NULL COMMENT '第三方系统的唯一ID，详细解释请参考：名词解释',
     user_id bigint(20)  NOT NULL comment '用户ID',
     source VARCHAR(255) NOT NULL COMMENT '第三方用户来源，可选值：GITHUB、GITEE、QQ，更多请参考：AuthDefaultSource.java(opens new window)',
@@ -18,7 +18,8 @@ CREATE TABLE oauth_user (
     mac_key VARCHAR(255) COMMENT '小米平台用户的附带属性，部分平台可能没有',
     code VARCHAR(255) COMMENT '用户的授权code，部分平台可能没有',
     oauth_token VARCHAR(255) COMMENT 'Twitter平台用户的附带属性，部分平台可能没有',
-    oauth_token_secret VARCHAR(255) COMMENT 'Twitter平台用户的附带属性，部分平台可能没有'
+    oauth_token_secret VARCHAR(255) COMMENT 'Twitter平台用户的附带属性，部分平台可能没有',
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB  COMMENT = '第三方登录';
 
 -- 菜单 SQL
