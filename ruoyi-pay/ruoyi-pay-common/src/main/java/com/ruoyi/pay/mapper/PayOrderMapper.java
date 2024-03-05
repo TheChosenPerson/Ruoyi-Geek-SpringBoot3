@@ -1,6 +1,7 @@
 package com.ruoyi.pay.mapper;
 
 import java.util.List;
+
 import com.ruoyi.pay.domain.PayOrder;
 
 /**
@@ -18,6 +19,14 @@ public interface PayOrderMapper
      * @return 订单
      */
     public PayOrder selectPayOrderByOrderId(Long orderId);
+
+    /**
+     * 查询订单
+     * 
+     * @param orderNumber 订单号
+     * @return 订单集合
+     */
+    public PayOrder selectPayOrderByOrderNumber(String orderNumber);
 
     /**
      * 查询订单列表

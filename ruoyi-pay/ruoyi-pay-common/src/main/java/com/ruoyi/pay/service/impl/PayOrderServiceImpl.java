@@ -1,10 +1,12 @@
 package com.ruoyi.pay.service.impl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.pay.mapper.PayOrderMapper;
+
 import com.ruoyi.pay.domain.PayOrder;
+import com.ruoyi.pay.mapper.PayOrderMapper;
 import com.ruoyi.pay.service.IPayOrderService;
 
 /**
@@ -14,8 +16,7 @@ import com.ruoyi.pay.service.IPayOrderService;
  * @date 2024-02-15
  */
 @Service
-public class PayOrderServiceImpl implements IPayOrderService 
-{
+public class PayOrderServiceImpl implements IPayOrderService {
     @Autowired
     private PayOrderMapper payOrderMapper;
 
@@ -26,9 +27,19 @@ public class PayOrderServiceImpl implements IPayOrderService
      * @return 订单
      */
     @Override
-    public PayOrder selectPayOrderByOrderId(Long orderId)
-    {
+    public PayOrder selectPayOrderByOrderId(Long orderId) {
         return payOrderMapper.selectPayOrderByOrderId(orderId);
+    }
+
+    /**
+     * 查询订单
+     * 
+     * @param orderNumber 订单号
+     * @return 订单集合
+     */
+    @Override
+    public PayOrder selectPayOrderByOrderNumber(String orderNumber) {
+        return payOrderMapper.selectPayOrderByOrderNumber(orderNumber);
     }
 
     /**
@@ -38,8 +49,7 @@ public class PayOrderServiceImpl implements IPayOrderService
      * @return 订单
      */
     @Override
-    public List<PayOrder> selectPayOrderList(PayOrder payOrder)
-    {
+    public List<PayOrder> selectPayOrderList(PayOrder payOrder) {
         return payOrderMapper.selectPayOrderList(payOrder);
     }
 
@@ -50,8 +60,7 @@ public class PayOrderServiceImpl implements IPayOrderService
      * @return 结果
      */
     @Override
-    public int insertPayOrder(PayOrder payOrder)
-    {
+    public int insertPayOrder(PayOrder payOrder) {
         return payOrderMapper.insertPayOrder(payOrder);
     }
 
@@ -62,8 +71,7 @@ public class PayOrderServiceImpl implements IPayOrderService
      * @return 结果
      */
     @Override
-    public int updatePayOrder(PayOrder payOrder)
-    {
+    public int updatePayOrder(PayOrder payOrder) {
         return payOrderMapper.updatePayOrder(payOrder);
     }
 
@@ -74,8 +82,7 @@ public class PayOrderServiceImpl implements IPayOrderService
      * @return 结果
      */
     @Override
-    public int deletePayOrderByOrderIds(Long[] orderIds)
-    {
+    public int deletePayOrderByOrderIds(Long[] orderIds) {
         return payOrderMapper.deletePayOrderByOrderIds(orderIds);
     }
 
@@ -86,8 +93,7 @@ public class PayOrderServiceImpl implements IPayOrderService
      * @return 结果
      */
     @Override
-    public int deletePayOrderByOrderId(Long orderId)
-    {
+    public int deletePayOrderByOrderId(Long orderId) {
         return payOrderMapper.deletePayOrderByOrderId(orderId);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.utils.sign.Md5Utils;
+import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.sqb.constant.SqbConstant;
 import com.ruoyi.pay.sqb.utils.HttpUtil;
 
@@ -99,8 +100,7 @@ public class SQBServiceImpl {
      * 
      * @return
      */
-    public String refund(String clientSn, String total, String payway, String subject, String operator,
-            String terminalSn) {
+    public String refund(String clientSn, String total, String payway, String subject, String operator) {
         String url = sqbConstant.getApiDomain() + "/upay/v2/refund";
         JSONObject params = new JSONObject();
         try {
@@ -125,8 +125,7 @@ public class SQBServiceImpl {
      * @return
      */
 
-    public String query(String clientSn, String total, String payway, String subject, String operator,
-            String terminalSn) {
+    public String query(String clientSn, String total, String payway, String subject, String operator) {
         String url = sqbConstant.getApiDomain() + "/upay/v2/query";
         JSONObject params = new JSONObject();
         try {
@@ -146,22 +145,24 @@ public class SQBServiceImpl {
         }
     }
 
-    public String payUrl(String clientSn, String total, String payway, String subject, String operator,
-            String terminalSn) throws UnsupportedEncodingException {
+    public String payUrl(PayOrder payOrder) throws UnsupportedEncodingException {
+        if(payOrder.getRemark() == null){
+            payOrder.setRemark("支付");
+        }
         String param = "" +
-                "client_sn=" + clientSn +
-                "&operator=" + operator +
+                "client_sn=" + payOrder.getOrderNumber() +
+                "&operator=" + "admin" +
                 "&return_url=" + "https://www.shouqianba.com/" +
-                "&subject=" + subject +
-                "&terminal_sn=" + terminalSn +
-                "&total_amount=" + total;
+                "&subject=" + payOrder.getRemark() +
+                "&terminal_sn=" + sqbConstant.getTerminalSn() +
+                "&total_amount=" + payOrder.getTotalAmount();
         String urlParam = "" +
-                "client_sn=" + clientSn +
-                "&operator=" + URLEncoder.encode(operator, "UTF-8") +
+                "client_sn=" + payOrder.getOrderNumber() +
+                "&operator=" + URLEncoder.encode("admin", "UTF-8") +
                 "&return_url=" + "https://www.shouqianba.com/" +
-                "&subject=" + URLEncoder.encode(subject, "UTF-8") +
-                "&terminal_sn=" + terminalSn +
-                "&total_amount=" + total;
+                "&subject=" + URLEncoder.encode(payOrder.getRemark(), "UTF-8") +
+                "&terminal_sn=" + sqbConstant.getTerminalSn() +
+                "&total_amount=" + payOrder.getTotalAmount();
         String sign = getSign(param + "&key=" + sqbConstant.getTerminalKey());
         return "https://qr.shouqianba.com/gateway?" + urlParam + "&sign=" + sign.toUpperCase();
     }
