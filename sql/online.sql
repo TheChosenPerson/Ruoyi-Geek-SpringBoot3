@@ -18,9 +18,16 @@ CREATE TABLE online_mb (
     PRIMARY KEY (mb_id)
 ) ENGINE = InnoDB  COMMENT = '在线接口';
 
+INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, `status`, perms, icon, create_by, create_time, update_by, update_time, remark) VALUES ('Online', 0, 5, 'online', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'international', 'admin', '2024-03-07 19:38:34', '', NULL, '');
+
+-- 按钮父菜单ID
+SELECT @parentId := LAST_INSERT_ID();
+
 -- 菜单 SQL
 insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values('mybatis在线接口', '3', '1', 'mb', 'online/mb/index', 1, 0, 'C', '0', '0', 'online:mb:list', 'code', 'admin', sysdate(), '', null, 'mybatis在线接口菜单');
+values('mybatis在线接口', @parentId, '1', 'mb', 'online/mb/index', 1, 0, 'C', '0', '0', 'online:mb:list', 'code', 'admin', sysdate(), '', null, 'mybatis在线接口菜单');
+
+INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark) VALUES ('数据库', @parentId, 1, 'db', 'online/db/index', NULL, 1, 0, 'C', '0', '0', 'admin', 'table', 'admin', '2024-03-07 19:48:24', 'admin', '2024-03-07 19:54:46', '');
 
 -- 按钮父菜单ID
 SELECT @parentId := LAST_INSERT_ID();
