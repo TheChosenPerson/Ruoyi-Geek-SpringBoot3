@@ -100,14 +100,14 @@ public class SQBServiceImpl {
      * 
      * @return
      */
-    public String refund(String clientSn, String total, String payway, String subject, String operator) {
+    public String refund(PayOrder payOrder) {
         String url = sqbConstant.getApiDomain() + "/upay/v2/refund";
         JSONObject params = new JSONObject();
         try {
             params.put("terminal_sn", sqbConstant.getTerminalSn()); // 收钱吧终端ID
-            params.put("client_sn", clientSn); // 商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
-            params.put("refund_amount", total); // 退款金额
-            params.put("refund_request_no", "2"); // 商户退款所需序列号,表明是第几次退款
+            params.put("client_sn", payOrder.getOrderNumber()); // 商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
+            params.put("refund_amount", payOrder.getTotalAmount()); // 退款金额
+            params.put("refund_request_no", "1"); // 商户退款所需序列号,表明是第几次退款
             params.put("operator", "kay"); // 门店操作员
 
             String sign = getSign(params.toString() + sqbConstant.getTerminalKey());
@@ -125,12 +125,12 @@ public class SQBServiceImpl {
      * @return
      */
 
-    public String query(String clientSn, String total, String payway, String subject, String operator) {
+    public JSONObject query(PayOrder payOrder) {
         String url = sqbConstant.getApiDomain() + "/upay/v2/query";
         JSONObject params = new JSONObject();
         try {
             params.put("terminal_sn", sqbConstant.getTerminalSn()); // 终端号
-            params.put("client_sn", clientSn); // 商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
+            params.put("client_sn", payOrder.getOrderNumber()); // 商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
             System.out.println(params.toString() + sqbConstant.getTerminalKey());
             String sign = getSign(params.toString() + sqbConstant.getTerminalKey());
             String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConstant.getTerminalSn());
@@ -139,7 +139,7 @@ public class SQBServiceImpl {
             if (!resCode.equals("200"))
                 return null;
             String responseStr = retObj.get("biz_response").toString();
-            return responseStr;
+            return JSONObject.parseObject(responseStr);
         } catch (Exception e) {
             return null;
         }
@@ -172,16 +172,16 @@ public class SQBServiceImpl {
      * 
      * @return
      */
-    public String precreate(String sn, String total, String payway, String subject, String operator) {
+    public String precreate(PayOrder payOrder,String sn, String payway) {
         String url = sqbConstant.getApiDomain() + "/upay/v2/precreate";
         JSONObject params = new JSONObject();
         try {
             params.put("terminal_sn", sqbConstant.getTerminalSn()); // 收钱吧终端ID
-            params.put("client_sn", sn); // 商户系统订单号,必须在商户系统内唯一；且长度不超过32字节
-            params.put("total_amou nt", total); // 交易总金额
+            params.put("client_sn", payOrder.getOrderNumber()); // 商户系统订单号,必须在商户系统内唯一；且长度不超过32字节
+            params.put("total_amount", payOrder.getTotalAmount()); // 交易总金额
             params.put("payway", payway); // 支付方式
-            params.put("subject", subject); // 交易简介
-            params.put("operator", operator); // 门店操作员
+            params.put("subject", "无简介"); // 交易简介
+            params.put("operator", "admin"); // 门店操作员
 
             String sign = getSign(params.toString() + sqbConstant.getTerminalKey());
             String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConstant.getTerminalSn());
@@ -203,7 +203,6 @@ public class SQBServiceImpl {
         JSONObject params = new JSONObject();
         try {
             params.put("terminal_sn", terminal_sn); // 终端号
-            params.put("sn", "7892259488292938"); // 收钱吧系统内部唯一订单号
             params.put("client_sn", "18348290098298292838"); // 商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
 
             String sign = getSign(params.toString() + terminal_key);

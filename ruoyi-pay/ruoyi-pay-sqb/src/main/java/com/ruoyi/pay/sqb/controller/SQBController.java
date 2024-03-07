@@ -23,11 +23,18 @@ public class SQBController extends BaseController {
 
     @PostMapping("/payUrl")
     @Anonymous
-    public AjaxResult postMethodName(@RequestParam("id") String orderNumber) throws Exception {
+    public AjaxResult payUrl(@RequestParam("id") String orderNumber) throws Exception {
         PayOrder payOrder = payOrderServicer.selectPayOrderByOrderNumber(orderNumber);
         String url = sqbServiceImpl.payUrl(payOrder);
-        AjaxResult ajaxResult = new AjaxResult(200,url,"操作成功");
+        AjaxResult ajaxResult = new AjaxResult(200, url, "操作成功");
         return ajaxResult;
+    }
+
+    @PostMapping("/query")
+    @Anonymous
+    public AjaxResult query(@RequestParam("id") String orderNumber) throws Exception {
+        PayOrder payOrder = payOrderServicer.selectPayOrderByOrderNumber(orderNumber);
+        return success(sqbServiceImpl.query(payOrder));
     }
 
 }
