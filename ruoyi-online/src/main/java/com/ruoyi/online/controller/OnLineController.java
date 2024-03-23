@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,11 +30,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping("/online")
 public class OnLineController extends BaseController {
     @Autowired
-    private SqlSessionFactory sqlSessionFactory;
-    @Autowired
     private IOnlineMbService onlineMbService;
     @Resource(name = "ss")
     private PermissionService permissionService;
+
+    @Autowired
+    private SqlMapper sqlMapper;
 
     @RequestMapping("/api/**")
     public Object api(@RequestParam(required = false) HashMap<String, Object> params,
@@ -70,9 +69,9 @@ public class OnLineController extends BaseController {
 
         List<OnlineMb> selectOnlineMbList = onlineMbService.selectOnlineMbList(selectOnlineMb);
         if (selectOnlineMbList.size() == 0) {
-            return AjaxResult.error("没有资源"+selectOnlineMb.getPath());
+            return AjaxResult.error("没有资源" + selectOnlineMb.getPath());
         } else if (selectOnlineMbList.size() > 1) {
-            return AjaxResult.error(500,"系统错误，在线接口重复");
+            return AjaxResult.error(500, "系统错误，在线接口重复");
         } else {
             OnlineMb onlineMb = selectOnlineMbList.get(0);
             boolean permissionFlag = true;
@@ -87,7 +86,7 @@ public class OnLineController extends BaseController {
                 }
             }
             if (!permissionFlag) {
-                return AjaxResult.error(403,"没有权限，请联系管理员授权");
+                return AjaxResult.error(403, "没有权限，请联系管理员授权");
             }
             if (onlineMb.getDeptId() != null && onlineMb.getDeptId().equals("1")) {
                 object.put("deptId", SecurityUtils.getDeptId());
@@ -97,15 +96,13 @@ public class OnLineController extends BaseController {
             }
 
             String sql = "<script>\n" + onlineMb.getSql() + "\n</script>";
-            SqlSession sqlSession = sqlSessionFactory.openSession();
-            SqlMapper sqlMapper = new SqlMapper(sqlSession);
             return switch (onlineMb.getActuator()) {
                 case "selectList" -> getDataTable(sqlMapper.selectList(sql, object));
                 case "insert" -> toAjax(sqlMapper.insert(sql, object));
                 case "selectOne" -> success(sqlMapper.selectOne(sql, object));
                 case "update" -> toAjax(sqlMapper.update(sql, object));
                 case "delete" -> toAjax(sqlMapper.delete(sql, object));
-                default -> AjaxResult.error(500,"系统错误，执行器错误");
+                default -> AjaxResult.error(500, "系统错误，执行器错误");
             };
         }
     }
