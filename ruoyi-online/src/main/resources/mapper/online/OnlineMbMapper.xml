@@ -28,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectOnlineMbList" parameterType="OnlineMb" resultMap="OnlineMbResult">
         <include refid="selectOnlineMbVo"/>
         <where>  
+            online_mb.del_flag != 1
             <if test="tag != null  and tag != ''"> and tag = #{tag}</if>
             <if test="tagId != null  and tagId != ''"> and tag_id = #{tagId}</if>
             <if test="parameterType != null  and parameterType != ''"> and parameter_type = #{parameterType}</if>
@@ -46,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectOnlineMbByMbId" parameterType="Long" resultMap="OnlineMbResult">
         <include refid="selectOnlineMbVo"/>
-        where online_mb.mb_id = #{mbId}
+        where online_mb.mb_id = #{mbId}  and online_mb.del_flag != 1
     </select>
         
     <insert id="insertOnlineMb" parameterType="OnlineMb">
@@ -102,15 +103,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="permissionType != null and permissionType != ''">permission_type = #{permissionType},</if>
             <if test="permissionValue != null and permissionValue != ''">permission_value = #{permissionValue},</if>
         </trim>
-        where online_mb.mb_id = #{mbId}
+        where online_mb.mb_id = #{mbId} and online_mb.del_flag != 1
     </update>
 
     <delete id="deleteOnlineMbByMbId" parameterType="Long">
-        delete from online_mb where mb_id = #{mbId}
+        update online_mb set del_flag = 1 where mb_id = #{mbId}
     </delete>
 
     <delete id="deleteOnlineMbByMbIds" parameterType="String">
-        delete from online_mb where mb_id in 
+        update online_mb set del_flag = 1 where mb_id in 
         <foreach item="mbId" collection="array" open="(" separator="," close=")">
             #{mbId}
         </foreach>

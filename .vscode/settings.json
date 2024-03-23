@@ -5,5 +5,9 @@
     },
     "java.compile.nullAnalysis.mode": "disabled",
     "maven.view": "hierarchical",
+    "maven.executable.options": "-T 4",
+    "maven.pomfile.autoUpdateEffectivePOM": true,
+    "java.debug.settings.hotCodeReplace": "auto",
+    "spring-boot.ls.java.home": "",
     // "java.compile.nullAnalysis.mode": "automatic"
 }
