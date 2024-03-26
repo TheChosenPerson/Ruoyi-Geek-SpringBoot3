@@ -13,6 +13,12 @@ import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.service.IPayOrderService;
 import com.ruoyi.pay.sqb.service.Impl.SQBServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "sqb支付")
 @RestController
 @RequestMapping("/pay/sql")
 public class SQBController extends BaseController {
@@ -21,6 +27,10 @@ public class SQBController extends BaseController {
     @Autowired
     private IPayOrderService payOrderServicer;
 
+    @Operation(summary = "获取支付url")
+    @Parameters(value = {
+            @Parameter(name = "id", description = "订单号", required = true)
+    })
     @PostMapping("/payUrl")
     @Anonymous
     public AjaxResult payUrl(@RequestParam("id") String orderNumber) throws Exception {
@@ -30,6 +40,7 @@ public class SQBController extends BaseController {
         return ajaxResult;
     }
 
+    @Operation(summary = "查询支付状态")
     @PostMapping("/query")
     @Anonymous
     public AjaxResult query(@RequestParam("id") String orderNumber) throws Exception {

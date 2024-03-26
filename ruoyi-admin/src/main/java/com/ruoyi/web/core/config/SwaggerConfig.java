@@ -42,4 +42,12 @@ public class SwaggerConfig {
                                 .build();
         }
 
+        @Bean
+        public GroupedOpenApi payApi() {
+                return GroupedOpenApi.builder()
+                                .group("支付模块")
+                                .pathsToMatch("/pay/**")
+                                .build();
+        }
+
 }
