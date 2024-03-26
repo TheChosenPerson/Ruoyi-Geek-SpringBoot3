@@ -62,10 +62,11 @@ public class OnLineController extends BaseController {
             object.putAll(data);
         }
         object.put("params", object_params);
-        return data;
+        return object;
     }
 
     public Boolean checkPermission(String permission) {
+        if(permission == null) return true;
         return switch (permission) {
             case "hasPermi" -> permissionService.hasPermi(permission);
             case "lacksPermi" -> !permissionService.lacksPermi(permission);
