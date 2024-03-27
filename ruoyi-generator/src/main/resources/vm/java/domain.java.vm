@@ -34,7 +34,7 @@ public class ${ClassName} extends ${Entity}
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.javaField))
     /** $column.columnComment */
-    @Schema(defaultValue = "$column.columnComment")
+    @Schema(title = "$column.columnComment")
 #if($column.list)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)

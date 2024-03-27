@@ -108,16 +108,16 @@ public class TestController extends BaseController
 @Schema(description = "用户实体")
 class UserEntity
 {
-    @Schema(defaultValue = "用户ID")
+    @Schema(title = "用户ID")
     private Integer userId;
 
-    @Schema(defaultValue = "用户名称")
+    @Schema(title = "用户名称")
     private String username;
 
-    @Schema(defaultValue = "用户密码")
+    @Schema(title = "用户密码")
     private String password;
 
-    @Schema(defaultValue = "用户手机")
+    @Schema(title = "用户手机")
     private String mobile;
 
     public UserEntity()

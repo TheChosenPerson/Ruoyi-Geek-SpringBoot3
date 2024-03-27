@@ -19,98 +19,98 @@ public class OauthUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
-    @Schema(defaultValue = "主键")
+    @Schema(title = "主键")
     private Long id;
 
     /** 第三方系统的唯一ID，详细解释请参考：名词解释 */
-    @Schema(defaultValue = "第三方系统的唯一ID，详细解释请参考：名词解释")
+    @Schema(title = "第三方系统的唯一ID，详细解释请参考：名词解释")
     @Excel(name = "第三方系统的唯一ID，详细解释请参考：名词解释")
     private String uuid;
 
     /** 用户ID */
-    @Schema(defaultValue = "用户ID")
+    @Schema(title = "用户ID")
     @Excel(name = "用户ID")
     private Long userId;
 
     /**
      * 第三方用户来源，可选值：GITHUB、GITEE、QQ，更多请参考：AuthDefaultSource.java(opens new window)
      */
-    @Schema(defaultValue = "第三方用户来源，可选值：GITHUB、GITEE、QQ，更多请参考：AuthDefaultSource.java(opens new window)")
+    @Schema(title = "第三方用户来源，可选值：GITHUB、GITEE、QQ，更多请参考：AuthDefaultSource.java(opens new window)")
     @Excel(name = "第三方用户来源，可选值：GITHUB、GITEE、QQ，更多请参考：AuthDefaultSource.java(opens new window)")
     private String source;
 
     /** 用户的授权令牌 */
-    @Schema(defaultValue = "用户的授权令牌")
+    @Schema(title = "用户的授权令牌")
     @Excel(name = "用户的授权令牌")
     private String accessToken;
 
     /** 第三方用户的授权令牌的有效期，部分平台可能没有 */
-    @Schema(defaultValue = "第三方用户的授权令牌的有效期，部分平台可能没有")
+    @Schema(title = "第三方用户的授权令牌的有效期，部分平台可能没有")
     @Excel(name = "第三方用户的授权令牌的有效期，部分平台可能没有")
     private Long expireIn;
 
     /** 刷新令牌，部分平台可能没有 */
-    @Schema(defaultValue = "刷新令牌，部分平台可能没有")
+    @Schema(title = "刷新令牌，部分平台可能没有")
     @Excel(name = "刷新令牌，部分平台可能没有")
     private String refreshToken;
 
     /** 第三方用户的 open id，部分平台可能没有 */
-    @Schema(defaultValue = "第三方用户的 open id，部分平台可能没有")
+    @Schema(title = "第三方用户的 open id，部分平台可能没有")
     @Excel(name = "第三方用户的 open id，部分平台可能没有")
     private String openId;
 
     /** 第三方用户的 ID，部分平台可能没有 */
-    @Schema(defaultValue = "第三方用户的 ID，部分平台可能没有")
+    @Schema(title = "第三方用户的 ID，部分平台可能没有")
     @Excel(name = "第三方用户的 ID，部分平台可能没有")
     private String uid;
 
     /** 个别平台的授权信息，部分平台可能没有 */
-    @Schema(defaultValue = "个别平台的授权信息，部分平台可能没有")
+    @Schema(title = "个别平台的授权信息，部分平台可能没有")
     @Excel(name = "个别平台的授权信息，部分平台可能没有")
     private String accessCode;
 
     /** 第三方用户的 union id，部分平台可能没有 */
-    @Schema(defaultValue = "第三方用户的 union id，部分平台可能没有")
+    @Schema(title = "第三方用户的 union id，部分平台可能没有")
     @Excel(name = "第三方用户的 union id，部分平台可能没有")
     private String unionId;
 
     /** 第三方用户授予的权限，部分平台可能没有 */
-    @Schema(defaultValue = "第三方用户授予的权限，部分平台可能没有")
+    @Schema(title = "第三方用户授予的权限，部分平台可能没有")
     @Excel(name = "第三方用户授予的权限，部分平台可能没有")
     private String scope;
 
     /** 个别平台的授权信息，部分平台可能没有 */
-    @Schema(defaultValue = "个别平台的授权信息，部分平台可能没有")
+    @Schema(title = "个别平台的授权信息，部分平台可能没有")
     @Excel(name = "个别平台的授权信息，部分平台可能没有")
     private String tokenType;
 
     /** id token，部分平台可能没有 */
-    @Schema(defaultValue = "id token，部分平台可能没有")
+    @Schema(title = "id token，部分平台可能没有")
     @Excel(name = "id token，部分平台可能没有")
     private String idToken;
 
     /** 小米平台用户的附带属性，部分平台可能没有 */
-    @Schema(defaultValue = "小米平台用户的附带属性，部分平台可能没有")
+    @Schema(title = "小米平台用户的附带属性，部分平台可能没有")
     @Excel(name = "小米平台用户的附带属性，部分平台可能没有")
     private String macAlgorithm;
 
     /** 小米平台用户的附带属性，部分平台可能没有 */
-    @Schema(defaultValue = "小米平台用户的附带属性，部分平台可能没有")
+    @Schema(title = "小米平台用户的附带属性，部分平台可能没有")
     @Excel(name = "小米平台用户的附带属性，部分平台可能没有")
     private String macKey;
 
     /** 用户的授权code，部分平台可能没有 */
-    @Schema(defaultValue = "用户的授权code，部分平台可能没有")
+    @Schema(title = "用户的授权code，部分平台可能没有")
     @Excel(name = "用户的授权code，部分平台可能没有")
     private String code;
 
     /** Twitter平台用户的附带属性，部分平台可能没有 */
-    @Schema(defaultValue = "Twitter平台用户的附带属性，部分平台可能没有")
+    @Schema(title = "Twitter平台用户的附带属性，部分平台可能没有")
     @Excel(name = "Twitter平台用户的附带属性，部分平台可能没有")
     private String oauthToken;
 
     /** Twitter平台用户的附带属性，部分平台可能没有 */
-    @Schema(defaultValue = "Twitter平台用户的附带属性，部分平台可能没有")
+    @Schema(title = "Twitter平台用户的附带属性，部分平台可能没有")
     @Excel(name = "Twitter平台用户的附带属性，部分平台可能没有")
     private String oauthTokenSecret;
 

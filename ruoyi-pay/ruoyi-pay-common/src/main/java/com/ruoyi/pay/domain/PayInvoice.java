@@ -19,41 +19,41 @@ public class PayInvoice extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 发票id */
-    @Schema(defaultValue = "发票id")
+    @Schema(title = "发票id")
     private Long invoiceId;
 
     /** 订单号 */
-    @Schema(defaultValue = "订单号")
+    @Schema(title = "订单号")
     @Excel(name = "订单号")
     private String orderNumber;
 
     /** 发票类型 */
-    @Schema(defaultValue = "发票类型")
+    @Schema(title = "发票类型")
     @Excel(name = "发票类型")
     private String invoiceType;
 
     /** 发票抬头 */
-    @Schema(defaultValue = "发票抬头")
+    @Schema(title = "发票抬头")
     @Excel(name = "发票抬头")
     private String invoiceHeader;
 
     /** 纳税人识别号 */
-    @Schema(defaultValue = "纳税人识别号")
+    @Schema(title = "纳税人识别号")
     @Excel(name = "纳税人识别号")
     private String invoiceNumber;
 
     /** 收票人手机号 */
-    @Schema(defaultValue = "收票人手机号")
+    @Schema(title = "收票人手机号")
     @Excel(name = "收票人手机号")
     private String invoicePhone;
 
     /** 收票人邮箱 */
-    @Schema(defaultValue = "收票人邮箱")
+    @Schema(title = "收票人邮箱")
     @Excel(name = "收票人邮箱")
     private String invoiceEmail;
 
     /** 发票备注 */
-    @Schema(defaultValue = "发票备注")
+    @Schema(title = "发票备注")
     @Excel(name = "发票备注")
     private String invoiceRemark;
 

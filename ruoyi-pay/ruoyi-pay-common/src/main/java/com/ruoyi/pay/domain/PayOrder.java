@@ -14,46 +14,46 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @author ruoyi
  * @date 2024-02-15
  */
-@Schema(description = "订单对象")
+@Schema(title = "订单对象")
 public class PayOrder extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 订单ID */
-    @Schema(defaultValue = "订单ID")
+    @Schema(title = "订单ID")
     private Long orderId;
 
     /** 用户id */
-    @Schema(defaultValue = "用户id")
+    @Schema(title = "用户id")
     @Excel(name = "用户id")
     private Long userId;
 
     /** 订单号 */
-    @Schema(defaultValue = "订单号")
+    @Schema(title = "订单号")
     @Excel(name = "订单号")
     private String orderNumber;
 
     /** 订单状态 */
-    @Schema(defaultValue = "订单状态")
+    @Schema(title = "订单状态")
     @Excel(name = "订单状态")
     private String orderStatus;
 
     /** 订单总金额 */
-    @Schema(defaultValue = "订单总金额")
+    @Schema(title = "订单总金额")
     @Excel(name = "订单总金额")
     private String totalAmount;
 
     /** 订单内容 */
-    @Schema(defaultValue = "订单内容")
+    @Schema(title = "订单内容")
     @Excel(name = "订单内容")
     private String orderContent;
 
     /** 订单备注 */
-    @Schema(defaultValue = "订单备注")
+    @Schema(title = "订单备注")
     @Excel(name = "订单备注")
     private String orderRemark;
 
     /** 负载信息 */
-    @Schema(defaultValue = "负载信息")
+    @Schema(title = "负载信息")
     @Excel(name = "负载信息")
     private String orderMessage;
 

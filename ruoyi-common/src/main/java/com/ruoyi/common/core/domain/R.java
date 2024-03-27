@@ -1,13 +1,17 @@
 package com.ruoyi.common.core.domain;
 
 import java.io.Serializable;
+
 import com.ruoyi.common.constant.HttpStatus;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * 响应信息主体
  *
  * @author ruoyi
  */
+@Schema(title = "响应信息主体")
 public class R<T> implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -18,10 +22,13 @@ public class R<T> implements Serializable
     /** 失败 */
     public static final int FAIL = HttpStatus.ERROR;
 
+    @Schema(title = "响应码")
     private int code;
 
+    @Schema(title = "响应信息")
     private String msg;
 
+    @Schema(title = "响应数据")
     private T data;
 
     public static <T> R<T> ok()

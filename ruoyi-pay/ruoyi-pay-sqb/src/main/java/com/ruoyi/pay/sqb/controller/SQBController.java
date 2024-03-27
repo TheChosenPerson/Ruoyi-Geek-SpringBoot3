@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.R;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.service.IPayOrderService;
 import com.ruoyi.pay.sqb.service.Impl.SQBServiceImpl;
@@ -33,14 +34,16 @@ public class SQBController extends BaseController {
     })
     @PostMapping("/payUrl")
     @Anonymous
-    public AjaxResult payUrl(@RequestParam("id") String orderNumber) throws Exception {
+    public R<String> payUrl(@RequestParam("id") String orderNumber) throws Exception {
         PayOrder payOrder = payOrderServicer.selectPayOrderByOrderNumber(orderNumber);
         String url = sqbServiceImpl.payUrl(payOrder);
-        AjaxResult ajaxResult = new AjaxResult(200, url, "操作成功");
-        return ajaxResult;
+        return R.ok(url);
     }
 
     @Operation(summary = "查询支付状态")
+    @Parameters(value = {
+        @Parameter(name = "id", description = "订单号", required = true)
+})
     @PostMapping("/query")
     @Anonymous
     public AjaxResult query(@RequestParam("id") String orderNumber) throws Exception {
