@@ -23,6 +23,8 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.service.ISysConfigService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
@@ -30,6 +32,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * 
  * @author ruoyi
  */
+@Tag(name = "参数配置")
 @RestController
 @RequestMapping("/system/config")
 public class SysConfigController extends BaseController
@@ -40,6 +43,7 @@ public class SysConfigController extends BaseController
     /**
      * 获取参数配置列表
      */
+    @Operation(summary = "获取参数配置列表")
     @PreAuthorize("@ss.hasPermi('system:config:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysConfig config)
@@ -49,6 +53,7 @@ public class SysConfigController extends BaseController
         return getDataTable(list);
     }
 
+    @Operation(summary = "参数管理")
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:config:export')")
     @PostMapping("/export")
@@ -62,6 +67,7 @@ public class SysConfigController extends BaseController
     /**
      * 根据参数编号获取详细信息
      */
+    @Operation(summary = "根据参数编号获取详细信息")
     @PreAuthorize("@ss.hasPermi('system:config:query')")
     @GetMapping(value = "/{configId}")
     public AjaxResult getInfo(@PathVariable( name = "configId" ) Long configId) 
@@ -72,6 +78,7 @@ public class SysConfigController extends BaseController
     /**
      * 根据参数键名查询参数值
      */
+    @Operation(summary = "根据参数键名查询参数值")
     @GetMapping(value = "/configKey/{configKey}")
     public AjaxResult getConfigKey(@PathVariable( name = "configKey" ) String configKey) 
     {
@@ -81,6 +88,7 @@ public class SysConfigController extends BaseController
     /**
      * 新增参数配置
      */
+    @Operation(summary = "新增参数配置")
     @PreAuthorize("@ss.hasPermi('system:config:add')")
     @Log(title = "参数管理", businessType = BusinessType.INSERT)
     @PostMapping
@@ -97,6 +105,7 @@ public class SysConfigController extends BaseController
     /**
      * 修改参数配置
      */
+    @Operation(summary = "修改参数配置")
     @PreAuthorize("@ss.hasPermi('system:config:edit')")
     @Log(title = "参数管理", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -113,6 +122,7 @@ public class SysConfigController extends BaseController
     /**
      * 删除参数配置
      */
+    @Operation(summary = "删除参数配置")
     @PreAuthorize("@ss.hasPermi('system:config:remove')")
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{configIds}")
@@ -125,6 +135,7 @@ public class SysConfigController extends BaseController
     /**
      * 刷新参数缓存
      */
+    @Operation(summary = "刷新参数缓存")
     @PreAuthorize("@ss.hasPermi('system:config:remove')")
     @Log(title = "参数管理", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")

@@ -2,68 +2,89 @@ package com.ruoyi.common.core.domain.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.ruoyi.common.core.domain.BaseEntity;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 菜单权限表 sys_menu
  * 
  * @author ruoyi
  */
+@Schema(title = "菜单权限")
 public class SysMenu extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 菜单ID */
+    @Schema(title = "菜单ID")
     private Long menuId;
 
     /** 菜单名称 */
+    @Schema(title = "菜单名称")
     private String menuName;
 
     /** 父菜单名称 */
+    @Schema(title = "父菜单名称")
     private String parentName;
 
     /** 父菜单ID */
+    @Schema(title = "父菜单ID")
     private Long parentId;
 
     /** 显示顺序 */
+    @Schema(title = "显示顺序")
     private Integer orderNum;
 
     /** 路由地址 */
+    @Schema(title = "路由地址")
     private String path;
 
     /** 组件路径 */
+    @Schema(title = "组件路径")
     private String component;
 
     /** 路由参数 */
+    @Schema(title = "路由参数")
     private String query;
 
     /** 是否为外链（0是 1否） */
+    @Schema(title = "是否为外链", description = "0是 1否")
     private String isFrame;
 
     /** 是否缓存（0缓存 1不缓存） */
+    @Schema(title = "是否缓存", description = "0缓存 1不缓存")
     private String isCache;
 
     /** 类型（M目录 C菜单 F按钮） */
+    @Schema(title = "类型", description = "M目录 C菜单 F按钮")
     private String menuType;
 
     /** 显示状态（0显示 1隐藏） */
+    @Schema(title = "显示状态", description = "0显示 1隐藏")
     private String visible;
     
     /** 菜单状态（0正常 1停用） */
+    @Schema(title = "菜单状态", description = "0正常 1停用")
     private String status;
 
     /** 权限字符串 */
+    @Schema(title = "权限字符串")
     private String perms;
 
     /** 菜单图标 */
+    @Schema(title = "菜单图标")
     private String icon;
 
     /** 子菜单 */
+    @Schema(title = "子菜单")
     private List<SysMenu> children = new ArrayList<SysMenu>();
 
     public Long getMenuId()

@@ -2,23 +2,30 @@ package com.ruoyi.system.domain;
 
 import com.ruoyi.common.utils.StringUtils;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * 缓存信息
  * 
  * @author ruoyi
  */
+@Schema(title = "缓存信息")
 public class SysCache
 {
     /** 缓存名称 */
+    @Schema(title = "缓存名称")
     private String cacheName = "";
 
     /** 缓存键名 */
+    @Schema(title = "缓存键名")
     private String cacheKey = "";
 
     /** 缓存内容 */
+    @Schema(title = "缓存内容")
     private String cacheValue = "";
 
     /** 备注 */
+    @Schema(title = "备注")
     private String remark = "";
 
     public SysCache()

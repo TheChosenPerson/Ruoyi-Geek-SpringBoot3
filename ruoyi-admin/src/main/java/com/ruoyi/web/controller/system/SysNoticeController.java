@@ -22,11 +22,15 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.service.ISysNoticeService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * 公告 信息操作处理
  * 
  * @author ruoyi
  */
+@Tag(name = "公告" , description = "信息操作处理")
 @RestController
 @RequestMapping("/system/notice")
 public class SysNoticeController extends BaseController
@@ -37,6 +41,7 @@ public class SysNoticeController extends BaseController
     /**
      * 获取通知公告列表
      */
+    @Operation(summary = "获取通知公告列表")
     @PreAuthorize("@ss.hasPermi('system:notice:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysNotice notice)
@@ -49,6 +54,7 @@ public class SysNoticeController extends BaseController
     /**
      * 根据通知公告编号获取详细信息
      */
+    @Operation(summary = "根据通知公告编号获取详细信息")
     @PreAuthorize("@ss.hasPermi('system:notice:query')")
     @GetMapping(value = "/{noticeId}")
     public AjaxResult getInfo(@PathVariable( name = "noticeId" ) Long noticeId) 
@@ -59,6 +65,7 @@ public class SysNoticeController extends BaseController
     /**
      * 新增通知公告
      */
+    @Operation(summary = "新增通知公告")
     @PreAuthorize("@ss.hasPermi('system:notice:add')")
     @Log(title = "通知公告", businessType = BusinessType.INSERT)
     @PostMapping
@@ -71,6 +78,7 @@ public class SysNoticeController extends BaseController
     /**
      * 修改通知公告
      */
+    @Operation(summary = "修改通知公告")
     @PreAuthorize("@ss.hasPermi('system:notice:edit')")
     @Log(title = "通知公告", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -83,6 +91,7 @@ public class SysNoticeController extends BaseController
     /**
      * 删除通知公告
      */
+    @Operation(summary = "删除通知公告")
     @PreAuthorize("@ss.hasPermi('system:notice:remove')")
     @Log(title = "通知公告", businessType = BusinessType.DELETE)
     @DeleteMapping("/{noticeIds}")

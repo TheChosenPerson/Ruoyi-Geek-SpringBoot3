@@ -2,57 +2,74 @@ package com.ruoyi.common.core.domain.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.ruoyi.common.core.domain.BaseEntity;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 /**
  * 部门表 sys_dept
  *
  * @author ruoyi
  */
+@Schema(title = "部门")
 public class SysDept extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 部门ID */
+    @Schema(title = "部门ID")
     private Long deptId;
 
     /** 父部门ID */
+    @Schema(title = "父部门ID")
     private Long parentId;
 
     /** 祖级列表 */
+    @Schema(title = "祖级列表")
     private String ancestors;
 
     /** 部门名称 */
+    @Schema(title = "部门名称")
     private String deptName;
 
     /** 显示顺序 */
+    @Schema(title = "显示顺序")
     private Integer orderNum;
 
     /** 负责人 */
+    @Schema(title = "负责人")
     private String leader;
 
     /** 联系电话 */
+    @Schema(title = "联系电话")
     private String phone;
 
     /** 邮箱 */
+    @Schema(title = "邮箱")
     private String email;
 
     /** 部门状态:0正常,1停用 */
+    @Schema(title = "部门表",description = "0正常,1停用")
     private String status;
 
     /** 删除标志（0代表存在 2代表删除） */
+    @Schema(title = "删除标志",description = "0代表存在 2代表删除")
     private String delFlag;
 
     /** 父部门名称 */
+    @Schema(title = "父部门名称")
     private String parentName;
 
     /** 子部门 */
+    @Schema(title = "子部门")
     private List<SysDept> children = new ArrayList<SysDept>();
 
     public Long getDeptId()

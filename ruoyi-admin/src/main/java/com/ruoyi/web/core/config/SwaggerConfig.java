@@ -28,8 +28,7 @@ public class SwaggerConfig {
         public GroupedOpenApi sysApi() {
                 return GroupedOpenApi.builder()
                                 .group("sys系统模块")
-                                .pathsToMatch("/system/**")
-                                .packagesToScan("com.ruoyi.web.controller")
+                                .packagesToScan("com.ruoyi.web.controller.system")
                                 .build();
         }
 
@@ -37,8 +36,7 @@ public class SwaggerConfig {
         public GroupedOpenApi commonApi() {
                 return GroupedOpenApi.builder()
                                 .group("基础模块")
-                                .pathsToMatch("/common/**")
-                                .packagesToScan("com.ruoyi.web.controller")
+                                .packagesToScan("com.ruoyi.web.controller.common")
                                 .build();
         }
 

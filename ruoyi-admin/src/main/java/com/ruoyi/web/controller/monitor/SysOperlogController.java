@@ -20,6 +20,10 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.service.ISysOperLogService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
@@ -27,6 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * 
  * @author ruoyi
  */
+@Tag(name = "操作日志记录")
 @RestController
 @RequestMapping("/monitor/operlog")
 public class SysOperlogController extends BaseController
@@ -34,6 +39,7 @@ public class SysOperlogController extends BaseController
     @Autowired
     private ISysOperLogService operLogService;
 
+    @Operation(summary = "获取操作日志记录列表")
     @PreAuthorize("@ss.hasPermi('monitor:operlog:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysOperLog operLog)
@@ -43,6 +49,7 @@ public class SysOperlogController extends BaseController
         return getDataTable(list);
     }
 
+    @Operation(summary = "导出操作日志记录列表")
     @Log(title = "操作日志", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('monitor:operlog:export')")
     @PostMapping("/export")
@@ -53,6 +60,10 @@ public class SysOperlogController extends BaseController
         util.exportExcel(response, list, "操作日志");
     }
 
+    @Operation(summary = "删除操作日志记录")
+    @Parameters({
+        @Parameter(name = "operIds", description = "记录id数组", required = true),
+    })
     @Log(title = "操作日志", businessType = BusinessType.DELETE)
     @PreAuthorize("@ss.hasPermi('monitor:operlog:remove')")
     @DeleteMapping("/{operIds}")
@@ -61,6 +72,7 @@ public class SysOperlogController extends BaseController
         return toAjax(operLogService.deleteOperLogByIds(operIds));
     }
 
+    @Operation(summary = "清除操作日志记录")
     @Log(title = "操作日志", businessType = BusinessType.CLEAN)
     @PreAuthorize("@ss.hasPermi('monitor:operlog:remove')")
     @DeleteMapping("/clean")

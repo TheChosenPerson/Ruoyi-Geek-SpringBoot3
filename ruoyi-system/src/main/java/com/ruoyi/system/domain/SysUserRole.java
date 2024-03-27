@@ -3,17 +3,22 @@ package com.ruoyi.system.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * 用户和角色关联 sys_user_role
  * 
  * @author ruoyi
  */
+@Schema(title = "用户和角色关联")
 public class SysUserRole
 {
     /** 用户ID */
+    @Schema(title = "用户ID")
     private Long userId;
     
     /** 角色ID */
+    @Schema(title = "角色ID")
     private Long roleId;
 
     public Long getUserId()

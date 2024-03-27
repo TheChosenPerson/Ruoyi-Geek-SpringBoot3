@@ -3,17 +3,22 @@ package com.ruoyi.system.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * 角色和菜单关联 sys_role_menu
  * 
  * @author ruoyi
  */
+@Schema(title = "角色和菜单关联")
 public class SysRoleMenu
 {
     /** 角色ID */
+    @Schema(title = "角色ID")
     private Long roleId;
     
     /** 菜单ID */
+    @Schema(title = "菜单ID")
     private Long menuId;
 
     public Long getRoleId()

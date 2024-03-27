@@ -26,11 +26,17 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysUserOnline;
 import com.ruoyi.system.service.ISysUserOnlineService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * 在线用户监控
  * 
  * @author ruoyi
  */
+@Tag(name = "在线用户监控")
 @RestController
 @RequestMapping("/monitor/online")
 public class SysUserOnlineController extends BaseController {
@@ -40,6 +46,11 @@ public class SysUserOnlineController extends BaseController {
     @Autowired
     private RedisCache redisCache;
 
+    @Operation(summary = "获取在线用户列表")
+    @Parameters({
+        @Parameter(name = "ipaddr", description = "ip地址", required = false),
+        @Parameter(name = "userName", description = "用户名", required = false),
+    })
     @PreAuthorize("@ss.hasPermi('monitor:online:list')")
     @GetMapping("/list")
     public TableDataInfo list(@RequestParam(name = "ipaddr", required = false) String ipaddr,
@@ -66,6 +77,10 @@ public class SysUserOnlineController extends BaseController {
     /**
      * 强退用户
      */
+    @Operation(summary = "强退用户")
+    @Parameters({
+        @Parameter(name = "tokenId", description = "用户凭证", required = true),
+    })
     @PreAuthorize("@ss.hasPermi('monitor:online:forceLogout')")
     @Log(title = "在线用户", businessType = BusinessType.FORCE)
     @DeleteMapping("/{tokenId}")

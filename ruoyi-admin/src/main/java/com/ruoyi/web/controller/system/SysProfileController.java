@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.core.controller.BaseController;
@@ -23,11 +24,15 @@ import com.ruoyi.common.utils.file.MimeTypeUtils;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysUserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * 个人信息 业务处理
  * 
  * @author ruoyi
  */
+@Tag(name = "个人信息" , description = "业务处理")
 @RestController
 @RequestMapping("/system/user/profile")
 public class SysProfileController extends BaseController
@@ -41,6 +46,7 @@ public class SysProfileController extends BaseController
     /**
      * 个人信息
      */
+    @Operation(summary = "个人信息")
     @GetMapping
     public AjaxResult profile()
     {
@@ -55,6 +61,7 @@ public class SysProfileController extends BaseController
     /**
      * 修改用户
      */
+    @Operation(summary = "修改用户")
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult updateProfile(@RequestBody SysUser user)
@@ -90,6 +97,7 @@ public class SysProfileController extends BaseController
     /**
      * 重置密码
      */
+    @Operation(summary = "重置密码")
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
     public AjaxResult updatePwd(String oldPassword, String newPassword)
@@ -119,6 +127,7 @@ public class SysProfileController extends BaseController
     /**
      * 头像上传
      */
+    @Operation(summary = "头像上传")
     @Log(title = "用户头像", businessType = BusinessType.UPDATE)
     @PostMapping("/avatar")
     public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws Exception

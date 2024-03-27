@@ -33,6 +33,8 @@ import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
@@ -40,6 +42,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * 
  * @author ruoyi
  */
+@Tag(name = "用户信息")
 @RestController
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController
@@ -59,6 +62,7 @@ public class SysUserController extends BaseController
     /**
      * 获取用户列表
      */
+    @Operation(summary = "获取用户列表")
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysUser user)
@@ -68,6 +72,7 @@ public class SysUserController extends BaseController
         return getDataTable(list);
     }
 
+    @Operation(summary = "导出用户列表")
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:user:export')")
     @PostMapping("/export")
@@ -78,6 +83,7 @@ public class SysUserController extends BaseController
         util.exportExcel(response, list, "用户数据");
     }
 
+    @Operation(summary = "导入用户列表")
     @Log(title = "用户管理", businessType = BusinessType.IMPORT)
     @PreAuthorize("@ss.hasPermi('system:user:import')")
     @PostMapping("/importData")
@@ -90,6 +96,7 @@ public class SysUserController extends BaseController
         return success(message);
     }
 
+    @Operation(summary = "获取导入用户模板")
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
@@ -100,6 +107,7 @@ public class SysUserController extends BaseController
     /**
      * 根据用户编号获取详细信息
      */
+    @Operation(summary = "根据用户编号获取详细信息")
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping(value = { "/", "/{userId}" })
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
@@ -122,6 +130,7 @@ public class SysUserController extends BaseController
     /**
      * 新增用户
      */
+    @Operation(summary = "新增用户")
     @PreAuthorize("@ss.hasPermi('system:user:add')")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @PostMapping
@@ -147,6 +156,7 @@ public class SysUserController extends BaseController
     /**
      * 修改用户
      */
+    @Operation(summary = "修改用户")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -173,6 +183,7 @@ public class SysUserController extends BaseController
     /**
      * 删除用户
      */
+    @Operation(summary = "删除用户")
     @PreAuthorize("@ss.hasPermi('system:user:remove')")
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{userIds}")
@@ -188,6 +199,7 @@ public class SysUserController extends BaseController
     /**
      * 重置密码
      */
+    @Operation(summary = "重置密码")
     @PreAuthorize("@ss.hasPermi('system:user:resetPwd')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping("/resetPwd")
@@ -203,6 +215,7 @@ public class SysUserController extends BaseController
     /**
      * 状态修改
      */
+    @Operation(summary = "状态修改")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
@@ -217,6 +230,7 @@ public class SysUserController extends BaseController
     /**
      * 根据用户编号获取授权角色
      */
+    @Operation(summary = "根据用户编号获取授权角色")
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping("/authRole/{userId}")
     public AjaxResult authRole(@PathVariable("userId") Long userId)
@@ -232,6 +246,7 @@ public class SysUserController extends BaseController
     /**
      * 用户授权角色
      */
+    @Operation(summary = "用户授权角色")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.GRANT)
     @PutMapping("/authRole")
@@ -245,6 +260,7 @@ public class SysUserController extends BaseController
     /**
      * 获取部门树列表
      */
+    @Operation(summary = "获取部门树列表")
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/deptTree")
     public AjaxResult deptTree(SysDept dept)

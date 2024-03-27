@@ -2,11 +2,13 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysMenu;
@@ -17,11 +19,15 @@ import com.ruoyi.framework.web.service.SysLoginService;
 import com.ruoyi.framework.web.service.SysPermissionService;
 import com.ruoyi.system.service.ISysMenuService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * 登录验证
  * 
  * @author ruoyi
  */
+@Tag(name = "登录验证")
 @RestController
 public class SysLoginController
 {
@@ -40,6 +46,7 @@ public class SysLoginController
      * @param loginBody 登录信息
      * @return 结果
      */
+    @Operation(summary = "登录方法")
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {
@@ -56,6 +63,7 @@ public class SysLoginController
      * 
      * @return 用户信息
      */
+    @Operation(summary = "获取用户信息")
     @GetMapping("getInfo")
     public AjaxResult getInfo()
     {
@@ -76,6 +84,7 @@ public class SysLoginController
      * 
      * @return 路由信息
      */
+    @Operation(summary = "获取路由信息")
     @GetMapping("getRouters")
     public AjaxResult getRouters()
     {

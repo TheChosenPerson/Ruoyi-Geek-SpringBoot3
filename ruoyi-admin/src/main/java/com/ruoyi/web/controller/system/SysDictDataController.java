@@ -26,6 +26,8 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.service.ISysDictDataService;
 import com.ruoyi.system.service.ISysDictTypeService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
@@ -33,6 +35,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * 
  * @author ruoyi
  */
+@Tag(name = "数据字典信息(数据)")
 @RestController
 @RequestMapping("/system/dict/data")
 public class SysDictDataController extends BaseController
@@ -43,6 +46,7 @@ public class SysDictDataController extends BaseController
     @Autowired
     private ISysDictTypeService dictTypeService;
 
+    @Operation(summary = "查询字典数据列表")
     @PreAuthorize("@ss.hasPermi('system:dict:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysDictData dictData)
@@ -52,6 +56,7 @@ public class SysDictDataController extends BaseController
         return getDataTable(list);
     }
 
+    @Operation(summary = "导出字典数据列表")
     @Log(title = "字典数据", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:dict:export')")
     @PostMapping("/export")
@@ -65,6 +70,7 @@ public class SysDictDataController extends BaseController
     /**
      * 查询字典数据详细
      */
+    @Operation(summary = "查询字典数据详细")
     @PreAuthorize("@ss.hasPermi('system:dict:query')")
     @GetMapping(value = "/{dictCode}")
     public AjaxResult getInfo(@PathVariable( name = "dictCode" ) Long dictCode) 
@@ -75,6 +81,7 @@ public class SysDictDataController extends BaseController
     /**
      * 根据字典类型查询字典数据信息
      */
+    @Operation(summary = "根据字典类型查询字典数据信息")
     @GetMapping(value = "/type/{dictType}")
     public AjaxResult dictType(@PathVariable( name = "dictType" ) String dictType) 
     {
@@ -89,6 +96,7 @@ public class SysDictDataController extends BaseController
     /**
      * 新增字典类型
      */
+    @Operation(summary = "新增字典类型")
     @PreAuthorize("@ss.hasPermi('system:dict:add')")
     @Log(title = "字典数据", businessType = BusinessType.INSERT)
     @PostMapping
@@ -101,6 +109,7 @@ public class SysDictDataController extends BaseController
     /**
      * 修改保存字典类型
      */
+    @Operation(summary = "修改保存字典类型")
     @PreAuthorize("@ss.hasPermi('system:dict:edit')")
     @Log(title = "字典数据", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -113,6 +122,7 @@ public class SysDictDataController extends BaseController
     /**
      * 删除字典类型
      */
+    @Operation(summary = "删除字典类型")
     @PreAuthorize("@ss.hasPermi('system:dict:remove')")
     @Log(title = "字典类型", businessType = BusinessType.DELETE)
     @DeleteMapping("/{dictCodes}")

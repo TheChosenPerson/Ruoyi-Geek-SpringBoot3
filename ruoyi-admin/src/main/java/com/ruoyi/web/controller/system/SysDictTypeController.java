@@ -23,6 +23,8 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.service.ISysDictTypeService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
@@ -30,6 +32,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * 
  * @author ruoyi
  */
+@Tag(name = "数据字典信息(类型)")
 @RestController
 @RequestMapping("/system/dict/type")
 public class SysDictTypeController extends BaseController
@@ -37,6 +40,7 @@ public class SysDictTypeController extends BaseController
     @Autowired
     private ISysDictTypeService dictTypeService;
 
+    @Operation(summary = "查询字典类型列表")
     @PreAuthorize("@ss.hasPermi('system:dict:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysDictType dictType)
@@ -46,6 +50,7 @@ public class SysDictTypeController extends BaseController
         return getDataTable(list);
     }
 
+    @Operation(summary = "导出字典类型列表")
     @Log(title = "字典类型", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:dict:export')")
     @PostMapping("/export")
@@ -59,6 +64,7 @@ public class SysDictTypeController extends BaseController
     /**
      * 查询字典类型详细
      */
+    @Operation(summary = "查询字典类型详细")
     @PreAuthorize("@ss.hasPermi('system:dict:query')")
     @GetMapping(value = "/{dictId}")
     public AjaxResult getInfo(@PathVariable( name = "dictId" ) Long dictId) 
@@ -69,6 +75,7 @@ public class SysDictTypeController extends BaseController
     /**
      * 新增字典类型
      */
+    @Operation(summary = "新增字典类型")
     @PreAuthorize("@ss.hasPermi('system:dict:add')")
     @Log(title = "字典类型", businessType = BusinessType.INSERT)
     @PostMapping
@@ -85,6 +92,7 @@ public class SysDictTypeController extends BaseController
     /**
      * 修改字典类型
      */
+    @Operation(summary = "修改字典类型")
     @PreAuthorize("@ss.hasPermi('system:dict:edit')")
     @Log(title = "字典类型", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -101,6 +109,7 @@ public class SysDictTypeController extends BaseController
     /**
      * 删除字典类型
      */
+    @Operation(summary = "删除字典类型")
     @PreAuthorize("@ss.hasPermi('system:dict:remove')")
     @Log(title = "字典类型", businessType = BusinessType.DELETE)
     @DeleteMapping("/{dictIds}")
@@ -113,6 +122,7 @@ public class SysDictTypeController extends BaseController
     /**
      * 刷新字典缓存
      */
+    @Operation(summary = "刷新字典缓存")
     @PreAuthorize("@ss.hasPermi('system:dict:remove')")
     @Log(title = "字典类型", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
@@ -125,6 +135,7 @@ public class SysDictTypeController extends BaseController
     /**
      * 获取字典选择框列表
      */
+    @Operation(summary = "获取字典选择框列表")
     @GetMapping("/optionselect")
     public AjaxResult optionselect()
     {

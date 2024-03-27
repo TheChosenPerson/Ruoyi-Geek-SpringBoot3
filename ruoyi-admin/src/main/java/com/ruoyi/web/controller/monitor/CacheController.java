@@ -23,11 +23,17 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysCache;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * 缓存监控
  * 
  * @author ruoyi
  */
+@Tag(name = "缓存监控")
 @RestController
 @RequestMapping("/monitor/cache")
 public class CacheController
@@ -46,6 +52,7 @@ public class CacheController
         caches.add(new SysCache(CacheConstants.PWD_ERR_CNT_KEY, "密码错误次数"));
     }
 
+    @Operation(summary = "获取缓存信息")
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping()
     public AjaxResult getInfo() throws Exception
@@ -70,6 +77,7 @@ public class CacheController
         return AjaxResult.success(result);
     }
 
+    @Operation(summary = "获取缓存名列表")
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping("/getNames")
     public AjaxResult cache()
@@ -77,6 +85,10 @@ public class CacheController
         return AjaxResult.success(caches);
     }
 
+    @Operation(summary = "获取缓存键列表")
+    @Parameters({
+        @Parameter(name = "cacheName", description = "缓存名称", required = true),
+    })
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping("/getKeys/{cacheName}")
     public AjaxResult getCacheKeys(@PathVariable( name = "cacheName" ) String cacheName) 
@@ -85,6 +97,11 @@ public class CacheController
         return AjaxResult.success(cacheKeys);
     }
 
+    @Operation(summary = "获取缓存值列表")
+    @Parameters({
+        @Parameter(name = "cacheName", description = "缓存名称", required = true),
+        @Parameter(name = "cacheKey", description = "缓存键名", required = true)
+    })
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping("/getValue/{cacheName}/{cacheKey}")
     public AjaxResult getCacheValue(@PathVariable( name = "cacheKey" ) String cacheName, @PathVariable String cacheKey) 
@@ -94,6 +111,10 @@ public class CacheController
         return AjaxResult.success(sysCache);
     }
 
+    @Operation(summary = "清除缓存")
+    @Parameters({
+        @Parameter(name = "cacheName", description = "缓存名称", required = true)
+    })
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @DeleteMapping("/clearCacheName/{cacheName}")
     public AjaxResult clearCacheName(@PathVariable( name = "cacheName" ) String cacheName) 
@@ -103,6 +124,10 @@ public class CacheController
         return AjaxResult.success();
     }
 
+    @Operation(summary = "清除缓存值")
+    @Parameters({
+        @Parameter(name = "cacheKey", description = "缓存键名", required = true)
+    })
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @DeleteMapping("/clearCacheKey/{cacheKey}")
     public AjaxResult clearCacheKey(@PathVariable( name = "cacheKey" ) String cacheKey) 
@@ -111,6 +136,7 @@ public class CacheController
         return AjaxResult.success();
     }
 
+    @Operation(summary = "清除所有缓存")
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @DeleteMapping("/clearCacheAll")
     public AjaxResult clearCacheAll()
