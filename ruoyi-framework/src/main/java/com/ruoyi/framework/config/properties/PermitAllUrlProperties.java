@@ -62,15 +62,13 @@ public class PermitAllUrlProperties implements InitializingBean, ApplicationCont
                     return Arrays.stream(new Pair[] { new Pair(info, method), new Pair(info, controller) });
                 })
                 .filter(pair -> pair.second != null)
-                .flatMap(pair -> {
-                    if ("ant_path_matcher".equals(matching)) {
-                        return Objects.requireNonNull(pair.first.getPatternsCondition().getPatterns()).stream();
-                    } else if ("path_pattern_parser".equals(matching)) {
-                        return Objects.requireNonNull(pair.first.getPathPatternsCondition().getPatternValues())
+                .flatMap(pair -> switch (matching) {
+                    case "ant_path_matcher" ->
+                        Objects.requireNonNull(pair.first.getPatternsCondition().getPatterns()).stream();
+                    case "path_pattern_parser" ->
+                        Objects.requireNonNull(pair.first.getPathPatternsCondition().getPatternValues())
                                 .stream();
-                    } else {
-                        return Objects.requireNonNull(pair.first.getPatternsCondition().getPatterns()).stream();
-                    }
+                    default -> Objects.requireNonNull(pair.first.getPatternsCondition().getPatterns()).stream();
                 })
                 .map(url -> RegExUtils.replaceAll(url, PATTERN, ASTERISK))
                 .forEach(urls::add);
