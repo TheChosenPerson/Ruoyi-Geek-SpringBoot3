@@ -30,11 +30,11 @@ public class SQBController extends BaseController {
 
     @Operation(summary = "获取支付url")
     @Parameters(value = {
-            @Parameter(name = "id", description = "订单号", required = true)
+            @Parameter(name = "orderNumber", description = "订单号", required = true)
     })
     @PostMapping("/payUrl")
     @Anonymous
-    public R<String> payUrl(@RequestParam("id") String orderNumber) throws Exception {
+    public R<String> payUrl(@RequestParam("orderNumber") String orderNumber) throws Exception {
         PayOrder payOrder = payOrderServicer.selectPayOrderByOrderNumber(orderNumber);
         String url = sqbServiceImpl.payUrl(payOrder);
         return R.ok(url);
@@ -42,11 +42,11 @@ public class SQBController extends BaseController {
 
     @Operation(summary = "查询支付状态")
     @Parameters(value = {
-        @Parameter(name = "id", description = "订单号", required = true)
+        @Parameter(name = "orderNumber", description = "订单号", required = true)
 })
     @PostMapping("/query")
     @Anonymous
-    public AjaxResult query(@RequestParam("id") String orderNumber) throws Exception {
+    public AjaxResult query(@RequestParam("orderNumber") String orderNumber) throws Exception {
         PayOrder payOrder = payOrderServicer.selectPayOrderByOrderNumber(orderNumber);
         return success(sqbServiceImpl.query(payOrder));
     }

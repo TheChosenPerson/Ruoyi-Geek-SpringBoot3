@@ -67,4 +67,6 @@ public interface PayOrderMapper
      * @return 结果
      */
     public int deletePayOrderByOrderIds(Long[] orderIds);
+
+    public int deletePayOrderByOrderNumber(String orderNumber);
 }

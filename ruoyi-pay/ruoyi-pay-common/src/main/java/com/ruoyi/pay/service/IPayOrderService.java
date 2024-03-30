@@ -59,6 +59,15 @@ public interface IPayOrderService {
      */
     public int deletePayOrderByOrderIds(Long[] orderIds);
 
+    
+    /**
+     * 删除订单信息
+     * 
+     * @param orderId 订单主键
+     * @return 结果
+     */
+    public int deletePayOrderByOrderNumber(String orderNumber);
+
     /**
      * 删除订单信息
      * 

@@ -93,7 +93,9 @@ public class PayOrderController extends BaseController
     {
         payOrder.setUserId(getUserId());
         payOrder.setOrderNumber(snowflakeidworker.nextId().toString());
-        return toAjax(payOrderService.insertPayOrder(payOrder));
+        AjaxResult result = toAjax(payOrderService.insertPayOrder(payOrder));
+        result.put(AjaxResult.DATA_TAG, result);
+        return result;
     }
 
     /**
@@ -106,6 +108,18 @@ public class PayOrderController extends BaseController
     public AjaxResult edit(@RequestBody PayOrder payOrder)
     {
         return toAjax(payOrderService.updatePayOrder(payOrder));
+    }
+
+    /**
+     * 删除订单
+     */
+    @Operation(summary = "通过订单号删除订单")
+    @PreAuthorize("@ss.hasPermi('pay:order:remove')")
+    @Log(title = "订单", businessType = BusinessType.DELETE)
+	@DeleteMapping("/orderNumber/{orderNumber}")
+    public AjaxResult removeByOrderNumber(@PathVariable( name = "orderNumber" ) String orderNumbers) 
+    {
+        return toAjax(payOrderService.deletePayOrderByOrderNumber(orderNumbers));
     }
 
     /**

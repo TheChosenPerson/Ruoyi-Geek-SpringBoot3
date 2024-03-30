@@ -96,4 +96,15 @@ public class PayOrderServiceImpl implements IPayOrderService {
     public int deletePayOrderByOrderId(Long orderId) {
         return payOrderMapper.deletePayOrderByOrderId(orderId);
     }
+
+    /**
+     * 删除订单信息
+     * 
+     * @param orderIds 需要删除的订单主键
+     * @return 结果
+     */
+    @Override
+    public int deletePayOrderByOrderNumber(String orderNumber) {
+        return payOrderMapper.deletePayOrderByOrderNumber(orderNumber);
+    }
 }
