@@ -94,7 +94,7 @@ public class PayOrderController extends BaseController
         payOrder.setUserId(getUserId());
         payOrder.setOrderNumber(snowflakeidworker.nextId().toString());
         AjaxResult result = toAjax(payOrderService.insertPayOrder(payOrder));
-        result.put(AjaxResult.DATA_TAG, result);
+        result.put(AjaxResult.DATA_TAG, payOrder);
         return result;
     }
 
