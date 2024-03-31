@@ -4,7 +4,7 @@
     <parent>
         <artifactId>ruoyi</artifactId>
         <groupId>com.ruoyi</groupId>
-        <version>3.8.7.3.1</version>
+        <version>3.8.7.3.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -131,10 +131,10 @@
             <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-        </dependency>
+        </dependency> -->
 
         <!-- mybatis-plus 增强CRUD -->
         <dependency>

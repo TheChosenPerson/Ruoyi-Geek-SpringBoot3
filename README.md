@@ -9,7 +9,7 @@
 	<a href="https://gitee.com/y_project/RuoYi-Vue/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
 </p>
 
-# 当前版本是3.8.7.3
+# 当前版本是3.8.7.3.2
 
 本人的其他两个推荐搭配的项目
 
@@ -50,8 +50,6 @@
 8. ExcelUtil中 .newInstance()方法已被弃用，改成.getDeclaredConstructor().newInstance()
 9. Excel中roundingMode方法BigDecimal.ROUND_HALF_EVEN改成RoundingMode.HALF_EVEN，用枚举代替常量
 10. ReflectUtils中isAccessible在java9中被弃用，建议通过canAccess(null)来代替
-
-
 
 ## 模块介绍（简单开发必看）
 
