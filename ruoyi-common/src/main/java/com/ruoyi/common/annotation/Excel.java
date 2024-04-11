@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+
 import com.ruoyi.common.utils.poi.ExcelHandlerAdapter;
 
 /**
@@ -172,7 +173,7 @@ public @interface Excel
 
     public enum ColumnType
     {
-        NUMERIC(0), STRING(1), IMAGE(2);
+        NUMERIC(0), STRING(1), IMAGE(2), TEXT(3);
         private final int value;
 
         ColumnType(int value)
