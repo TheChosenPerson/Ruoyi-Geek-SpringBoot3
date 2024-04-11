@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ruoyi</groupId>
@@ -240,6 +239,13 @@
                 <artifactId>ruoyi-online</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+
+            <!-- mybatis-jpa-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-mybatis-jpa</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -253,6 +259,7 @@
         <module>ruoyi-oauth</module>
         <module>ruoyi-pay</module>
         <module>ruoyi-online</module>
+        <module>ruoyi-mybatis-jpa</module>
     </modules>
     <packaging>pom</packaging>
 
