@@ -33,6 +33,7 @@ public class ${ClassName} extends ${Entity}
 
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.javaField))
+
     /** $column.columnComment */
     @Schema(title = "$column.columnComment")
 #if($column.list)
@@ -59,6 +60,7 @@ public class ${ClassName} extends ${Entity}
 #end
     private $column.javaType $column.javaField;
 #if($column.subColumnTableName && $table.haveSubColumn == '1')
+
     /** $column.javaField 到 $column.subColumnTableName 映射 */
     private $column.subColumnJavaType $column.subColumnJavaField;
 #end
