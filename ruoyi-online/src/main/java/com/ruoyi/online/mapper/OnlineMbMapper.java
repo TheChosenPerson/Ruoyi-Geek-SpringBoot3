@@ -1,12 +1,13 @@
 package com.ruoyi.online.mapper;
 
 import java.util.List;
+
 import com.ruoyi.online.domain.OnlineMb;
 
 /**
  * mybatis在线接口Mapper接口
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-01-26
  */
 public interface OnlineMbMapper 

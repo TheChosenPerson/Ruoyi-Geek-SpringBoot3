@@ -11,6 +11,13 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.online.mapper.OnlineDbMapper;
 
+
+/**
+ * mysql数据库Controller接口
+ * 
+ * @author Dftre
+ * @date 2024-01-26
+ */
 @RestController
 @RequestMapping("/online/db")
 @Anonymous

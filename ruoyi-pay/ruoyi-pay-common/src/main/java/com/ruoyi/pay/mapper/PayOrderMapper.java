@@ -7,7 +7,7 @@ import com.ruoyi.pay.domain.PayOrder;
 /**
  * 订单Mapper接口
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-02-15
  */
 public interface PayOrderMapper 

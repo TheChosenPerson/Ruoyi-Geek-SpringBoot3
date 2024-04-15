@@ -7,7 +7,7 @@ import com.ruoyi.oauth.common.domain.OauthUser;
 /**
  * 第三方认证Mapper接口
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-01-18
  */
 public interface OauthUserMapper {

@@ -12,9 +12,11 @@ import com.ruoyi.mybatis.domain.ColumnInfo;
 import com.ruoyi.mybatis.domain.MapColumnInfo;
 import com.ruoyi.mybatis.domain.TableInfo;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
+/**
+ * sql构建工具
+ *
+ * @author Dftre
+ */
 public class SQLUtil {
 
     private static final Map<Class<?>, TableInfo> tableInfoMap = new HashMap<>();
@@ -48,7 +50,6 @@ public class SQLUtil {
                     .map(ColumnInfo::getQuerySql)
                     .forEach(sql::WHERE);
         }
-        log.debug(sql.toString());
         return sql.toString();
     }
 

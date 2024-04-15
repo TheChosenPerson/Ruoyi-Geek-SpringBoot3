@@ -9,6 +9,11 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 
+/**
+ * 验证码操作处理
+ *
+ * @author Dftre
+ */
 @Configuration
 public class SwaggerConfig {
 

@@ -1,5 +1,10 @@
 package com.ruoyi.mybatis.enums;
 
+/**
+ * 数据库查询枚举
+ *
+ * @author Dftre
+ */
 public enum QueryEnum {
     eq, // 等于 =
     ne, // 不等于 <>

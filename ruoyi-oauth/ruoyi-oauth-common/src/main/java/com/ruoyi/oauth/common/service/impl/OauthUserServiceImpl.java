@@ -12,7 +12,7 @@ import com.ruoyi.oauth.common.service.IOauthUserService;
 /**
  * 第三方认证Service业务层处理
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-01-18
  */
 @Service

@@ -25,7 +25,7 @@ import com.ruoyi.framework.security.handle.LogoutSuccessHandlerImpl;
 /**
  * spring security配置
  *
- * @author ruoyi
+ * @author Dftre
  */
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Configuration

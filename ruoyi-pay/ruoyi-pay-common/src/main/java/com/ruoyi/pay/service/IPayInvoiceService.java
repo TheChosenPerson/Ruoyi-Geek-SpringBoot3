@@ -1,12 +1,13 @@
 package com.ruoyi.pay.service;
 
 import java.util.List;
+
 import com.ruoyi.pay.domain.PayInvoice;
 
 /**
  * 发票Service接口
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-02-15
  */
 public interface IPayInvoiceService 

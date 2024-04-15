@@ -7,6 +7,11 @@ import java.lang.annotation.Target;
 
 import com.ruoyi.mybatis.enums.QueryEnum;
 
+/**
+ * 标注查询条件
+ *
+ * @author Dftre
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Query {

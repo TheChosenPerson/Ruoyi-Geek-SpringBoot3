@@ -7,6 +7,11 @@ import org.springframework.core.annotation.AnnotationUtils;
 import com.ruoyi.mybatis.annotation.Column;
 import com.ruoyi.mybatis.annotation.Query;
 
+/**
+ * 数据库字段信息
+ *
+ * @author Dftre
+ */
 public class ColumnInfo {
     private String columnName;
     private String fieldName;

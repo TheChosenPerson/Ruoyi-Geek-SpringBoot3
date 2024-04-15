@@ -27,6 +27,12 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * 在线接口
+ * 
+ * @author Dftre
+ * @date 2024-01-26
+ */
 @RestController
 @Anonymous
 @RequestMapping("/online")

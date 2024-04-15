@@ -1,12 +1,13 @@
 package com.ruoyi.pay.mapper;
 
 import java.util.List;
+
 import com.ruoyi.pay.domain.PayInvoice;
 
 /**
  * 发票Mapper接口
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-02-15
  */
 public interface PayInvoiceMapper 

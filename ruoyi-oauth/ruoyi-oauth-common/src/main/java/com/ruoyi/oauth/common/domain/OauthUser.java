@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * 第三方认证对象 oauth_user
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-01-18
  */
 @Schema(description = "第三方认证对象")

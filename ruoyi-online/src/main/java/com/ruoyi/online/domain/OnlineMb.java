@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * mybatis在线接口对象 online_mb
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-01-26
  */
 @Schema(description = "mybatis在线接口对象")

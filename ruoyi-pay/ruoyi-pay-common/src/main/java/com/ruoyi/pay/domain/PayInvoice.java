@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * 发票对象 pay_invoice
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-02-15
  */
 @Schema(description = "发票对象")

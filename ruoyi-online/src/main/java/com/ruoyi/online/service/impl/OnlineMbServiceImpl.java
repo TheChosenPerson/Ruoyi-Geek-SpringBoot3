@@ -12,7 +12,7 @@ import com.ruoyi.online.service.IOnlineMbService;
 /**
  * mybatis在线接口Service业务层处理
  * 
- * @author ruoyi
+ * @author Dftre
  * @date 2024-01-26
  */
 @Service

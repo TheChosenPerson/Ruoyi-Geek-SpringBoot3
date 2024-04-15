@@ -14,6 +14,11 @@ import com.ruoyi.mybatis.annotation.ColumnMap;
 import com.ruoyi.mybatis.annotation.EnableTableMap;
 import com.ruoyi.mybatis.annotation.Table;
 
+/**
+ * 数据库表信息
+ *
+ * @author Dftre
+ */
 public class TableInfo {
     private String tableName;
     private EnableTableMap enableTableMap;
