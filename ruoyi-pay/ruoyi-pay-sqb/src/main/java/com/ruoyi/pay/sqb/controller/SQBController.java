@@ -2,10 +2,12 @@ package com.ruoyi.pay.sqb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -42,8 +44,8 @@ public class SQBController extends BaseController {
 
     @Operation(summary = "查询支付状态")
     @Parameters(value = {
-        @Parameter(name = "orderNumber", description = "订单号", required = true)
-})
+            @Parameter(name = "orderNumber", description = "订单号", required = true)
+    })
     @PostMapping("/query")
     @Anonymous
     public AjaxResult query(@RequestParam("orderNumber") String orderNumber) throws Exception {
@@ -51,4 +53,14 @@ public class SQBController extends BaseController {
         return success(sqbServiceImpl.query(payOrder));
     }
 
+    @PostMapping("/refund")
+    @Anonymous
+    public AjaxResult refund(@RequestBody PayOrder payOrder) {
+        String refund = sqbServiceImpl.refund(payOrder);
+        if (refund == null) {
+            return error("退款失败");
+        }
+        Object parse = JSON.parse(refund);
+        return success(parse);
+    }
 }

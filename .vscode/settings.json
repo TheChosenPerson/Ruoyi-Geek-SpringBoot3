@@ -9,5 +9,20 @@
     "maven.pomfile.autoUpdateEffectivePOM": true,
     "java.debug.settings.hotCodeReplace": "auto",
     "spring-boot.ls.java.home": "",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=9 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms4G -Xlog:disable",
     // "java.compile.nullAnalysis.mode": "automatic"
+    "maven.excludedFolders": [
+        "**/.vscode",
+        "**/.idea",
+        "**/target",
+        "**/.*",
+        "**/node_modules",
+        "**/target",
+        "**/bin",
+        "**/archetype-resources"
+    ],
+    "boot-java.rewrite.refactorings.on": true,
+    "maven.executable.preferMavenWrapper": true,
+    "java.import.maven.enabled": true,
+    "java.dependency.packagePresentation": "hierarchical",
 }

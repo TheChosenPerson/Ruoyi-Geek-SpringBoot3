@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.sign.Md5Utils;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.sqb.constant.SqbConstant;
@@ -20,7 +21,7 @@ public class SQBServiceImpl {
 
     /**
      * 计算字符串的MD5值
-     * 
+     *
      * @param signStr:签名字符串
      * @return
      */
@@ -36,7 +37,7 @@ public class SQBServiceImpl {
 
     /**
      * 终端激活
-     * 
+     *
      * @param code:激活码
      * @return {terminal_sn:"$终端号",terminal_key:"$终端密钥"}
      */
@@ -68,7 +69,7 @@ public class SQBServiceImpl {
 
     /**
      * 终端签到
-     * 
+     *
      * @return {terminal_sn:"$终端号",terminal_key:"$终端密钥"}
      */
     public JSONObject checkin() {
@@ -97,7 +98,7 @@ public class SQBServiceImpl {
 
     /**
      * 退款
-     * 
+     *
      * @return
      */
     public String refund(PayOrder payOrder) {
@@ -121,7 +122,7 @@ public class SQBServiceImpl {
 
     /**
      * 查询
-     * 
+     *
      * @return
      */
 
@@ -146,7 +147,7 @@ public class SQBServiceImpl {
     }
 
     public String payUrl(PayOrder payOrder) throws UnsupportedEncodingException {
-        if(payOrder.getRemark() == null){
+        if (payOrder.getRemark() == null) {
             payOrder.setRemark("支付");
         }
         String param = "" +
@@ -169,19 +170,19 @@ public class SQBServiceImpl {
 
     /**
      * 预下单
-     * 
+     *
      * @return
      */
-    public String precreate(PayOrder payOrder,String sn, String payway) {
+    public String precreate(PayOrder payOrder, String sn, String payway) {
         String url = sqbConstant.getApiDomain() + "/upay/v2/precreate";
         JSONObject params = new JSONObject();
         try {
             params.put("terminal_sn", sqbConstant.getTerminalSn()); // 收钱吧终端ID
             params.put("client_sn", payOrder.getOrderNumber()); // 商户系统订单号,必须在商户系统内唯一；且长度不超过32字节
             params.put("total_amount", payOrder.getTotalAmount()); // 交易总金额
-            params.put("payway", payway); // 支付方式
+            // params.put("payway", payway); // 支付方式
             params.put("subject", "无简介"); // 交易简介
-            params.put("operator", "admin"); // 门店操作员
+            params.put("operator", SecurityUtils.getUsername()); // 门店操作员
 
             String sign = getSign(params.toString() + sqbConstant.getTerminalKey());
             String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConstant.getTerminalSn());
@@ -193,7 +194,7 @@ public class SQBServiceImpl {
 
     /**
      * 自动撤单
-     * 
+     *
      * @param terminal_sn:终端号
      * @param terminal_key:终端密钥
      * @return

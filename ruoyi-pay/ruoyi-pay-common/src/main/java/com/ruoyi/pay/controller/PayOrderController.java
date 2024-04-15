@@ -19,9 +19,9 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.common.utils.uuid.Seq;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.service.IPayOrderService;
-import com.ruoyi.pay.utils.SnowflakeIdWorker;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,9 +40,6 @@ public class PayOrderController extends BaseController
 {
     @Autowired
     private IPayOrderService payOrderService;
-
-    @Autowired
-    private SnowflakeIdWorker snowflakeidworker;
 
     /**
      * 查询订单列表
@@ -92,7 +89,7 @@ public class PayOrderController extends BaseController
     public AjaxResult add(@RequestBody PayOrder payOrder)
     {
         payOrder.setUserId(getUserId());
-        payOrder.setOrderNumber(snowflakeidworker.nextId().toString());
+        payOrder.setOrderNumber(Seq.getId().toString());
         AjaxResult result = toAjax(payOrderService.insertPayOrder(payOrder));
         result.put(AjaxResult.DATA_TAG, payOrder);
         return result;
