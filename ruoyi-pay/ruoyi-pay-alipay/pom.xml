@@ -17,10 +17,9 @@
 
     <dependencies>
 
-        <!-- 通用工具-->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common</artifactId>
+            <artifactId>ruoyi-pay-common</artifactId>
         </dependency>
 
     </dependencies>

@@ -17,23 +17,9 @@
 
     <dependencies>
 
-        <!-- 通用工具-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common</artifactId>
-        </dependency>
-
-        <!-- 支付基础模块-->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-pay-common</artifactId>
-        </dependency>
-
-        <!--httpclient-->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.2</version>
         </dependency>
 
     </dependencies>

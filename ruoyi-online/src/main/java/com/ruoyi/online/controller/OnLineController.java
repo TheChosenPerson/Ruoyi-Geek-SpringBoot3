@@ -17,13 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.security.service.IPermissionService;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.framework.web.service.PermissionService;
 import com.ruoyi.online.domain.OnlineMb;
 import com.ruoyi.online.service.IOnlineMbService;
 import com.ruoyi.online.utils.SqlMapper;
 
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -39,8 +38,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class OnLineController extends BaseController {
     @Autowired
     private IOnlineMbService onlineMbService;
-    @Resource(name = "ss")
-    private PermissionService permissionService;
+
+    @Autowired
+    private IPermissionService permissionService;
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
@@ -71,15 +71,16 @@ public class OnLineController extends BaseController {
         return object;
     }
 
-    public Boolean checkPermission(String permission) {
-        if(permission == null) return true;
-        return switch (permission) {
-            case "hasPermi" -> permissionService.hasPermi(permission);
-            case "lacksPermi" -> !permissionService.lacksPermi(permission);
-            case "hasAnyPermi" -> permissionService.hasAnyPermi(permission);
-            case "hasRole" -> permissionService.hasRole(permission);
-            case "lacksRole" -> !permissionService.lacksRole(permission);
-            case "hasAnyRoles" -> permissionService.hasAnyRoles(permission);
+    public Boolean checkPermission(String permissionType,String permissionValue) {
+        if (permissionType == null)
+            return true;
+        return switch (permissionType) {
+            case "hasPermi" -> permissionService.hasPermi(permissionValue);
+            case "lacksPermi" -> permissionService.lacksPermi(permissionValue);
+            case "hasAnyPermi" -> permissionService.hasAnyPermi(permissionValue);
+            case "hasRole" -> permissionService.hasRole(permissionValue);
+            case "lacksRole" -> permissionService.lacksRole(permissionValue);
+            case "hasAnyRoles" -> permissionService.hasAnyRoles(permissionValue);
             default -> true;
         };
     }
@@ -118,7 +119,7 @@ public class OnLineController extends BaseController {
             return AjaxResult.error(500, "系统错误，在线接口重复");
         } else {
             OnlineMb onlineMb = selectOnlineMbList.get(0);
-            if (!checkPermission(onlineMb.getPermissionValue()))
+            if (!checkPermission(onlineMb.getPermissionType(),onlineMb.getPermissionValue()))
                 return AjaxResult.error(403, "没有权限，请联系管理员授权");
 
             if (onlineMb.getDeptId() != null && onlineMb.getDeptId().equals("1")) {

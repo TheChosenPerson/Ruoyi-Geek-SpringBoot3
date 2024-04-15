@@ -16,17 +16,10 @@
     </description>
 
     <dependencies>
-
-        <!-- 通用工具-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common</artifactId>
-        </dependency>
-
         <!-- 系统框架 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-framework</artifactId>
+            <artifactId>ruoyi-common</artifactId>
         </dependency>
     </dependencies>
 

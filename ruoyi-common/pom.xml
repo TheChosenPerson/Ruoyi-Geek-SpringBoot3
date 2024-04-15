@@ -120,6 +120,12 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
+        <!--httpclient-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
         <!-- 解析客户端操作系统、浏览器等 -->
         <dependency>
             <groupId>eu.bitwalker</groupId>
@@ -131,10 +137,11 @@
             <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
 
-        <!-- <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-        </dependency> -->
+        <!-- mybatis 简化JDBC -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
 
         <!-- mybatis-plus 增强CRUD -->
         <dependency>
