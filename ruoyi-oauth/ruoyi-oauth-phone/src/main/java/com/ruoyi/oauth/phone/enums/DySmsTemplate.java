@@ -2,6 +2,12 @@ package com.ruoyi.oauth.phone.enums;
 
 import com.ruoyi.common.utils.StringUtils;
 
+/**
+ * 手机号认证短信模板
+ * 
+ * @author Dftre
+ * @date 2024-04-16
+ */
 public enum DySmsTemplate {
     /** 登录短信模板编码 */
     LOGIN_TEMPLATE_CODE("SMS_175435174", "Ruoyi", "code"),
