@@ -2,6 +2,8 @@ package com.ruoyi.oauth.common.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.ruoyi.oauth.common.domain.OauthUser;
 
 /**
@@ -18,6 +20,7 @@ public interface OauthUserMapper {
      * @return 第三方认证
      */
     public OauthUser selectOauthUserById(Long id);
+
     public OauthUser selectOauthUserByUserId(Long userId);
 
     /**
@@ -72,4 +75,38 @@ public interface OauthUserMapper {
      * @return 结果
      */
     public int deleteOauthUserByIds(Long[] ids);
+
+    /**
+     * 校验source平台是否绑定
+     *
+     * @param userId 用户编号
+     * @param source 绑定平台
+     * @return 结果
+     */
+    public int checkAuthUser(@Param("userId") Long userId, @Param("source") String source);
+
+        /**
+     * 校验用户名称是否唯一
+     * 
+     * @param userName 用户名称
+     * @return 结果
+     */
+    public int checkUserNameUnique(String userName);
+
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param phonenumber 手机号码
+     * @return 结果
+     */
+    public int checkPhoneUnique(String phonenumber);
+
+    /**
+     * 校验email是否唯一
+     *
+     * @param email 用户邮箱
+     * @return 结果
+     */
+    public int checkEmailUnique(String email);
+
 }
