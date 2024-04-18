@@ -1,8 +1,10 @@
 package com.ruoyi.framework.config;
 
 import java.nio.charset.Charset;
+
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
+
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
@@ -49,7 +51,7 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T>
         }
         String str = new String(bytes, DEFAULT_CHARSET);
 
-        // TODO 自动类型，官方说不安全，所以弃用了，代替方案是autoTypeFilter；
+        // TODO 自动类型，官方说不安全，所以弃用了，代替方案是autoTypeFilter,在注释中给了案例；
         return JSON.parseObject(str, clazz, JSONReader.Feature.SupportAutoType);
         // return JSON.parseObject(str, clazz, autoTypeFilter);
     }

@@ -45,6 +45,7 @@ public class OnLineController extends BaseController {
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
 
+    @SuppressWarnings("unchecked")
     public Map<String, Object> getParams(HashMap<String, Object> params, HashMap<String, Object> data) {
         Map<String, Object> object = new HashMap<>();
         HashMap<String, Object> object_params = new HashMap<String, Object>();

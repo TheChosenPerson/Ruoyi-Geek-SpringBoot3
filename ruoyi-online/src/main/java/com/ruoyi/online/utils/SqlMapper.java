@@ -244,7 +244,7 @@ public class SqlMapper {
 
         private MSUtils(Configuration configuration) {
             this.configuration = configuration;
-            languageDriver = configuration.getDefaultScriptingLanuageInstance();
+            languageDriver = configuration.getDefaultScriptingLanguageInstance();
         }
 
         /**

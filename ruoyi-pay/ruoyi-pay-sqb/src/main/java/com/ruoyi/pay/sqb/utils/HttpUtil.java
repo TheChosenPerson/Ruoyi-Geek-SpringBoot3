@@ -101,7 +101,7 @@ public class HttpUtil {
 
     public static String doGet(String url,String parameter)
     {
-        String uriAPI =url+"?"+parameter ; //"http://XXXXX?str=I+am+get+String";
+        String uriAPI =url+"?"+parameter ; //"http://XX?str=I+am+get+String";
         String result= "";
         HttpClient client = createSSLClientDefault();
         HttpGet httpRequst = new HttpGet(uriAPI);
@@ -118,11 +118,9 @@ public class HttpUtil {
             else
                 httpRequst.abort();
         } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             result = e.getMessage().toString();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             result = e.getMessage().toString();
         }

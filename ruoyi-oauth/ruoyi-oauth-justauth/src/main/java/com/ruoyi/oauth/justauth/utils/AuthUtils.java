@@ -7,7 +7,7 @@ import me.zhyd.oauth.request.AuthAlipayRequest;
 import me.zhyd.oauth.request.AuthAliyunRequest;
 import me.zhyd.oauth.request.AuthBaiduRequest;
 import me.zhyd.oauth.request.AuthCodingRequest;
-import me.zhyd.oauth.request.AuthCsdnRequest;
+// import me.zhyd.oauth.request.AuthCsdnRequest;
 import me.zhyd.oauth.request.AuthDingTalkRequest;
 import me.zhyd.oauth.request.AuthDouyinRequest;
 import me.zhyd.oauth.request.AuthElemeRequest;
@@ -88,10 +88,10 @@ public class AuthUtils
                 authRequest = new AuthWeChatOpenRequest(AuthConfig.builder().clientId(clientId)
                         .clientSecret(clientSecret).redirectUri(redirectUri).build(), authStateCache);
                 break;
-            case "csdn":
-                authRequest = new AuthCsdnRequest(AuthConfig.builder().clientId(clientId).clientSecret(clientSecret)
-                        .redirectUri(redirectUri).build(), authStateCache);
-                break;
+            // case "csdn":
+            //     authRequest = new AuthCsdnRequest(AuthConfig.builder().clientId(clientId).clientSecret(clientSecret)
+            //             .redirectUri(redirectUri).build(), authStateCache);
+            //     break;
             case "taobao":
                 authRequest = new AuthTaobaoRequest(AuthConfig.builder().clientId(clientId).clientSecret(clientSecret)
                         .redirectUri(redirectUri).build(), authStateCache);
