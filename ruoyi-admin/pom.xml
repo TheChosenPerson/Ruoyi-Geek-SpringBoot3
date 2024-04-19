@@ -75,6 +75,12 @@
             <artifactId>ruoyi-mybatis-jpa</artifactId>
         </dependency>
 
+        <!-- minio -->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-minio</artifactId>
+        </dependency>
+
         <!-- knife4j -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
