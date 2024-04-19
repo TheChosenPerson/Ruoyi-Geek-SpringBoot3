@@ -1,4 +1,4 @@
-package com.ruoyi.minio.config;
+package com.ruoyi.middleware.minio.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

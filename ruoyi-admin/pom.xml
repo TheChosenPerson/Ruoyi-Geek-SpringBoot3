@@ -78,7 +78,7 @@
         <!-- minio -->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-minio</artifactId>
+            <artifactId>ruoyi-middleware-starter</artifactId>
         </dependency>
 
         <!-- knife4j -->

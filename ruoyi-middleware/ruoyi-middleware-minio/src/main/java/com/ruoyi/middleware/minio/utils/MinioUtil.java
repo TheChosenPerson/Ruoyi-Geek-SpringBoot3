@@ -1,4 +1,4 @@
-package com.ruoyi.minio.utils;
+package com.ruoyi.middleware.minio.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

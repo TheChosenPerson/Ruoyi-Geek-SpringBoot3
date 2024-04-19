@@ -1,4 +1,4 @@
-package com.ruoyi.minio.utils;
+package com.ruoyi.middleware.minio.utils;
 
 import java.io.IOException;
 
@@ -9,7 +9,8 @@ import com.ruoyi.common.exception.file.FileSizeLimitExceededException;
 import com.ruoyi.common.exception.file.InvalidExtensionException;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.MimeTypeUtils;
-import com.ruoyi.minio.config.MinioConfig;
+import com.ruoyi.middleware.minio.config.MinioConfig;
+import com.ruoyi.middleware.minio.utils.MinioUtil;
 
 public class FileUploadMinioUtils extends FileUploadUtils {
      /**

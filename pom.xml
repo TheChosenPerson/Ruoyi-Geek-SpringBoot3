@@ -38,7 +38,6 @@
         <jaxb.version>2.3.1</jaxb.version>
         <springdoc.version>2.1.0</springdoc.version>
         <jakarta.version>6.0.0</jakarta.version>
-        <minio.version>8.2.1</minio.version>
     </properties>
 
 
@@ -199,13 +198,6 @@
                 <version>${jakarta.version}</version>
             </dependency>
 
-            <!-- Minio 文件存储 -->
-            <dependency>
-                <groupId>io.minio</groupId>
-                <artifactId>minio</artifactId>
-                <version>${minio.version}</version>
-            </dependency>
-
             <!-- 定时任务-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -255,6 +247,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 集成中间件 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-middleware-starter</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
             <!-- 在线接口 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -289,7 +288,7 @@
         <module>ruoyi-pay</module>
         <module>ruoyi-online</module>
         <module>ruoyi-mybatis-jpa</module>
-        <module>ruoyi-minio</module>
+        <module>ruoyi-middleware</module>
     </modules>
     <packaging>pom</packaging>
 
