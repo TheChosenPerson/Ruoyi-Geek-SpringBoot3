@@ -19,16 +19,16 @@ public class RuoYiApplication {
     public static void main(String[] args) throws UnknownHostException {
         // System.setProperty("spring.devtools.restart.enabled", "false");
         ConfigurableApplicationContext application = SpringApplication.run(RuoYiApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  若依启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
+        System.out.println("(♥◠‿◠)ﾉﾞ  若依极客启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
                 " .-------.       ____     __        \n" +
                 " |  _ _   \\      \\   \\   /  /    \n" +
                 " | ( ' )  |       \\  _. /  '       \n" +
                 " |(_ o _) /        _( )_ .'         \n" +
-                " | (_,_).' __  ___(_ o _)'          \n" +
-                " |  |\\ \\  |  ||   |(_,_)'         \n" +
-                " |  | \\ `'   /|   `-'  /           \n" +
-                " |  |  \\    /  \\      /           \n" +
-                " ''-'   `'-'    `-..-'              ");
+                " | (_,_).' __  ___(_ o _)'     " + " ____           _         " + "\n" +
+                " |  |\\ \\  |  ||   |(_,_)'    " + "  / ___| ___  ___| | __   " + "\n" +
+                " |  | \\ `'   /|   `-'  /      " + "| |  _ / _ \\/ _ \\ |/ /  " + "\n" +
+                " |  |  \\    /  \\      /      " + " | |_| |  __/  __/   <    " + "\n" +
+                " ''-'   `'-'    `-..-'         " + "\\____|\\___|\\___|_|\\_\\");
 
         Environment env = application.getEnvironment();
         String ip = InetAddress.getLocalHost().getHostAddress();
@@ -38,7 +38,7 @@ public class RuoYiApplication {
                 "Local: \t\thttp://localhost:" + port + "/\n\t" +
                 "External: \thttp://" + ip + ":" + port + "/\n\t" +
                 "Swagger文档: \thttp://" + ip + ":" + port + "/swagger-ui/index.html\n\t" +
-                "Knife4j文档: \thttp://" + ip + ":" + port + "/doc.html\n" +
+                "Knife4j文档: \thttp://" + ip + ":" + port + "/doc.html" + "" + "\n" +
                 "----------------------------------------------------------");
     }
 }
