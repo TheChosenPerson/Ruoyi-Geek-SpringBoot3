@@ -274,6 +274,12 @@
                 <artifactId>ruoyi-minio</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-websocket</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -289,6 +295,7 @@
         <module>ruoyi-online</module>
         <module>ruoyi-mybatis-jpa</module>
         <module>ruoyi-middleware</module>
+        <module>ruoyi-websocket</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -81,6 +81,12 @@
             <artifactId>ruoyi-middleware-starter</artifactId>
         </dependency>
 
+        <!-- websocket -->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-websocket</artifactId>
+        </dependency>
+
         <!-- knife4j -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
