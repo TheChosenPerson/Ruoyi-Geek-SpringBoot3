@@ -19,11 +19,14 @@
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
         <spring-boot.version>3.2.4</spring-boot.version>
         <druid.version>1.2.21</druid.version>
+        <shardingsphere.version>4.1.1</shardingsphere.version>
+        <dynamic.version>3.5.2</dynamic.version>
         <bitwalker.version>1.21</bitwalker.version>
         <swagger.version>3.0.0</swagger.version>
         <kaptcha.version>2.3.3</kaptcha.version>
         <pagehelper.boot.version>1.4.7</pagehelper.boot.version>
         <fastjson.version>2.0.45</fastjson.version>
+        <jackson.version>2.9.8</jackson.version>
         <oshi.version>6.4.11</oshi.version>
         <commons.io.version>2.11.0</commons.io.version>
         <commons.collections.version>3.2.2</commons.collections.version>
@@ -95,6 +98,20 @@
                 <version>${druid.version}</version>
             </dependency>
 
+            <!-- sharding-jdbc分库分表 -->
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-core</artifactId>
+                <version>${shardingsphere.version}</version>
+            </dependency>
+
+            <!-- 动态数据源 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic.version}</version>
+            </dependency>
+
             <!-- 解析客户端操作系统、浏览器等 -->
             <dependency>
                 <groupId>eu.bitwalker</groupId>
@@ -156,6 +173,13 @@
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+
+            <!--引入jsr310模块 支持java8的时间序列化 -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
             <!-- Token生成与解析-->

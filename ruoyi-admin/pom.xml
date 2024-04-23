@@ -14,10 +14,6 @@
         web服务入口
     </description>
 
-    <properties>
-        <ruoyi.version>3.8.7.3.2</ruoyi.version>
-    </properties>
-
     <dependencies>
 
         <!-- spring-boot-devtools -->
