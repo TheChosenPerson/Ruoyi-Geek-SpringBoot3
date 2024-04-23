@@ -16,6 +16,20 @@ spring:
                 url:
                 username:
                 password:
+            sharding:
+                # 分库分表开关/默认关闭
+                enabled: false
+                order1:
+                    enabled: false
+                    url:
+                    username:
+                    password:
+                order2:
+                    enabled: false
+                    url:
+                    username:
+                    password:
+
             # 初始连接数
             initialSize: 5
             # 最小连接池数量

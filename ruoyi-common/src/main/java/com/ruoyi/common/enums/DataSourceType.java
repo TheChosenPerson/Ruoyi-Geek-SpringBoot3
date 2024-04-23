@@ -5,8 +5,7 @@ package com.ruoyi.common.enums;
  * 
  * @author ruoyi
  */
-public enum DataSourceType
-{
+public enum DataSourceType {
     /**
      * 主库
      */
@@ -15,5 +14,10 @@ public enum DataSourceType
     /**
      * 从库
      */
-    SLAVE
+    SLAVE,
+
+    /**
+     * 分库分表
+     */
+    SHARDING
 }

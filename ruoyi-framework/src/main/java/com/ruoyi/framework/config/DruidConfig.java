@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -36,6 +38,8 @@ import jakarta.servlet.ServletResponse;
 @Configuration
 public class DruidConfig {
 
+    Logger logger = LoggerFactory.getLogger(DruidConfig.class);
+
     @Bean
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource(DruidProperties druidProperties) {
@@ -57,6 +61,7 @@ public class DruidConfig {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(DataSourceType.MASTER.name(), masterDataSource);
         setDataSource(targetDataSources, DataSourceType.SLAVE.name(), "slaveDataSource");
+        setDataSource(targetDataSources, DataSourceType.SHARDING.name(), "shardingDataSource");
         return new DynamicDataSource(masterDataSource, targetDataSources);
     }
 
@@ -72,6 +77,7 @@ public class DruidConfig {
             DataSource dataSource = SpringUtils.getBean(beanName);
             targetDataSources.put(sourceName, dataSource);
         } catch (Exception e) {
+            logger.error("Failed to register a data source:{}", beanName);
         }
     }
 
