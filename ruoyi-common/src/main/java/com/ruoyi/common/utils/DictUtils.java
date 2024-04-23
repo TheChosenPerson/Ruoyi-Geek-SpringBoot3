@@ -1,12 +1,11 @@
 package com.ruoyi.common.utils;
 
-import java.util.Collection;
 import java.util.List;
-import com.alibaba.fastjson2.JSONArray;
+
+import org.springframework.cache.Cache;
+
 import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.core.domain.entity.SysDictData;
-import com.ruoyi.common.core.redis.RedisCache;
-import com.ruoyi.common.utils.spring.SpringUtils;
 
 /**
  * 字典工具类
@@ -28,7 +27,7 @@ public class DictUtils
      */
     public static void setDictCache(String key, List<SysDictData> dictDatas)
     {
-        SpringUtils.getBean(RedisCache.class).setCacheObject(getCacheKey(key), dictDatas);
+        getDictCacheKey().put(key, dictDatas);
     }
 
     /**
@@ -37,12 +36,13 @@ public class DictUtils
      * @param key 参数键
      * @return dictDatas 字典数据列表
      */
+    @SuppressWarnings("unchecked")
     public static List<SysDictData> getDictCache(String key)
     {
-        JSONArray arrayCache = SpringUtils.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
+        List<SysDictData> arrayCache = (List<SysDictData>) getDictCacheKey().get(key, List.class);
         if (StringUtils.isNotNull(arrayCache))
         {
-            return arrayCache.toList(SysDictData.class);
+            return arrayCache;
         }
         return null;
     }
@@ -83,7 +83,6 @@ public class DictUtils
     {
         StringBuilder propertyString = new StringBuilder();
         List<SysDictData> datas = getDictCache(dictType);
-
         if (StringUtils.isNotNull(datas))
         {
             if (StringUtils.containsAny(separator, dictValue))
@@ -126,7 +125,6 @@ public class DictUtils
     {
         StringBuilder propertyString = new StringBuilder();
         List<SysDictData> datas = getDictCache(dictType);
-
         if (StringUtils.containsAny(separator, dictLabel) && StringUtils.isNotEmpty(datas))
         {
             for (SysDictData dict : datas)
@@ -161,7 +159,7 @@ public class DictUtils
      */
     public static void removeDictCache(String key)
     {
-        SpringUtils.getBean(RedisCache.class).deleteObject(getCacheKey(key));
+        getDictCacheKey().evict(key);
     }
 
     /**
@@ -169,18 +167,16 @@ public class DictUtils
      */
     public static void clearDictCache()
     {
-        Collection<String> keys = SpringUtils.getBean(RedisCache.class).keys(CacheConstants.SYS_DICT_KEY + "*");
-        SpringUtils.getBean(RedisCache.class).deleteObject(keys);
+        getDictCacheKey().clear();
     }
 
     /**
-     * 设置cache key
+     * 获取dict缓存
      * 
-     * @param configKey 参数键
-     * @return 缓存键key
+     * @return 缓存Cache
      */
-    public static String getCacheKey(String configKey)
+    public static Cache getDictCacheKey()
     {
-        return CacheConstants.SYS_DICT_KEY + configKey;
+        return CacheUtils.getCache(CacheConstants.SYS_DICT_KEY);
     }
 }
