@@ -18,16 +18,30 @@
 
 与本项目同为一个作者开发，兼容性最好，学习成本最低
 
+# 引言
+
+RuoYi-Vue与RuoYi-App是基于SpringBoot2+Vue2打造的企业级开发框架，得到了广大开发者的喜爱和积极反馈。随着技术的迭代进步，SpringBoot3与Vue3逐渐进入开发者的视野。为了满足开发者对于新技术的追求，RuoYi官方文档提供了SpringBoot2至SpringBoot3的升级方法。与此同时，社区也涌现出了RuoYi-Vue3、RuoYi-App-Vue3的版本，展现了开发者社区对于技术升级的热情与努力。
+
+然而，在升级的过程中，官方的方法为了兼顾Java1.8的特性与一些老旧的方法，未完全拥抱SpringBoot3与Java17的全部特性。而社区的RuoYi-Vue3、RuoYi-App-Vue3版本由于出自不同的团队之手，兼容性及整合性上存在些许不足。更为关键的是，尽管这些版本支持TypeScript，但缺乏与之相匹配的tsconfig.json配置文件，这使得在主流编辑器如VSCode中，TypeScript的语法提示环境并未达到最佳状态。
+
+鉴于此，RuoYi-Geek生态应运而生。它旨在为广大开发者提供一个既保留原版本核心特性，又整合社区版优点的全新解决方案。在RuoYi-Geek中，我们深入调研了企业开发中常用的RuoYi扩展，并直接在框架中集成，确保开发者能够快速上手，高效开发。同时，我们采用了最新的SpringBoot3+Vue3技术栈，彻底移除了为了兼容Java1.8而保留的老旧方法。更为重要的是，我们为TypeScript开发环境加入了常用的tsconfig.json配置，使得开发者在VSCode等编辑器中能够获得更为舒适、便捷的语法提示体验。
+
+RuoYi-Geek不仅仅是一个简单的升级版本，更是对于RuoYi生态的一次全面优化与整合。我们相信，通过RuoYi-Geek，开发者将能够更为高效、愉悦地开发出优秀的企业级应用。
+
 ## 平台简介
 
 若依是一套全部开源的快速开发平台，毫无保留给个人及企业免费使用。
 
-* 前端采用Vue、Element UI。
-* 后端采用Spring Boot、Spring Security、Redis & Jwt。
+* 前端采用Vue3、Element Plus。
+* 后端采用Spring Boot3、Spring Security、Redis & Jwt。
 * 权限认证使用Jwt，支持多终端认证系统。
 * 支持加载动态权限菜单，多方式轻松权限控制。
 * 高效率开发，使用代码生成器可以一键生成前后端代码。
-* 不分离版本，请移步[RuoYi](https://gitee.com/y_project/RuoYi)，微服务版本，请移步[RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud)
+* 多数据源与分库分表默认集成
+* 所有非基本模块可随意插拔，让开发更加简单高效
+* 提供了多个工具模块助力开发，如：在线接口模块、mybatis-jpa模块
+* 提供了多个常见业务模块简化开发，如：第三方认证模块、支付模块
+* 提供了多个常见的服务模块集成开发，如：websocket模块、minio模块
 * 特别鸣谢：[element](https://github.com/ElemeFE/element)，[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)，[eladmin-web](https://github.com/elunez/eladmin-web)。
 * 阿里云折扣场：[点我进入](http://aly.ruoyi.vip)，腾讯云秒杀场：[点我进入](http://txy.ruoyi.vip)&nbsp;&nbsp;
 * 阿里云优惠券：[点我领取](https://www.aliyun.com/minisite/goods?userCode=brki8iof&share_source=copy_link)，腾讯云优惠券：[点我领取](https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console)&nbsp;&nbsp;
@@ -40,16 +54,13 @@
 
 ### 细节
 
-1. 改用SpringBoot3+java17的更新的技术栈
-2. 升级了代码生成器（配合本项目的vue3版本才可用）
-3. 改用最新版本的SpringSecurity安全框架，以及采用最新的lambda 表达式的配置方式
-4. 自动Api文档以springfox替代springdoc来适配knife4j框架的4.x版本
-5. 引入mybatis-plus增强mybatis
-6. RedisConfig实现CachingConfigurer接口代替继承CachingConfigurerSupport类
-7. CacheController中RedisCallback的connection.info() 和connection.dbSize()方法已经被弃用，改成通过connection.serverCommands()调用info和db方法，如connection.serverCommands().info()。
-8. ExcelUtil中 .newInstance()方法已被弃用，改成.getDeclaredConstructor().newInstance()
-9. Excel中roundingMode方法BigDecimal.ROUND_HALF_EVEN改成RoundingMode.HALF_EVEN，用枚举代替常量
-10. ReflectUtils中isAccessible在java9中被弃用，建议通过canAccess(null)来代替
+1. 改用SpringBoot3+java17的更新的技术栈并改掉所有的弃用的方法，全面拥抱java17的全新特性。
+2. 升级了代码生成器（配合本项目的vue3版本才可用），使关联表生成更加简单！
+3. 改用最新版本的SpringSecurity安全框架，以及采用最新的lambda 表达式的配置方式，更加通俗易懂！
+4. 自动Api文档以springfox替代springdoc来适配knife4j框架的4.x版本，更好的适配springboot3！
+5. 默认引入mybatis-plus增强mybatis，并自创工具模块mybatis-jpa简化CRUD！
+6. 默认引入lombok简化代码（注：基础模块并未使用mybatis-plus和lombok，对这两个扩展有争议的小伙伴可以直接删除，不会影响到框架本身滴，以及knife4j直接删除也不会影响到springdoc，主要还是为了方便咱们开发者呢！）
+7. 提供了大量可随意插拔的模块，助力快速开发！同时ruoyi插件集成中的常用插件也以模块的形式直接集成在了项目中，也是可以随意插拔的嗷~
 
 ## 模块介绍（简单开发必看）
 
@@ -58,6 +69,7 @@
 * 开发中的模块请直接删除。
 
 ```
+
 
 
 
@@ -98,6 +110,11 @@ com.ruoyi
 │       └── phone                          // 手机认证模块（测试中）
 │       └── email                          // 邮箱认证模块（开发中）
 │       └── starter                          // 第三方认证整合模块
+├── ruoyi-middleware   // 中间件模块（可移除）
+│       └── minio			   // minio文件服务模块 
+│       └── starter  		 	   // 中间件整合模块
+├── ruoyi-mybatis-jpa  // mybatis-jpa模块（可移除）
+├── ruoyi-websocket    // mybatis-websocket模块（可移除）
 ```
 
 ## 内置功能
