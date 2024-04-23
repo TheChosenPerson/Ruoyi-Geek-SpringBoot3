@@ -3,6 +3,9 @@ package com.ruoyi.framework.manager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import com.ruoyi.common.utils.http.HttpUtils;
+
 import jakarta.annotation.PreDestroy;
 
 /**
@@ -19,6 +22,7 @@ public class ShutdownManager
     public void destroy()
     {
         shutdownAsyncManager();
+        HttpUtils.shutdown();
     }
 
     /**
