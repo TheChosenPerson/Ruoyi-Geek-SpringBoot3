@@ -33,12 +33,12 @@ public class RuoYiApplication {
         Environment env = application.getEnvironment();
         String ip = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");
-        System.out.println("\n----------------------------------------------------------\n\t" +
-                "Application Ruoyi-Geek is running! Access URLs:\n\t" +
-                "Local: \t\thttp://localhost:" + port + "/\n\t" +
-                "External: \thttp://" + ip + ":" + port + "/\n\t" +
-                "Swagger文档: \thttp://" + ip + ":" + port + "/swagger-ui/index.html\n\t" +
-                "Knife4j文档: \thttp://" + ip + ":" + port + "/doc.html" + "" + "\n" +
+        System.out.println("\n----------------------------------------------------------\n" +
+                " Application Ruoyi-Geek is running! Access URLs:\n" +
+                " Local:        http://localhost:" + port + "/\n" +
+                " External:     http://" + ip + ":" + port + "/\n" +
+                " Swagger文档:  http://" + ip + ":" + port + "/swagger-ui/index.html\n" +
+                " Knife4j文档:  http://" + ip + ":" + port + "/doc.html" + "" + "\n" +
                 "----------------------------------------------------------");
     }
 }
