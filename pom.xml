@@ -17,7 +17,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-        <spring-boot.version>3.2.4</spring-boot.version>
+        <spring-boot.version>3.2.5</spring-boot.version>
         <druid.version>1.2.21</druid.version>
         <shardingsphere.version>4.1.1</shardingsphere.version>
         <dynamic.version>3.5.2</dynamic.version>

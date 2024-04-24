@@ -1,4 +1,4 @@
-package com.ruoyi.framework.config;
+package com.ruoyi.middleware.redis.config;
 
 import java.nio.charset.Charset;
 

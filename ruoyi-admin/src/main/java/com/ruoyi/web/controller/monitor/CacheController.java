@@ -1,15 +1,10 @@
 package com.ruoyi.web.controller.monitor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.springframework.cache.Cache.ValueWrapper;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,32 +47,6 @@ public class CacheController
         caches.add(new SysCache(CacheConstants.PWD_ERR_CNT_KEY, "密码错误次数"));
     }
 
-    @Operation(summary = "获取缓存信息")
-    @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
-    @GetMapping()
-    public AjaxResult getInfo() throws Exception
-    {
-        Map<String, Object> result = new HashMap<>(3);
-        if (CacheUtils.getCacheManager() instanceof RedisCacheManager)
-        {
-            Properties info = (Properties) CacheUtils.getRedisTemplate().execute((RedisCallback<Object>) connection -> connection.info());
-            Properties commandStats = (Properties) CacheUtils.getRedisTemplate().execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
-            Object dbSize = CacheUtils.getRedisTemplate().execute((RedisCallback<Object>) connection -> connection.dbSize());
-            result.put("info", info);
-            result.put("dbSize", dbSize);
-
-            List<Map<String, String>> pieList = new ArrayList<>();
-            commandStats.stringPropertyNames().forEach(key -> {
-                Map<String, String> data = new HashMap<>(2);
-                String property = commandStats.getProperty(key);
-                data.put("name", StringUtils.removeStart(key, "cmdstat_"));
-                data.put("value", StringUtils.substringBetween(property, "calls=", ",usec"));
-                pieList.add(data);
-            });
-            result.put("commandStats", pieList);
-        }
-        return AjaxResult.success(result);
-    }
 
     @Operation(summary = "获取缓存名列表")
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")

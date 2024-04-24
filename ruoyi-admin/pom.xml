@@ -71,7 +71,7 @@
             <artifactId>ruoyi-mybatis-jpa</artifactId>
         </dependency>
 
-        <!-- minio -->
+        <!-- 中间件 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-middleware-starter</artifactId>

@@ -10,7 +10,6 @@ import com.ruoyi.common.exception.file.InvalidExtensionException;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.MimeTypeUtils;
 import com.ruoyi.middleware.minio.config.MinioConfig;
-import com.ruoyi.middleware.minio.utils.MinioUtil;
 
 public class FileUploadMinioUtils extends FileUploadUtils {
      /**

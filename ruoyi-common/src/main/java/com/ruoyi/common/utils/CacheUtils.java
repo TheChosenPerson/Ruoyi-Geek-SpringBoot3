@@ -1,34 +1,19 @@
 package com.ruoyi.common.utils;
 
-import java.lang.reflect.Field;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.ehcache.core.EhcacheBase;
-import org.ehcache.impl.internal.concurrent.ConcurrentHashMap;
-import org.ehcache.impl.internal.store.heap.OnHeapStore;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.jcache.JCacheCache;
 import org.springframework.cache.transaction.TransactionAwareCacheDecorator;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
+import com.ruoyi.common.core.cache.CacheSpecialUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 
 public class CacheUtils {
-    /**
-     * 使用redis时对redis进行单独特殊操作需要使用
-     *
-     * @param <K>
-     * @param <V>
-     * @return
-     */
-    public static <K, V> RedisTemplate<K, V> getRedisTemplate() {
-        return SpringUtils.getBean("redisTemplate");
-    }
 
     /**
      * 获取CacheManager
@@ -58,38 +43,8 @@ public class CacheUtils {
     @SuppressWarnings(value = { "unchecked", "rawtypes" })
     public static Set<String> getkeys(String cacheName) {
         Cache cache = getCacheManager().getCache(cacheName);
-        Set<String> keyset = new HashSet<>();
-        if (cache instanceof JCacheCache) {
-            try {
-                JCacheCache jehcache = (JCacheCache) cache;
-                // org.ehcache.jsr107.Eh107Cache 不公开
-                Object nativeCache = jehcache.getNativeCache();
-                Class<?> nativeCacheClass = nativeCache.getClass();
-                Field ehCacheField = nativeCacheClass.getDeclaredField("ehCache");
-                ehCacheField.setAccessible(true);
-                EhcacheBase ehcache = (EhcacheBase) ehCacheField.get(nativeCache);
-                Field storeField = EhcacheBase.class.getDeclaredField("store");
-                storeField.setAccessible(true);
-                OnHeapStore store = (OnHeapStore) storeField.get(ehcache);
-                Field mapField = OnHeapStore.class.getDeclaredField("map");
-                mapField.setAccessible(true);
-                // org.ehcache.impl.internal.store.heap.Backend 不公开
-                Object map = mapField.get(store);
-                Class<?> mapClass = map.getClass();
-                Field realMapField = mapClass.getDeclaredField("realMap");
-                realMapField.setAccessible(true);
-                ConcurrentHashMap<String, ?> realMap = (ConcurrentHashMap<String, ?>) realMapField.get(map);
-                keyset = realMap.keySet();
-            } catch (Exception e) {
-            }
-
-        } else if (cache instanceof TransactionAwareCacheDecorator) {
-            Set<Object> keysets = getRedisTemplate().keys(cache.getName() + "*");
-            for (Object s : keysets) {
-                keyset.add(StringUtils.replace(s.toString(), cache.getName() + ":", ""));
-            }
-        }
-        return keyset;
+        CacheSpecialUtils cacheGetKets = SpringUtils.getBean(CacheSpecialUtils.class);
+        return cacheGetKets.getKeys(cache);
     }
 
     /**
@@ -118,6 +73,10 @@ public class CacheUtils {
         }
     }
 
+    public static boolean hasKey(String cacheName, String key){
+        return ObjectUtils.isEmpty(get(cacheName, key));
+    }
+
     /**
      * 根据cacheName,key和缓存过期时间进行缓存数据,使用各种不同缓存可以单独进行操作
      *
@@ -134,10 +93,11 @@ public class CacheUtils {
             JCacheCache ehcache = (JCacheCache) cache;
             ehcache.put(key, value);
         } else if (cache instanceof TransactionAwareCacheDecorator) {
+            CacheSpecialUtils cacheSet = SpringUtils.getBean(CacheSpecialUtils.class);
             if (timeout != 0 && unit != null) {
-                getRedisTemplate().opsForValue().set(cacheName + ":" + key, value, timeout, unit);
+                cacheSet.set(cacheName + ":" + key, value, timeout, unit);
             } else {
-                getRedisTemplate().opsForValue().set(cacheName + ":" + key, value);
+                cacheSet.set(cacheName + ":" + key, value);
             }
         } else {
             cache.put(key, value);

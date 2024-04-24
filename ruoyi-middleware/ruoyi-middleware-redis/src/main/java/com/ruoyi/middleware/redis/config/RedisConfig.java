@@ -1,8 +1,12 @@
-package com.ruoyi.framework.config;
+package com.ruoyi.middleware.redis.config;
 
 import java.time.Duration;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +20,9 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import com.ruoyi.common.core.cache.CacheSpecialUtils;
+import com.ruoyi.common.utils.StringUtils;
+
 /**
  * redis配置
  * 
@@ -23,40 +30,61 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @Configuration
 @ConditionalOnProperty(prefix = "spring.cache", name = { "type" }, havingValue = "redis", matchIfMissing = false)
-public class RedisConfig implements CachingConfigurer 
-{
+public class RedisConfig implements CachingConfigurer {
     @Bean
     @Primary
-    public CacheManager cacheManager(RedisConnectionFactory connectionFactory)
-    {
+    public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         RedisCacheConfiguration config = instanceConfig(3600 * 24 * 15L);
         return RedisCacheManager.builder(connectionFactory).cacheDefaults(config).transactionAware().build();
     }
 
     @Bean
-    public CacheManager cacheManager30m(RedisConnectionFactory connectionFactory)
-    {
+    public CacheManager cacheManager30m(RedisConnectionFactory connectionFactory) {
         RedisCacheConfiguration config = instanceConfig(1800L);
         return RedisCacheManager.builder(connectionFactory).cacheDefaults(config).transactionAware().build();
     }
 
+    @Bean
+    public CacheSpecialUtils cacheGetKets(RedisTemplate<Object, Object> redisTemplate) {
+        return new CacheSpecialUtils() {
+            @Override
+            public Set<String> getKeys(Cache cache) {
+                Set<String> keyset = new HashSet<>();
+                Set<Object> keysets = redisTemplate.keys(cache.getName() + "*");
+                for (Object s : keysets) {
+                    keyset.add(StringUtils.replace(s.toString(), cache.getName() + ":", ""));
+                }
+                return keyset;
+            }
+
+            @Override
+            public <T> void set(String cacheName, T value, long timeout, TimeUnit unit){
+                redisTemplate.opsForValue().set(cacheName, value, timeout, unit);
+            }
+
+            public <T> void set(String cacheName, T value){
+                redisTemplate.opsForValue().set(cacheName, value);
+            };
+
+        };
+    }
+
     @SuppressWarnings(value = { "unchecked", "rawtypes" })
-    private RedisCacheConfiguration instanceConfig(Long ttl)
-    {
+    private RedisCacheConfiguration instanceConfig(Long ttl) {
         FastJson2JsonRedisSerializer serializer = new FastJson2JsonRedisSerializer(Object.class);
         return RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(ttl)).disableCachingNullValues()
                 .computePrefixWith(name -> name + ":")
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeKeysWith(
+                        RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer));
     }
 
     @Bean
     @SuppressWarnings(value = { "unchecked", "rawtypes" })
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory)
-    {
+    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
-        
+
         FastJson2JsonRedisSerializer serializer = new FastJson2JsonRedisSerializer(Object.class);
 
         // 使用StringRedisSerializer来序列化和反序列化redis的key值
@@ -72,8 +100,7 @@ public class RedisConfig implements CachingConfigurer
     }
 
     @Bean
-    public DefaultRedisScript<Long> limitScript()
-    {
+    public DefaultRedisScript<Long> limitScript() {
         DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
         redisScript.setScriptText(limitScriptText());
         redisScript.setResultType(Long.class);
@@ -83,8 +110,7 @@ public class RedisConfig implements CachingConfigurer
     /**
      * 限流脚本
      */
-    private String limitScriptText()
-    {
+    private String limitScriptText() {
         return "local key = KEYS[1]\n" +
                 "local count = tonumber(ARGV[1])\n" +
                 "local time = tonumber(ARGV[2])\n" +

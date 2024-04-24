@@ -1,4 +1,4 @@
-package com.ruoyi.framework.aspectj;
+package com.ruoyi.middleware.redis.aspectj;
 
 import java.lang.reflect.Method;
 import java.util.Collections;

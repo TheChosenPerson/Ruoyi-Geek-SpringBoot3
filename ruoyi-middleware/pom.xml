@@ -13,6 +13,7 @@
     <properties>
         <ruoyi.version>3.8.7.3.2</ruoyi.version>
         <minio.version>8.2.1</minio.version>
+        <spring-boot.version>3.2.5</spring-boot.version>
     </properties>
 
     <description>
@@ -20,13 +21,6 @@
     </description>
     <dependencyManagement>
         <dependencies>
-            <!-- 通用工具-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
-
             <!-- Minio 文件存储 -->
             <dependency>
                 <groupId>io.minio</groupId>
@@ -42,6 +36,12 @@
 
             <dependency>
                 <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-middleware-redis</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-middleware-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
@@ -51,6 +51,7 @@
 
     <modules>
         <module>ruoyi-middleware-minio</module>
+        <module>ruoyi-middleware-redis</module>
         <module>ruoyi-middleware-starter</module>
     </modules>
     <packaging>pom</packaging>
