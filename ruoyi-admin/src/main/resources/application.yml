@@ -49,7 +49,7 @@ user:
 spring:
   cache:
     # 指定缓存类型 jcache 本地缓存 redis 缓存
-    type: redis
+    type: jcache
     redis:
       # 指定存活时间（ms）
       time-to-live: 86400000

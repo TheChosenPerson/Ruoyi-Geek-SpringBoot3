@@ -10,7 +10,8 @@ import org.springframework.cache.transaction.TransactionAwareCacheDecorator;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
-import com.ruoyi.common.core.cache.CacheSpecialUtils;
+import com.ruoyi.common.interceptor.cache.CacheKeys;
+import com.ruoyi.common.interceptor.cache.CacheTimeOut;
 import com.ruoyi.common.utils.spring.SpringUtils;
 
 public class CacheUtils {
@@ -43,8 +44,8 @@ public class CacheUtils {
     @SuppressWarnings(value = { "unchecked", "rawtypes" })
     public static Set<String> getkeys(String cacheName) {
         Cache cache = getCacheManager().getCache(cacheName);
-        CacheSpecialUtils cacheGetKets = SpringUtils.getBean(CacheSpecialUtils.class);
-        return cacheGetKets.getKeys(cache);
+        CacheKeys cacheGetKets = SpringUtils.getBean(CacheKeys.class);
+        return cacheGetKets.getCachekeys(cache);
     }
 
     /**
@@ -73,7 +74,7 @@ public class CacheUtils {
         }
     }
 
-    public static boolean hasKey(String cacheName, String key){
+    public static boolean hasKey(String cacheName, String key) {
         return ObjectUtils.isEmpty(get(cacheName, key));
     }
 
@@ -93,11 +94,11 @@ public class CacheUtils {
             JCacheCache ehcache = (JCacheCache) cache;
             ehcache.put(key, value);
         } else if (cache instanceof TransactionAwareCacheDecorator) {
-            CacheSpecialUtils cacheSet = SpringUtils.getBean(CacheSpecialUtils.class);
+            CacheTimeOut cacheTimeOut = SpringUtils.getBean(CacheTimeOut.class);
             if (timeout != 0 && unit != null) {
-                cacheSet.set(cacheName + ":" + key, value, timeout, unit);
+                cacheTimeOut.setCacheObject(cacheName, key, value, timeout, unit);
             } else {
-                cacheSet.set(cacheName + ":" + key, value);
+                cacheTimeOut.setCacheObject(cacheName, key, value);
             }
         } else {
             cache.put(key, value);

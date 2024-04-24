@@ -35,18 +35,6 @@
             <artifactId>ruoyi-framework</artifactId>
         </dependency>
 
-        <!-- 定时任务-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-quartz</artifactId>
-        </dependency>
-
-        <!-- 代码生成-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-generator</artifactId>
-        </dependency>
-
         <!-- 集成第三方登录启动器 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
@@ -59,28 +47,22 @@
             <artifactId>ruoyi-pay-starter</artifactId>
         </dependency>
 
-        <!-- 在线接口 -->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-online</artifactId>
-        </dependency>
-
-        <!-- 在线接口 -->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-mybatis-jpa</artifactId>
-        </dependency>
-
         <!-- 中间件 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-middleware-starter</artifactId>
         </dependency>
 
-        <!-- websocket -->
+        <!-- plugins-->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-websocket</artifactId>
+            <artifactId>ruoyi-plugins-starter</artifactId>
+        </dependency>
+
+        <!-- models-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-models-starter</artifactId>
         </dependency>
 
         <!-- knife4j -->
@@ -88,6 +70,7 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>

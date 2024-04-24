@@ -1,12 +1,8 @@
 package com.ruoyi.middleware.redis.config;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +15,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import com.ruoyi.common.core.cache.CacheSpecialUtils;
-import com.ruoyi.common.utils.StringUtils;
 
 /**
  * redis配置
@@ -42,31 +35,6 @@ public class RedisConfig implements CachingConfigurer {
     public CacheManager cacheManager30m(RedisConnectionFactory connectionFactory) {
         RedisCacheConfiguration config = instanceConfig(1800L);
         return RedisCacheManager.builder(connectionFactory).cacheDefaults(config).transactionAware().build();
-    }
-
-    @Bean
-    public CacheSpecialUtils cacheGetKets(RedisTemplate<Object, Object> redisTemplate) {
-        return new CacheSpecialUtils() {
-            @Override
-            public Set<String> getKeys(Cache cache) {
-                Set<String> keyset = new HashSet<>();
-                Set<Object> keysets = redisTemplate.keys(cache.getName() + "*");
-                for (Object s : keysets) {
-                    keyset.add(StringUtils.replace(s.toString(), cache.getName() + ":", ""));
-                }
-                return keyset;
-            }
-
-            @Override
-            public <T> void set(String cacheName, T value, long timeout, TimeUnit unit){
-                redisTemplate.opsForValue().set(cacheName, value, timeout, unit);
-            }
-
-            public <T> void set(String cacheName, T value){
-                redisTemplate.opsForValue().set(cacheName, value);
-            };
-
-        };
     }
 
     @SuppressWarnings(value = { "unchecked", "rawtypes" })

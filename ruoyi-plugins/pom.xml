@@ -8,42 +8,57 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ruoyi-middleware</artifactId>
+    <artifactId>ruoyi-plugins</artifactId>
 
     <properties>
         <ruoyi.version>3.8.7.3.2</ruoyi.version>
-        <minio.version>8.2.1</minio.version>
-        <spring-boot.version>3.2.5</spring-boot.version>
+        <ehcache.version>3.10.8</ehcache.version>
     </properties>
 
     <description>
-        中间件
+
     </description>
-    
     <dependencyManagement>
         <dependencies>
-            <!-- Minio 文件存储 -->
+            <!-- Ehcache缓存管理器 -->
             <dependency>
-                <groupId>io.minio</groupId>
-                <artifactId>minio</artifactId>
-                <version>${minio.version}</version>
+                <groupId>org.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>${ehcache.version}</version>
             </dependency>
 
+            <!-- ehcache-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-middleware-minio</artifactId>
+                <artifactId>ruoyi-ehcache</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- ehcache-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-middleware-redis</artifactId>
+                <artifactId>ruoyi-ehcache</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- ehcache-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-middleware-starter</artifactId>
+                <artifactId>ruoyi-mybatis-jpa</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <!-- websocket -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-websocket</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <!-- plugins-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-plugins-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
         </dependencies>
@@ -51,9 +66,10 @@
 
 
     <modules>
-        <module>ruoyi-middleware-minio</module>
-        <module>ruoyi-middleware-redis</module>
-        <module>ruoyi-middleware-starter</module>
+        <module>ruoyi-ehcache</module>
+        <module>ruoyi-mybatis-jpa</module>
+        <module>ruoyi-websocket</module>
+        <module>ruoyi-plugins-starter</module>
     </modules>
     <packaging>pom</packaging>
 </project>

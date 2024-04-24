@@ -222,20 +222,6 @@
                 <version>${jakarta.version}</version>
             </dependency>
 
-            <!-- 定时任务-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-quartz</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
-
-            <!-- 代码生成-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
-
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -257,51 +243,38 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- 集成第三方登录 -->
+            <!-- 集成第三方登录启动器 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-oauth-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- 集成支付 -->
+            <!-- 集成支付启动器 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-pay-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- 集成中间件 -->
+            <!-- 插件启动器 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-plugins-starter</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <!-- 中间件启动器  -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-middleware-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- 在线接口 -->
+            <!-- 模块启动器 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-online</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
-
-            <!-- mybatis-jpa-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-mybatis-jpa</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
-
-            <!-- mybatis-minio-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-minio</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-websocket</artifactId>
+                <artifactId>ruoyi-models-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
         </dependencies>
@@ -311,15 +284,12 @@
         <module>ruoyi-admin</module>
         <module>ruoyi-framework</module>
         <module>ruoyi-system</module>
-        <module>ruoyi-quartz</module>
-        <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>ruoyi-oauth</module>
         <module>ruoyi-pay</module>
-        <module>ruoyi-online</module>
-        <module>ruoyi-mybatis-jpa</module>
         <module>ruoyi-middleware</module>
-        <module>ruoyi-websocket</module>
+        <module>ruoyi-plugins</module>
+        <module>ruoyi-models</module>
     </modules>
     <packaging>pom</packaging>
 
