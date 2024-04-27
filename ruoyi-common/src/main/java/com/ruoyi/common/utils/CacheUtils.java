@@ -41,7 +41,6 @@ public class CacheUtils {
      * @param cacheName
      * @return
      */
-    @SuppressWarnings(value = { "unchecked", "rawtypes" })
     public static Set<String> getkeys(String cacheName) {
         Cache cache = getCacheManager().getCache(cacheName);
         CacheKeys cacheGetKets = SpringUtils.getBean(CacheKeys.class);

@@ -3,24 +3,27 @@ package com.ruoyi.ehcache.config;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.ehcache.core.EhcacheBase;
+import org.ehcache.impl.internal.concurrent.ConcurrentHashMap;
 import org.ehcache.impl.internal.store.heap.OnHeapStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.jcache.JCacheCache;
 import org.springframework.cache.jcache.JCacheCacheManager;
+import org.springframework.stereotype.Component;
 
 import com.ruoyi.common.interceptor.cache.CacheKeys;
 import com.ruoyi.common.interceptor.cache.CacheNoTimeOut;
 
+@Component
 public class Ehcache3Cache implements CacheNoTimeOut, CacheKeys {
 
     @Autowired
     private JCacheCacheManager jCacheCacheManager;
 
     @Override
+    @SuppressWarnings(value = { "unchecked", "rawtypes" })
     public Set<String> getCachekeys(Cache cache) {
         Set<String> keyset = new HashSet<>();
         try {
