@@ -45,6 +45,10 @@ public class SQLUtil {
                     .map(ColumnInfo::getQuerySql)
                     .map(query -> tableInfo.getTableNameT() + "." + query)
                     .forEach(sql::WHERE);
+            if (tableInfo.hasDataScope()) {
+                sql.WHERE("1=1 ${params.dataScope}");
+            }
+
         } else {
             tableInfo.getNotNullColumns(entity).stream()
                     .map(ColumnInfo::getQuerySql)
@@ -105,6 +109,10 @@ public class SQLUtil {
                     .map(column -> tableInfo.getTableNameT() + "." + column.getColumnName() + " = "
                             + column.getTemplate())
                     .forEach(sql::WHERE);
+
+            if (tableInfo.hasDataScope()) {
+                sql.WHERE("1=1 ${params.dataScope}");
+            }
         } else {
             tableInfo.getPrimaryKeys().stream()
                     .map(column -> column.getColumnName() + " = " + column.getTemplate())

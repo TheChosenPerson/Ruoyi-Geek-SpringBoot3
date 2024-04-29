@@ -14,4 +14,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface EnableTableMap {
     String name() default "t";
+    String dept() default "";
+    String user() default "";
 }

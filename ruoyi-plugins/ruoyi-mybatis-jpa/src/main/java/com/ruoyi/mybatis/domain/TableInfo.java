@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.core.annotation.AnnotationUtils;
 
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.mybatis.annotation.Column;
 import com.ruoyi.mybatis.annotation.ColumnMap;
 import com.ruoyi.mybatis.annotation.EnableTableMap;
@@ -27,6 +28,7 @@ public class TableInfo {
     private List<ColumnInfo> primaryKeys = new ArrayList<>();
     private List<MapColumnInfo> mapColumns = new ArrayList<>();
     private Set<String> joinSql = new HashSet<>();
+    boolean hasDataScopeValue = false;
 
     public TableInfo(Class<?> cls) {
         this.table = AnnotationUtils.findAnnotation(cls, Table.class);
@@ -56,7 +58,25 @@ public class TableInfo {
                         + join.target() + "." + join.targetColumn() + " = "
                         + this.getTableNameT() + "." + join.targetColumn())
                 .forEach(joinSql::add);
+        if (this.enableTableMap != null) {
+            if (StringUtils.isNotEmpty(this.enableTableMap.user())) {
+                this.joinSql.add("sys_user " + this.enableTableMap.user() + " on "
+                        + this.enableTableMap.user() + ".user_id = "
+                        + this.getTableNameT() + "." + ".user_id");
+                this.hasDataScopeValue = true;
+            }
 
+            if (StringUtils.isNotEmpty(this.enableTableMap.dept())) {
+                this.joinSql.add("sys_dept " + this.enableTableMap.dept() + " on "
+                        + this.enableTableMap.dept() + ".dept_id = "
+                        + this.getTableNameT() + ".dept_id");
+                this.hasDataScopeValue = true;
+            }
+        }
+    }
+
+    public boolean hasDataScope() {
+        return this.hasDataScopeValue;
     }
 
     public Set<String> getJoinSql() {
