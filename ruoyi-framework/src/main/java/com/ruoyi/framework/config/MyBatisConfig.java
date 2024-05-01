@@ -3,8 +3,10 @@ package com.ruoyi.framework.config;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -12,10 +14,13 @@ import org.apache.ibatis.io.VFS;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -26,7 +31,10 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
 
+import com.ruoyi.common.enums.DataSourceType;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.spring.SpringUtils;
+import com.ruoyi.framework.datasource.DynamicSqlSessionTemplate;
 
 /**
  * Mybatis支持*匹配扫描包
@@ -34,13 +42,11 @@ import com.ruoyi.common.utils.StringUtils;
  * @author ruoyi
  */
 @Configuration
-@ConditionalOnProperty(prefix = "mybatis", name = { "typeAliasesPackage", "mapperLocations",
-        "configLocation" }, matchIfMissing = false)
 public class MyBatisConfig {
-    @Autowired
-    private Environment env;
 
     static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
+
+    Logger logger = LoggerFactory.getLogger(MyBatisConfig.class);
 
     public static String setTypeAliasesPackage(String typeAliasesPackage) {
         ResourcePatternResolver resolver = (ResourcePatternResolver) new PathMatchingResourcePatternResolver();
@@ -100,8 +106,7 @@ public class MyBatisConfig {
         return resources.toArray(new Resource[resources.size()]);
     }
 
-    @Bean
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+    public SqlSessionFactory createSqlSessionFactory(Environment env, DataSource dataSource) throws Exception {
         String typeAliasesPackage = env.getProperty("mybatis.typeAliasesPackage");
         String mapperLocations = env.getProperty("mybatis.mapperLocations");
         String configLocation = env.getProperty("mybatis.configLocation");
@@ -114,5 +119,40 @@ public class MyBatisConfig {
         sessionFactory.setMapperLocations(resolveMapperLocations(StringUtils.split(mapperLocations, ",")));
         sessionFactory.setConfigLocation(new DefaultResourceLoader().getResource(configLocation));
         return sessionFactory.getObject();
+    }
+
+    @Bean(name = "sqlSessionFactoryMaster")
+    @Primary
+    public SqlSessionFactory sqlSessionFactoryMaster(Environment env,
+            @Qualifier("masterDataSource") DataSource dataSource) throws Exception {
+        return createSqlSessionFactory(env, dataSource);
+    }
+
+    @Bean(name = "sqlSessionFactorySlave")
+    @ConditionalOnBean(name = "slaveDataSource")
+    public SqlSessionFactory sqlSessionFactorySlave(Environment env,
+            @Qualifier("slaveDataSource") DataSource dataSource) throws Exception {
+        return createSqlSessionFactory(env, dataSource);
+    }
+
+    @Bean(name = "sqlSessionTemplate")
+    public DynamicSqlSessionTemplate sqlSessionTemplate(
+            @Qualifier("sqlSessionFactoryMaster") SqlSessionFactory factoryMaster) throws Exception {
+        Map<Object, SqlSessionFactory> sqlSessionFactoryMap = new HashMap<>();
+        sqlSessionFactoryMap.put(DruidConfig.MASTER, factoryMaster);
+        putSqlSessionFactory("sqlSessionFactorySlave", DataSourceType.SLAVE, sqlSessionFactoryMap);
+        DynamicSqlSessionTemplate customSqlSessionTemplate = new DynamicSqlSessionTemplate(factoryMaster);
+        customSqlSessionTemplate.setTargetSqlSessionFactorys(sqlSessionFactoryMap);
+        return customSqlSessionTemplate;
+    }
+
+    private void putSqlSessionFactory(String sqlSessionFactoryName, DataSourceType dataSourceType,
+            Map<Object, SqlSessionFactory> sqlSessionFactoryMap) {
+        try {
+            SqlSessionFactory factorySlave = SpringUtils.getBean(sqlSessionFactoryName);
+            sqlSessionFactoryMap.put(dataSourceType, factorySlave);
+        } catch (Exception e) {
+            logger.error("Failed to register a SqlSessionFactory:{}", sqlSessionFactoryName);
+        }
     }
 }
