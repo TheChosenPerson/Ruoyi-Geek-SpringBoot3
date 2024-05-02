@@ -1,12 +1,12 @@
-<p align="center">
+<div style="display: flex;justify-content: center;align-items: center;">
 	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
-</p>
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">RuoYi v3.8.7</h1>
-<h4 align="center">基于SpringBoot+Vue前后端分离的Java快速开发框架</h4>
+    <span style="font-weight: bolder;font-size: 30px;">+</span>
+    <img alt="logo" src="./doc/image/logo.png">
+</div>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">RuoYi-Geek v3.8.7.3.2</h1>
+<h4 align="center">基于SpringBoot3+Vue3前后端分离的Java快速开发框架</h4>
 <p align="center">
-	<a href="https://gitee.com/y_project/RuoYi-Vue/stargazers"><img src="https://gitee.com/y_project/RuoYi-Vue/badge/star.svg?theme=dark"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Vue"><img src="https://img.shields.io/badge/RuoYi-v3.8.7-brightgreen.svg"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Vue/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
+	<img src="https://img.shields.io/github/license/mashape/apistatus.svg">
 </p>
 
 # 当前版本是3.8.7.3.2
@@ -69,11 +69,6 @@ RuoYi-Geek不仅仅是一个简单的升级版本，更是对于RuoYi生态的�
 * 开发中的模块请直接删除。
 
 ```
-
-
-
-
-
 com.ruoyi   
 ├── common            // 工具类
 │       └── annotation                    // 自定义注解
@@ -92,29 +87,35 @@ com.ruoyi
 │       └── manager                       // 异步处理
 │       └── security                      // 权限控制
 │       └── web                           // 前端控制
-├── ruoyi-generator   // 代码生成（可移除）
-├── ruoyi-quartz      // 定时任务（可移除）
-├── ruoyi-system      // 系统代码
-├── ruoyi-admin       // 后台服务
-├── ruoyi-pay         // 支付框架（开发中）
+├── ruoyi-admin        // 后台服务
+├── ruoyi-pay          // 支付场景（开发中）
 │       └── common                         // 支付框架基础模块（测试中）
 │       └── sqb	                           // 收钱吧支付模块（测试中）
 │       └── wx	                           // 微信支付模块（待开发）
 │       └── alipay	                   // 支付宝支付模块（开发中）
-│       └── starter	                   // 支付框架整合模块
-├── ruoyi-online      // 在线开发模块（可移除）
-├── ruoyi-oauth       // 第三方认证框架（测试中）
+│       └── starter	                   // 支付场景启动器
+├── ruoyi-oauth        // 第三方认证场景（测试中）
 │       └── common                         // 第三方认证基础模块（开发中）
 │       └── justauth                       // 网站第三方认证模块（测试中，参照若依扩展改进，因没有这么多场景的code，请大家测试出问题后help解决一下发出来）
 │       └── wx                             // 微信小程序认证模块（测试中）
 │       └── phone                          // 手机认证模块（测试中）
 │       └── email                          // 邮箱认证模块（开发中）
-│       └── starter                          // 第三方认证整合模块
-├── ruoyi-middleware   // 中间件模块（可移除）
+│       └── starter                        // 第三方认证启动器
+├── ruoyi-middleware   // 中间件场景（可移除）
 │       └── minio			   // minio文件服务模块 
+│       └── redis			   // redis缓存服务模块（与ehcache插件同类） 
 │       └── starter  		 	   // 中间件整合模块
-├── ruoyi-mybatis-jpa  // mybatis-jpa模块（可移除）
-├── ruoyi-websocket    // mybatis-websocket模块（可移除）
+├── ruoyi-models   	// 业务场景
+│       └── online			   // 在线开发模块（可移除）
+│       └── quartz			   // 定时任务（可移除）
+│       └── generator			   // 代码生成（可移除）
+│       └── starter  		 	   // 业务场景启动器
+├── ruoyi-plugins   	// 插件
+│       └── ehcache			   // ehcache缓存插件（与redis模块同类） 
+│       └── mybatis-jpa			   // mybatis-jpa插件（可移除） 
+│       └── websocket			   // websocket插件（可移除）
+│       └── starter  		 	   // 插件整合模块
+├── ruoyi-system        // 系统代码
 ```
 
 ## 内置功能
@@ -137,14 +138,9 @@ com.ruoyi
 16. 缓存监控：对系统的缓存信息查询，命令统计等。
 17. 在线构建器：拖动表单元素生成相应的HTML代码。
 18. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
-
-## 在线体验
-
-- admin/admin123
-- 陆陆续续收到一些打赏，为了更好的体验已用于演示服务器升级。谢谢各位小伙伴。
-
-演示地址：http://vue.ruoyi.vip
-文档地址：http://doc.ruoyi.vip
+19. 支付场景
+20. 第三方登录场景
+21. 中间件场景
 
 ## 演示图
 
