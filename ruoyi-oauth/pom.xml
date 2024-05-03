@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ruoyi</artifactId>
         <groupId>com.ruoyi</groupId>
@@ -13,6 +12,8 @@
 
     <properties>
         <ruoyi.version>3.8.7.3.2</ruoyi.version>
+        <justauth.version>1.16.6</justauth.version>
+        <alipay.version>3.7.4.ALL</alipay.version>
     </properties>
 
     <description>
@@ -30,12 +31,12 @@
             <dependency>
                 <groupId>me.zhyd.oauth</groupId>
                 <artifactId>JustAuth</artifactId>
-                <version>1.16.6</version>
+                <version>${justauth.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alipay.sdk</groupId>
                 <artifactId>alipay-sdk-java</artifactId>
-                <version>3.7.4.ALL</version>
+                <version>${alipay.version}</version>
             </dependency>
 
             <!-- justauth通用认证 -->

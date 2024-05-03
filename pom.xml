@@ -21,6 +21,8 @@
         <druid.version>1.2.21</druid.version>
         <shardingsphere.version>4.1.1</shardingsphere.version>
         <dynamic.version>3.5.2</dynamic.version>
+        <transactions.version>6.0.0</transactions.version>
+        <jta.version>1.1</jta.version>
         <bitwalker.version>1.21</bitwalker.version>
         <swagger.version>3.0.0</swagger.version>
         <kaptcha.version>2.3.3</kaptcha.version>
@@ -38,7 +40,8 @@
         <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
         <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
         <mysql.version>8.2.0</mysql.version>
-        <jaxb.version>2.3.1</jaxb.version>
+        <jaxb-api.version>2.3.1</jaxb-api.version>
+        <jaxb.version>4.0.5</jaxb.version>
         <springdoc.version>2.1.0</springdoc.version>
         <jakarta.version>6.0.0</jakarta.version>
     </properties>
@@ -80,8 +83,19 @@
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
                 <version>${jaxb.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+
 
             <!-- Mysql驱动包 -->
             <dependency>
@@ -110,6 +124,19 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${dynamic.version}</version>
+            </dependency>
+
+            <!-- atomikos分布式事务 -->
+            <dependency>
+                <groupId>com.atomikos</groupId>
+                <artifactId>transactions-spring-boot3-starter</artifactId>
+                <version>${transactions.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.transaction</groupId>
+                <artifactId>jta</artifactId>
+                <version>${jta.version}</version>
             </dependency>
 
             <!-- 解析客户端操作系统、浏览器等 -->
