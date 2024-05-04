@@ -6,3 +6,8 @@ pay:
     appId: "appId"
     vendorSn: "vendorSn"
     vendorKey: "vendorKey"
+  alipay:
+    appId: "appId"
+    privateKey: "privateKey"
+    publicKey: "publicKey"
+    notifyUrl: "notifyUrl"
