@@ -75,6 +75,10 @@ public class TableInfo {
         }
     }
 
+    public String[] getOrderBy() {
+        return this.table.orderBy();
+    }
+
     public boolean hasDataScope() {
         return this.hasDataScopeValue;
     }
@@ -124,6 +128,12 @@ public class TableInfo {
 
     public List<MapColumnInfo> getMapColumns() {
         return mapColumns;
+    }
+
+    public <T> List<ColumnInfo> getNotNullColumnsForQuery(T entity) {
+        return this.columns.stream()
+                .filter(column -> column.fieldQueryIsNotNull(entity))
+                .collect(Collectors.toList());
     }
 
     public <T> List<ColumnInfo> getNotNullColumns(T entity) {

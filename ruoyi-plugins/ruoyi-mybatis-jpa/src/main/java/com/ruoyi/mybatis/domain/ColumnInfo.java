@@ -1,17 +1,15 @@
 package com.ruoyi.mybatis.domain;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import org.springframework.core.annotation.AnnotationUtils;
 
+import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.mybatis.annotation.Column;
 import com.ruoyi.mybatis.annotation.Query;
+import com.ruoyi.mybatis.enums.QueryEnum;
 
-/**
- * 数据库字段信息
- *
- * @author Dftre
- */
 public class ColumnInfo {
     private String columnName;
     private String fieldName;
@@ -48,6 +46,20 @@ public class ColumnInfo {
 
     public boolean isPrimaryKey() {
         return this.column.primaryKey();
+    }
+
+    public boolean fieldQueryIsNotNull(Object entity) {
+        try {
+            if (this.query != null && this.query.operation().equals(QueryEnum.between)) {
+                BaseEntity baseEntity = (BaseEntity) entity;
+                Map<String, Object> map = baseEntity.getParams();
+                return map.get(this.query.section()[0]) != null && map.get(this.query.section()[1]) != null;
+            } else {
+                return this.field.get(entity) != null;
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Failed to access field for building query conditions.", e);
+        }
     }
 
     public boolean fieldIsNotNull(Object entity) {

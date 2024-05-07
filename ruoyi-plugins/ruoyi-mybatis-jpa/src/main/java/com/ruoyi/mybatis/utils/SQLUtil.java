@@ -1,6 +1,7 @@
 package com.ruoyi.mybatis.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class SQLUtil {
             tableInfo.getNotNullMapColumns(entity).stream()
                     .map(MapColumnInfo::getQuerySql)
                     .forEach(sql::WHERE);
-            tableInfo.getNotNullColumns(entity).stream()
+            tableInfo.getNotNullColumnsForQuery(entity).stream()
                     .map(ColumnInfo::getQuerySql)
                     .map(query -> tableInfo.getTableNameT() + "." + query)
                     .forEach(sql::WHERE);
@@ -49,10 +50,15 @@ public class SQLUtil {
                 sql.WHERE("1=1 ${params.dataScope}");
             }
 
+            Arrays.stream(tableInfo.getOrderBy())
+                    .map(order -> tableInfo.getTableNameT() + "." + order)
+                    .forEach(sql::ORDER_BY);
         } else {
-            tableInfo.getNotNullColumns(entity).stream()
+            tableInfo.getNotNullColumnsForQuery(entity).stream()
                     .map(ColumnInfo::getQuerySql)
                     .forEach(sql::WHERE);
+            Arrays.stream(tableInfo.getOrderBy())
+                    .forEach(sql::ORDER_BY);
         }
         return sql.toString();
     }
@@ -109,10 +115,6 @@ public class SQLUtil {
                     .map(column -> tableInfo.getTableNameT() + "." + column.getColumnName() + " = "
                             + column.getTemplate())
                     .forEach(sql::WHERE);
-
-            if (tableInfo.hasDataScope()) {
-                sql.WHERE("1=1 ${params.dataScope}");
-            }
         } else {
             tableInfo.getPrimaryKeys().stream()
                     .map(column -> column.getColumnName() + " = " + column.getTemplate())
