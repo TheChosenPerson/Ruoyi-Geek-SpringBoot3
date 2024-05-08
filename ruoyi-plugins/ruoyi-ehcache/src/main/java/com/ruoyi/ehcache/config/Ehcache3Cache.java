@@ -8,6 +8,7 @@ import org.ehcache.core.EhcacheBase;
 import org.ehcache.impl.internal.concurrent.ConcurrentHashMap;
 import org.ehcache.impl.internal.store.heap.OnHeapStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.Cache;
 import org.springframework.cache.jcache.JCacheCache;
 import org.springframework.cache.jcache.JCacheCacheManager;
@@ -17,6 +18,7 @@ import com.ruoyi.common.interceptor.cache.CacheKeys;
 import com.ruoyi.common.interceptor.cache.CacheNoTimeOut;
 
 @Component
+@ConditionalOnProperty(prefix = "spring.cache", name = { "type" }, havingValue = "jcache", matchIfMissing = false)
 public class Ehcache3Cache implements CacheNoTimeOut, CacheKeys {
 
     @Autowired
