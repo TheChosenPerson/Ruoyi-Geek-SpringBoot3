@@ -5,14 +5,14 @@
     <parent>
         <artifactId>ruoyi</artifactId>
         <groupId>com.ruoyi</groupId>
-        <version>3.8.7.3.2</version>
+        <version>3.8.7.3.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ruoyi-pay</artifactId>
 
     <properties>
-        <ruoyi.version>3.8.7.3.2</ruoyi.version>
+        <ruoyi.version>3.8.7.3.3</ruoyi.version>
     </properties>
 
     <description>
