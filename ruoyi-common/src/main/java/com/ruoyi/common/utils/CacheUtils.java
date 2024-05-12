@@ -74,7 +74,7 @@ public class CacheUtils {
     }
 
     public static boolean hasKey(String cacheName, String key) {
-        return ObjectUtils.isEmpty(get(cacheName, key));
+        return !ObjectUtils.isEmpty(get(cacheName, key));
     }
 
     /**
