@@ -55,21 +55,21 @@ public class TableInfo {
         this.getMapColumns().stream()
                 .map(MapColumnInfo::getJoin)
                 .map(join -> join.target() + " on "
-                        + join.target() + "." + join.targetColumn() + " = "
-                        + this.getTableNameT() + "." + join.targetColumn())
+                        + join.target() + "." + join.on() + " = "
+                        + this.getTableNameT() + "." + join.on())
                 .forEach(joinSql::add);
         if (this.enableTableMap != null) {
             if (StringUtils.isNotEmpty(this.enableTableMap.user())) {
                 this.joinSql.add("sys_user " + this.enableTableMap.user() + " on "
-                        + this.enableTableMap.user() + ".user_id = "
-                        + this.getTableNameT() + "." + ".user_id");
+                        + this.enableTableMap.user() + "." + this.enableTableMap.userOn() + " = "
+                        + this.getTableNameT() + "." + this.enableTableMap.userOn());
                 this.hasDataScopeValue = true;
             }
 
             if (StringUtils.isNotEmpty(this.enableTableMap.dept())) {
                 this.joinSql.add("sys_dept " + this.enableTableMap.dept() + " on "
-                        + this.enableTableMap.dept() + ".dept_id = "
-                        + this.getTableNameT() + ".dept_id");
+                        + this.enableTableMap.dept() + "." + this.enableTableMap.deptOn() + " = "
+                        + this.getTableNameT() + "." + this.enableTableMap.deptOn());
                 this.hasDataScopeValue = true;
             }
         }

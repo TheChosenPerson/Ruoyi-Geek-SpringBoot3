@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
 public @interface ColumnMap {
     String name(); // 对应数据库字段
     String target(); // 映射表来源
-    String targetColumn(); // 映射表字段
+    String on(); // 映射关联字段
 }

@@ -16,4 +16,6 @@ public @interface EnableTableMap {
     String name() default "t";
     String dept() default "";
     String user() default "";
+    String userOn() default "user_id";
+    String deptOn() default "dept_id";
 }

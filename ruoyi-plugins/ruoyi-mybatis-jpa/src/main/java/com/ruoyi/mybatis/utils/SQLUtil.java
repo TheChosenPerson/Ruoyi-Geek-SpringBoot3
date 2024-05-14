@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
 
 import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.mybatis.domain.ColumnInfo;
 import com.ruoyi.mybatis.domain.MapColumnInfo;
 import com.ruoyi.mybatis.domain.TableInfo;
@@ -38,12 +39,15 @@ public class SQLUtil {
 
         if (tableInfo.isEnbleMap()) {
             tableInfo.getJoinSql().stream()
+                    .filter(StringUtils::isNotEmpty)
                     .forEach(sql::LEFT_OUTER_JOIN);
             tableInfo.getNotNullMapColumns(entity).stream()
                     .map(MapColumnInfo::getQuerySql)
+                    .filter(StringUtils::isNotEmpty)
                     .forEach(sql::WHERE);
             tableInfo.getNotNullColumnsForQuery(entity).stream()
                     .map(ColumnInfo::getQuerySql)
+                    .filter(StringUtils::isNotEmpty)
                     .map(query -> tableInfo.getTableNameT() + "." + query)
                     .forEach(sql::WHERE);
             if (tableInfo.hasDataScope()) {
@@ -51,13 +55,16 @@ public class SQLUtil {
             }
 
             Arrays.stream(tableInfo.getOrderBy())
+                    .filter(StringUtils::isNotEmpty)
                     .map(order -> tableInfo.getTableNameT() + "." + order)
                     .forEach(sql::ORDER_BY);
         } else {
             tableInfo.getNotNullColumnsForQuery(entity).stream()
                     .map(ColumnInfo::getQuerySql)
+                    .filter(StringUtils::isNotEmpty)
                     .forEach(sql::WHERE);
             Arrays.stream(tableInfo.getOrderBy())
+                    .filter(StringUtils::isNotEmpty)
                     .forEach(sql::ORDER_BY);
         }
         return sql.toString();
