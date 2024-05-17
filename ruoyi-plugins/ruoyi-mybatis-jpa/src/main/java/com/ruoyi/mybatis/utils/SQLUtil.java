@@ -41,13 +41,11 @@ public class SQLUtil {
             tableInfo.getJoinSql().stream()
                     .filter(StringUtils::isNotEmpty)
                     .forEach(sql::LEFT_OUTER_JOIN);
-            tableInfo.getNotNullMapColumns(entity).stream()
+            tableInfo.getNotNullMapColumnsForQuery(entity).stream()
                     .map(MapColumnInfo::getQuerySql)
-                    .filter(StringUtils::isNotEmpty)
                     .forEach(sql::WHERE);
             tableInfo.getNotNullColumnsForQuery(entity).stream()
                     .map(ColumnInfo::getQuerySql)
-                    .filter(StringUtils::isNotEmpty)
                     .map(query -> tableInfo.getTableNameT() + "." + query)
                     .forEach(sql::WHERE);
             if (tableInfo.hasDataScope()) {

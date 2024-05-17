@@ -17,7 +17,9 @@ import com.ruoyi.mybatis.enums.QueryEnum;
 public @interface Query {
     QueryEnum operation() default QueryEnum.eq; // 操作符，如 eq, like, gt 等
 
-    String[] section() default { "begin", "end" };
+    String[] sections() default { "begin", "end" };
+
+    String section() default "section";
 
     boolean params() default false;
 

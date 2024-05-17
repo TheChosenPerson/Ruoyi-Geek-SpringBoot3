@@ -142,6 +142,12 @@ public class TableInfo {
                 .collect(Collectors.toList());
     }
 
+    public <T> List<MapColumnInfo> getNotNullMapColumnsForQuery(T entity) {
+        return this.mapColumns.stream()
+                .filter(column -> column.fieldQueryIsNotNull(entity))
+                .collect(Collectors.toList());
+    }
+
     public <T> List<MapColumnInfo> getNotNullMapColumns(T entity) {
         return this.mapColumns.stream()
                 .filter(column -> column.fieldIsNotNull(entity))
