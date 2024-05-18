@@ -60,16 +60,35 @@ public class TableInfo {
                 .forEach(joinSql::add);
         if (this.enableTableMap != null) {
             if (StringUtils.isNotEmpty(this.enableTableMap.user())) {
+                String left = "";
+                String right = "";
+                if (StringUtils.isEmpty(this.enableTableMap.deptOn())) {
+                    left = this.enableTableMap.userOn();
+                    right = this.enableTableMap.userOn();
+                } else {
+                    left = this.enableTableMap.userOnLeft();
+                    right = this.enableTableMap.userOnRight();
+                }
                 this.joinSql.add("sys_user " + this.enableTableMap.user() + " on "
-                        + this.enableTableMap.user() + "." + this.enableTableMap.userOn() + " = "
-                        + this.getTableNameT() + "." + this.enableTableMap.userOn());
+                        + this.enableTableMap.user() + "." + right + " = "
+                        + this.getTableNameT() + "." + left);
                 this.hasDataScopeValue = true;
             }
 
             if (StringUtils.isNotEmpty(this.enableTableMap.dept())) {
+                String left = "";
+                String right = "";
+                if (StringUtils.isEmpty(this.enableTableMap.deptOn())) {
+                    left = this.enableTableMap.deptOn();
+                    right = this.enableTableMap.deptOn();
+                } else {
+                    left = this.enableTableMap.deptOnLeft();
+                    right = this.enableTableMap.deptOnRight();
+                }
+
                 this.joinSql.add("sys_dept " + this.enableTableMap.dept() + " on "
-                        + this.enableTableMap.dept() + "." + this.enableTableMap.deptOn() + " = "
-                        + this.getTableNameT() + "." + this.enableTableMap.deptOn());
+                        + this.enableTableMap.dept() + "." + right + " = "
+                        + this.getTableNameT() + "." + left);
                 this.hasDataScopeValue = true;
             }
         }

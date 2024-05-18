@@ -14,8 +14,20 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface EnableTableMap {
     String name() default "t";
+
     String dept() default "";
+
     String user() default "";
-    String userOn() default "user_id";
+
+    String userOn() default "";
+
+    String userOnLeft() default "create_by";
+
+    String userOnRight() default "user_name";
+
     String deptOn() default "dept_id";
+
+    String deptOnLeft() default "";
+
+    String deptOnRight() default "";
 }
