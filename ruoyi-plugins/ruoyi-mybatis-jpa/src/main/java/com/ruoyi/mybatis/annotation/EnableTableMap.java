@@ -19,11 +19,11 @@ public @interface EnableTableMap {
 
     String user() default "";
 
-    String userOn() default "";
+    String userOn() default "user_id";
 
-    String userOnLeft() default "create_by";
+    String userOnLeft() default "";
 
-    String userOnRight() default "user_name";
+    String userOnRight() default "";
 
     String deptOn() default "dept_id";
 

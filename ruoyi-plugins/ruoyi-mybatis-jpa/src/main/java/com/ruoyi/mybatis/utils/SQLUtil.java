@@ -34,7 +34,7 @@ public class SQLUtil {
     public static <T extends BaseEntity> String list(T entity) {
         SQL sql = new SQL();
         TableInfo tableInfo = getTableInfo(entity);
-        sql.SELECT(String.join(",", tableInfo.getQueryColumns()))
+        sql.SELECT(String.join(",", tableInfo.getQueryColumnNames()))
                 .FROM(tableInfo.getTableNameFrom());
 
         if (tableInfo.isEnbleMap()) {
@@ -109,7 +109,7 @@ public class SQLUtil {
     public static <T extends BaseEntity> String selectById(T entity) {
         SQL sql = new SQL();
         TableInfo tableInfo = getTableInfo(entity);
-        sql.SELECT(String.join(",", tableInfo.getQueryColumns()))
+        sql.SELECT(String.join(",", tableInfo.getColumnNames()))
                 .FROM(tableInfo.getTableNameFrom());
 
         if (tableInfo.isEnbleMap()) {

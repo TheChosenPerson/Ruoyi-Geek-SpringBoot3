@@ -14,6 +14,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface ColumnMap {
     String name(); // 对应数据库字段
+
     String target(); // 映射表来源
-    String on(); // 映射表字段
+
+    String on() default ""; // 映射表字段
+
+    String onLeft() default ""; // 映射表左字段
+
+    String onRight() default ""; // 映射表右字段
 }

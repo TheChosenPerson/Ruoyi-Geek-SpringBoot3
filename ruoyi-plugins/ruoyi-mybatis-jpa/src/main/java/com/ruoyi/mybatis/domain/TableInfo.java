@@ -54,20 +54,26 @@ public class TableInfo {
 
         this.getMapColumns().stream()
                 .map(MapColumnInfo::getJoin)
-                .map(join -> join.target() + " on "
-                        + join.target() + "." + join.on() + " = "
-                        + this.getTableNameT() + "." + join.on())
+                .map(join -> {
+                    String left = join.onLeft();
+                    String right = join.onRight();
+                    if (StringUtils.isEmpty(left) || StringUtils.isEmpty(right)) {
+                        left = join.onLeft();
+                        right = join.onRight();
+                    }
+                    return join.target() + " on "
+                            + join.target() + "." + right + " = "
+                            + this.getTableNameT() + "." + left;
+                })
                 .forEach(joinSql::add);
+
         if (this.enableTableMap != null) {
             if (StringUtils.isNotEmpty(this.enableTableMap.user())) {
-                String left = "";
-                String right = "";
-                if (StringUtils.isEmpty(this.enableTableMap.deptOn())) {
+                String left = this.enableTableMap.userOnLeft();
+                String right = this.enableTableMap.userOnRight();
+                if (StringUtils.isEmpty(left) || StringUtils.isEmpty(right)) {
                     left = this.enableTableMap.userOn();
                     right = this.enableTableMap.userOn();
-                } else {
-                    left = this.enableTableMap.userOnLeft();
-                    right = this.enableTableMap.userOnRight();
                 }
                 this.joinSql.add("sys_user " + this.enableTableMap.user() + " on "
                         + this.enableTableMap.user() + "." + right + " = "
@@ -76,16 +82,12 @@ public class TableInfo {
             }
 
             if (StringUtils.isNotEmpty(this.enableTableMap.dept())) {
-                String left = "";
-                String right = "";
-                if (StringUtils.isEmpty(this.enableTableMap.deptOn())) {
+                String left = this.enableTableMap.deptOnLeft();
+                String right = this.enableTableMap.deptOnRight();
+                if (StringUtils.isEmpty(right) || StringUtils.isEmpty(left)) {
                     left = this.enableTableMap.deptOn();
                     right = this.enableTableMap.deptOn();
-                } else {
-                    left = this.enableTableMap.deptOnLeft();
-                    right = this.enableTableMap.deptOnRight();
                 }
-
                 this.joinSql.add("sys_dept " + this.enableTableMap.dept() + " on "
                         + this.enableTableMap.dept() + "." + right + " = "
                         + this.getTableNameT() + "." + left);
@@ -121,7 +123,7 @@ public class TableInfo {
             return this.tableName;
     }
 
-    public List<String> getQueryColumns() {
+    public List<String> getQueryColumnNames() {
         List<String> columns = Arrays.asList(this.table.columns());
         if (columns.size() <= 0) {
             columns = this.columns.stream()
@@ -139,6 +141,23 @@ public class TableInfo {
 
         return columns;
 
+    }
+
+    public List<String> getColumnNames() {
+        List<String> columns = this.columns.stream()
+                .map(ColumnInfo::getColumnName)
+                .collect(Collectors.toList());
+
+        if (this.isEnbleMap()) {
+            columns = columns.stream()
+                    .map(column -> this.getTableNameT() + "." + column)
+                    .collect(Collectors.toList());
+            this.mapColumns.stream()
+                    .map(column -> column.getJoin().target() + "." + column.getColumnName())
+                    .forEach(columns::add);
+        }
+
+        return columns;
     }
 
     public List<ColumnInfo> getColumns() {
