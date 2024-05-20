@@ -36,17 +36,17 @@ public class ShardingDataSourceConfig {
     Logger logger = LoggerFactory.getLogger(ShardingDataSourceConfig.class);
 
     @Bean
-    @ConfigurationProperties("spring.datasource.druid.sharding.order1")
-    @ConditionalOnProperty(prefix = "spring.datasource.druid.sharding.order1", name = "enabled", havingValue = "true")
-    public DataSource order1DataSource(DruidProperties druidProperties) {
+    @ConfigurationProperties("spring.datasource.druid.sharding.ruoyi1")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.sharding.ruoyi1", name = "enabled", havingValue = "true")
+    public DataSource ruoyi1DataSource(DruidProperties druidProperties) {
         DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
         return druidProperties.dataSource(dataSource);
     }
 
     @Bean
-    @ConfigurationProperties("spring.datasource.druid.sharding.order2")
-    @ConditionalOnProperty(prefix = "spring.datasource.druid.sharding.order2", name = "enabled", havingValue = "true")
-    public DataSource order2DataSource(DruidProperties druidProperties) {
+    @ConfigurationProperties("spring.datasource.druid.sharding.ruoyi2")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.sharding.ruoyi2", name = "enabled", havingValue = "true")
+    public DataSource ruoyi2DataSource(DruidProperties druidProperties) {
         DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
         return druidProperties.dataSource(dataSource);
     }
@@ -72,25 +72,25 @@ public class ShardingDataSourceConfig {
         Map<String, DataSource> dataSourceMap = new HashMap<>();
 
         // 添加数据源
-        setDataSource(dataSourceMap, "order1", "order1DataSource");
-        setDataSource(dataSourceMap, "order2", "order2DataSource");
+        setDataSource(dataSourceMap, "ruoyi1", "ruoyi1DataSource");
+        setDataSource(dataSourceMap, "ruoyi2", "ruoyi2DataSource");
 
         // 配置分片规则
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
         // 表规则配置 示例:
         // 添加order1.sys_order_0,order2.sys_order_0,order1.sys_order_1,order2.sys_order_1
         TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration(
-                "sys_user", "order$->{1..2}.sys_order_$->{0..1}");
+                "sys_user", "ruoyi$->{1..2}.sys_user_$->{0..1}");
         // 配置分库策略
         // 示例: 根据user_id分库,user_id为单数去order1库,偶数去order2库
         orderTableRuleConfig.setDatabaseShardingStrategyConfig(
-                new InlineShardingStrategyConfiguration("user_id", "order$->{user_id % 2 + 1}"));
+                new InlineShardingStrategyConfiguration("user_id", "ruoyi$->{user_id % 2 + 1}"));
         // 配置分表策略
-        // 示例: 根据order_id分表,order_id为偶数分到sys_order_0表,奇数分到sys_order_1表
+        // 示例: 根据sex分表,sex为偶数分到sys_order_0表,奇数分到sys_order_1表
         orderTableRuleConfig.setTableShardingStrategyConfig(
-                new InlineShardingStrategyConfiguration("order_id", "sys_order_$->{order_id % 2}"));
+                new InlineShardingStrategyConfiguration("sex", "sys_user_$->{sex % 2}"));
         // 分布式主键
-        orderTableRuleConfig.setKeyGeneratorConfig(new KeyGeneratorConfiguration("SNOWFLAKE", "order_id"));
+        orderTableRuleConfig.setKeyGeneratorConfig(new KeyGeneratorConfiguration("SNOWFLAKE", "user_id"));
         shardingRuleConfig.getTableRuleConfigs().add(orderTableRuleConfig);
 
         // 获取数据源对象
