@@ -65,7 +65,6 @@ public class SysLoginController
      */
     @Operation(summary = "获取用户信息")
     @GetMapping("getInfo")
-    // @DataSource(DataSourceType.SLAVE)
     public AjaxResult getInfo()
     {
         SysUser user = SecurityUtils.getLoginUser().getUser();

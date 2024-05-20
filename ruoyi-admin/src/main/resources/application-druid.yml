@@ -13,22 +13,22 @@ spring:
             slave:
                 # 从数据源开关/默认关闭
                 enabled: true
-                url: jdbc:mysql://127.0.0.1/ruoyi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-                username: root
-                password: 123456
+                url: 
+                username: 
+                password: 
             sharding:
                 # 分库分表开关/默认关闭
-                enabled: true
+                enabled: false
                 ruoyi1:
-                    enabled: true
-                    url: jdbc:mysql://127.0.0.1/ruoyi1?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-                    username: root
-                    password: 123456
+                    enabled: false
+                    url: 
+                    username: 
+                    password: 
                 ruoyi2:
-                    enabled: true
-                    url: jdbc:mysql://127.0.0.1/ruoyi2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-                    username: root
-                    password: 123456
+                    enabled: false
+                    url: 
+                    username: 
+                    password: 
 
             # 初始连接数
             initialSize: 5
