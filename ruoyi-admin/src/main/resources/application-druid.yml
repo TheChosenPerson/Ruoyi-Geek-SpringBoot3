@@ -16,19 +16,6 @@ spring:
                 url: 
                 username: 
                 password: 
-            sharding:
-                # 分库分表开关/默认关闭
-                enabled: false
-                ruoyi1:
-                    enabled: false
-                    url: 
-                    username: 
-                    password: 
-                ruoyi2:
-                    enabled: false
-                    url: 
-                    username: 
-                    password: 
 
             # 初始连接数
             initialSize: 5

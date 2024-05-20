@@ -106,7 +106,6 @@ public class DruidConfig {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(MASTER, masterDataSource);
         setDataSource(targetDataSources, SLAVE, "slaveDataSource");
-        setDataSource(targetDataSources, DataSourceType.SHARDING.name(), "shardingDataSource");
         return new DynamicDataSource(masterDataSource, targetDataSources);
     }
 

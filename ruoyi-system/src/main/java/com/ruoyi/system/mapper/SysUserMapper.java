@@ -4,16 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.ruoyi.common.annotation.DataSource;
 import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.enums.DataSourceType;
 
 /**
  * 用户表 数据层
  * 
  * @author ruoyi
  */
-@DataSource(DataSourceType.SHARDING)
 public interface SysUserMapper
 {
     /**

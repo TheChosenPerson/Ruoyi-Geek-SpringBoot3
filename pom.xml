@@ -19,7 +19,6 @@
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
         <spring-boot.version>3.2.5</spring-boot.version>
         <druid.version>1.2.21</druid.version>
-        <shardingsphere.version>4.1.1</shardingsphere.version>
         <dynamic.version>3.5.2</dynamic.version>
         <transactions.version>6.0.0</transactions.version>
         <jta.version>1.1</jta.version>
@@ -110,13 +109,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-3-starter</artifactId>
                 <version>${druid.version}</version>
-            </dependency>
-
-            <!-- sharding-jdbc分库分表 -->
-            <dependency>
-                <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>sharding-jdbc-core</artifactId>
-                <version>${shardingsphere.version}</version>
             </dependency>
 
             <!-- 动态数据源 -->
