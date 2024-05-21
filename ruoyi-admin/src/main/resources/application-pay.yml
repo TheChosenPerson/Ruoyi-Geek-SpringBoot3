@@ -7,7 +7,14 @@ pay:
     vendorSn: "vendorSn"
     vendorKey: "vendorKey"
   alipay:
-    appId: "appId"
-    privateKey: "privateKey"
-    publicKey: "publicKey"
-    notifyUrl: "notifyUrl"
+    appId: appId
+    appPrivateKey: appPrivateKey #classpath:pay/alipay/alipay_private_key.pem
+    alipayPublicKey: alipayPublicKey #classpath:pay/alipay/alipay_public_key.pem
+    notifyUrl: http://www.sdaizy.com/prod-api/alipay/notify
+  wechat:
+    merchantId: merchantId
+    privateKeyPath: privateKeyPath
+    merchantSerialNumber: merchantSerialNumber
+    apiV3Key: apiV3Key
+    appId: appId
+    notifyUrl: http://g5vdrz.natappfree.cc/wxPay/notify

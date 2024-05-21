@@ -75,4 +75,5 @@ public interface IPayOrderService {
      * @return 结果
      */
     public int deletePayOrderByOrderId(Long orderId);
+    public int updateStatus(String orderNumber, String orderStatus);
 }

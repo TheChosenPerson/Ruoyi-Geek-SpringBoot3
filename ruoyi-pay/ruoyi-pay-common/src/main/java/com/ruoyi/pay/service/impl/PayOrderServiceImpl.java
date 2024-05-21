@@ -107,4 +107,9 @@ public class PayOrderServiceImpl implements IPayOrderService {
     public int deletePayOrderByOrderNumber(String orderNumber) {
         return payOrderMapper.deletePayOrderByOrderNumber(orderNumber);
     }
+
+    @Override
+    public int updateStatus(String orderNumber, String orderStatus) {
+        return payOrderMapper.updateStatus(orderNumber, orderStatus);
+    }
 }

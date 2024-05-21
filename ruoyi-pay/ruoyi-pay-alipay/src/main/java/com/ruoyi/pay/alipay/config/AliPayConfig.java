@@ -1,66 +1,78 @@
 package com.ruoyi.pay.alipay.config;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.kernel.Config;
-
-import jakarta.annotation.PostConstruct;
-
-@Component
+/**
+ * @author zlh
+ */
+@Configuration
 public class AliPayConfig {
     @Value("${pay.alipay.appId}")
     private String appId;
-    @Value("${pay.alipay.privateKey}")
-    private String privateKey;
-    @Value("${pay.alipay.publicKey}")
-    private String publicKey;
     @Value("${pay.alipay.notifyUrl}")
     private String notifyUrl;
+    @Value("${pay.alipay.appPrivateKey}")
+    private String appPrivateKey;
+    @Value("${pay.alipay.alipayPublicKey}")
+    private String alipayPublicKey;
 
-    @PostConstruct
-    public void init() {
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    private String getAppPrivateKey() throws Exception {
+        if (appPrivateKey.startsWith("classpath")) {
+            Resource resource = applicationContext.getResource(appPrivateKey);
+            InputStream inputStream = resource.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String appPrivateKeyValue = bufferedReader.lines().collect(Collectors.joining(System.lineSeparator()));
+            bufferedReader.close();
+            return appPrivateKeyValue;
+        } else {
+            return appPrivateKey;
+        }
+    }
+
+    private String getAlipayPublicKey() throws Exception {
+        if (alipayPublicKey.startsWith("classpath")) {
+            Resource resource = applicationContext.getResource(alipayPublicKey);
+            InputStream inputStream = resource.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String alipayPublicKeyValue = bufferedReader.lines().collect(Collectors.joining(System.lineSeparator()));
+            bufferedReader.close();
+            return alipayPublicKeyValue;
+        } else {
+            return alipayPublicKey;
+        }
+    }
+
+    @Bean
+    protected Config config() throws Exception {
+        // 设置参数（全局只需设置一次）
         Config config = new Config();
         config.protocol = "https";
-        config.gatewayHost = "openapi-sandbox.dl.alipaydev.com";
+        config.gatewayHost = "openapi.alipay.com";// openapi-sandbox.dl.alipaydev.com||openapi.alipay.com
         config.signType = "RSA2";
         config.appId = this.appId;
-        config.merchantPrivateKey = this.privateKey;
-        config.alipayPublicKey = this.publicKey;
+        config.merchantPrivateKey = getAppPrivateKey();
+        config.alipayPublicKey = getAlipayPublicKey();
+        System.out.println(getAlipayPublicKey());
         config.notifyUrl = this.notifyUrl;
         Factory.setOptions(config);
+        return config;
     }
 
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getPrivateKey() {
-        return privateKey;
-    }
-
-    public void setPrivateKey(String privateKey) {
-        this.privateKey = privateKey;
-    }
-
-    public String getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-    }
-
-    public String getNotifyUrl() {
-        return notifyUrl;
-    }
-
-    public void setNotifyUrl(String notifyUrl) {
-        this.notifyUrl = notifyUrl;
-    }
 }
+
+// https://openapi-sandbox.dl.alipaydev.com/gateway.do
