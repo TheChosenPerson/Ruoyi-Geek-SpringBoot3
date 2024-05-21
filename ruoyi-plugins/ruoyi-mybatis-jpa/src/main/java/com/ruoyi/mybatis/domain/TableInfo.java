@@ -58,8 +58,8 @@ public class TableInfo {
                     String left = join.onLeft();
                     String right = join.onRight();
                     if (StringUtils.isEmpty(left) || StringUtils.isEmpty(right)) {
-                        left = join.onLeft();
-                        right = join.onRight();
+                        left = join.on();
+                        right = join.on();
                     }
                     return join.target() + " on "
                             + join.target() + "." + right + " = "
