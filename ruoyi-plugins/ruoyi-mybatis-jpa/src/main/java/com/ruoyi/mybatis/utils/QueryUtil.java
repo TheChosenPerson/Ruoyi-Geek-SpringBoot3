@@ -51,6 +51,12 @@ public class QueryUtil {
         }
     }
 
+    public static String getJoinSql(String leftTable, String rightTable, String leftField, String rightField) {
+        return rightTable + " on "
+                + leftTable + "." + leftField + " = "
+                + rightTable + "." + rightField;
+    }
+
     public static String getQuerySql(String column, String iField, Query query) {
         if (query == null)
             return "";

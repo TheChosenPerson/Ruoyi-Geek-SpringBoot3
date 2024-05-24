@@ -21,10 +21,6 @@ public class ColumnInfo extends BaseColumnInfo {
         this.querySql = this.getQuerySql(this.query);
     }
 
-    public String getColumnName() {
-        return columnName;
-    }
-
     public boolean isPrimaryKey() {
         return this.column.primaryKey();
     }
@@ -35,5 +31,9 @@ public class ColumnInfo extends BaseColumnInfo {
 
     public String getQuerySql() {
         return this.querySql;
+    }
+
+    public String getFullyQualifiedColumnName(String tableName) {
+        return tableName + "." + this.getColumnName();
     }
 }

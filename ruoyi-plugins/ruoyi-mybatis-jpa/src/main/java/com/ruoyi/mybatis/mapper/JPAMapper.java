@@ -9,22 +9,22 @@ import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
 import com.ruoyi.common.core.domain.BaseEntity;
-import com.ruoyi.mybatis.utils.SQLUtil;
+import com.ruoyi.mybatis.utils.SQLGenerator;
 
 public interface JPAMapper<T extends BaseEntity> {
-    @SelectProvider(value = SQLUtil.class, method = "selectById")
+    @SelectProvider(value = SQLGenerator.class, method = SQLGenerator.Method.SELECT_BY_ID)
     public T selectById(T entity);
 
-    @SelectProvider(value = SQLUtil.class, method = "list")
+    @SelectProvider(value = SQLGenerator.class, method = SQLGenerator.Method.LIST)
     public List<T> selectList(T entity);
 
-    @InsertProvider(value = SQLUtil.class, method = "insert")
+    @InsertProvider(value = SQLGenerator.class, method = SQLGenerator.Method.INSERT)
     @Options(useGeneratedKeys = true)
     public int insert(T entity);
 
-    @UpdateProvider(value = SQLUtil.class, method = "update")
+    @UpdateProvider(value = SQLGenerator.class, method = SQLGenerator.Method.UPDATE)
     public int update(T entity);
 
-    @DeleteProvider(value = SQLUtil.class, method = "deleteById")
+    @DeleteProvider(value = SQLGenerator.class, method = SQLGenerator.Method.DELETE_BY_ID)
     public int deleteById(T entity);
 }

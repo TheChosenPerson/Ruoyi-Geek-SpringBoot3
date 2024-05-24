@@ -30,16 +30,16 @@ public class MapColumnInfo extends BaseColumnInfo {
         return this.columnMap;
     }
 
-    public String getColumnName() {
-        return columnName;
-    }
-
     public String getQuerySql(Query query) {
         return QueryUtil.getQuerySql(this.getColumnName(), getTemplate(), query);
     }
 
     public String getQuerySql() {
         return this.columnMap.target() + "." + this.querySql;
+    }
+
+    public String getFullyQualifiedColumnName() {
+        return this.columnMap.target() + "." + this.getColumnName();
     }
 
 }

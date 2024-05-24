@@ -16,6 +16,14 @@ public class BaseColumnInfo {
         return getTemplate(false);
     }
 
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public String getUnqualifiedColumnName() {
+        return columnName;
+    }
+
     public String getTemplate(boolean params) {
         if (params) {
             return "#{params." + fieldName + "}";

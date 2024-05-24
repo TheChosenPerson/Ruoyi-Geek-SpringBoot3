@@ -14,6 +14,7 @@ import com.ruoyi.mybatis.annotation.Column;
 import com.ruoyi.mybatis.annotation.ColumnMap;
 import com.ruoyi.mybatis.annotation.EnableTableMap;
 import com.ruoyi.mybatis.annotation.Table;
+import com.ruoyi.mybatis.utils.QueryUtil;
 
 /**
  * 数据库表信息
@@ -35,17 +36,16 @@ public class TableInfo {
         if (this.table == null)
             throw new RuntimeException("error , not find tableName");
         this.tableName = this.table.name();
-        // 获取所有标记Column注解的字段
         this.enableTableMap = AnnotationUtils.findAnnotation(cls, EnableTableMap.class);
 
         Arrays.stream(cls.getDeclaredFields())
                 .filter(field -> AnnotationUtils.findAnnotation(field, Column.class) != null)
-                .map(field -> new ColumnInfo(field))
+                .map(ColumnInfo::new)
                 .forEach(this.columns::add);
 
         Arrays.stream(cls.getDeclaredFields())
                 .filter(field -> AnnotationUtils.findAnnotation(field, ColumnMap.class) != null)
-                .map(field -> new MapColumnInfo(field))
+                .map(MapColumnInfo::new)
                 .forEach(this.mapColumns::add);
 
         this.getColumns().stream()
@@ -55,42 +55,42 @@ public class TableInfo {
         this.getMapColumns().stream()
                 .map(MapColumnInfo::getJoin)
                 .map(join -> {
-                    String left = join.onLeft();
-                    String right = join.onRight();
-                    if (StringUtils.isEmpty(left) || StringUtils.isEmpty(right)) {
-                        left = join.on();
-                        right = join.on();
+                    String lf = join.onLeft();
+                    String rf = join.onRight();
+                    String lt = this.getTableNameT();
+                    String rt = join.target();
+                    if (StringUtils.isEmpty(lf) || StringUtils.isEmpty(rf)) {
+                        lf = join.on();
+                        rf = join.on();
                     }
-                    return join.target() + " on "
-                            + join.target() + "." + right + " = "
-                            + this.getTableNameT() + "." + left;
+                    return QueryUtil.getJoinSql(lt, rt, lf, rf);
                 })
                 .forEach(joinSql::add);
 
         if (this.enableTableMap != null) {
             if (StringUtils.isNotEmpty(this.enableTableMap.user())) {
-                String left = this.enableTableMap.userOnLeft();
-                String right = this.enableTableMap.userOnRight();
-                if (StringUtils.isEmpty(left) || StringUtils.isEmpty(right)) {
-                    left = this.enableTableMap.userOn();
-                    right = this.enableTableMap.userOn();
+                String lf = this.enableTableMap.userOnLeft();
+                String rf = this.enableTableMap.userOnRight();
+                String lt = this.getTableNameT();
+                String rt = this.enableTableMap.user();
+                if (StringUtils.isEmpty(lf) || StringUtils.isEmpty(rf)) {
+                    lf = this.enableTableMap.userOn();
+                    rf = this.enableTableMap.userOn();
                 }
-                this.joinSql.add("sys_user " + this.enableTableMap.user() + " on "
-                        + this.enableTableMap.user() + "." + right + " = "
-                        + this.getTableNameT() + "." + left);
+                this.joinSql.add("sys_user " + QueryUtil.getJoinSql(lt, rt, lf, rf));
                 this.hasDataScopeValue = true;
             }
 
             if (StringUtils.isNotEmpty(this.enableTableMap.dept())) {
-                String left = this.enableTableMap.deptOnLeft();
-                String right = this.enableTableMap.deptOnRight();
-                if (StringUtils.isEmpty(right) || StringUtils.isEmpty(left)) {
-                    left = this.enableTableMap.deptOn();
-                    right = this.enableTableMap.deptOn();
+                String lf = this.enableTableMap.deptOnLeft();
+                String rf = this.enableTableMap.deptOnRight();
+                String lt = this.getTableNameT();
+                String rt = this.enableTableMap.dept();
+                if (StringUtils.isEmpty(lf) || StringUtils.isEmpty(rf)) {
+                    lf = this.enableTableMap.deptOn();
+                    rf = this.enableTableMap.deptOn();
                 }
-                this.joinSql.add("sys_dept " + this.enableTableMap.dept() + " on "
-                        + this.enableTableMap.dept() + "." + right + " = "
-                        + this.getTableNameT() + "." + left);
+                this.joinSql.add("sys_dept " + QueryUtil.getJoinSql(lt, rt, lf, rf));
                 this.hasDataScopeValue = true;
             }
         }
@@ -135,7 +135,7 @@ public class TableInfo {
                     .map(column -> this.getTableNameT() + "." + column)
                     .collect(Collectors.toList());
             this.mapColumns.stream()
-                    .map(column -> column.getJoin().target() + "." + column.getColumnName())
+                    .map(MapColumnInfo::getFullyQualifiedColumnName)
                     .forEach(columns::add);
         }
 
@@ -153,7 +153,7 @@ public class TableInfo {
                     .map(column -> this.getTableNameT() + "." + column)
                     .collect(Collectors.toList());
             this.mapColumns.stream()
-                    .map(column -> column.getJoin().target() + "." + column.getColumnName())
+                    .map(MapColumnInfo::getFullyQualifiedColumnName)
                     .forEach(columns::add);
         }
 
