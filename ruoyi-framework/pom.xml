@@ -69,6 +69,11 @@
             <artifactId>ruoyi-system</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-plugins-starter</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -11,7 +11,7 @@
     <artifactId>ruoyi-mybatis-jpa</artifactId>
 
     <description>
-        ruoyi-mybatis-plus模块
+        ruoyi-mybatis-jpa
     </description>
 
     <dependencies>
@@ -20,6 +20,13 @@
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common</artifactId>
+        </dependency>
+
+        <!-- mybatis-plus 增强CRUD -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <optional>true</optional>
         </dependency>
 
     </dependencies>

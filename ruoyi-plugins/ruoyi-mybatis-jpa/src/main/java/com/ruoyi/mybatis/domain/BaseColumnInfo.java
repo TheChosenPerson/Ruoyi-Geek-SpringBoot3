@@ -12,6 +12,14 @@ public class BaseColumnInfo {
     protected Query query;
     protected String querySql;
 
+    public Field getField() {
+        return field;
+    }
+
+    public Query getQuery() {
+        return query;
+    }
+
     public String getTemplate() {
         return getTemplate(false);
     }

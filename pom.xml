@@ -37,7 +37,6 @@
         <jwt.version>0.9.1</jwt.version>
         <knife4j.version>4.5.0</knife4j.version>
         <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
-        <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
         <mysql.version>8.2.0</mysql.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jaxb.version>4.0.5</jaxb.version>
@@ -63,19 +62,6 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis-spring-boot.version}</version>
-            </dependency>
-
-            <!-- mybatis-plus 增强CRUD -->
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.mybatis</groupId>
-                        <artifactId>mybatis-spring</artifactId>
-                    </exclusion>
-                </exclusions>
-                <version>${mybatis-plus-boot-starter.version}</version>
             </dependency>
 
             <!-- jaxb 处理xml -->

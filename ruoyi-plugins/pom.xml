@@ -13,6 +13,7 @@
     <properties>
         <ruoyi.version>3.8.7.3.4</ruoyi.version>
         <ehcache.version>3.10.8</ehcache.version>
+        <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
     </properties>
 
     <description>
@@ -27,24 +28,37 @@
                 <version>${ehcache.version}</version>
             </dependency>
 
-            <!-- ehcache-->
+            <!-- mybatis-plus 增强CRUD -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.mybatis</groupId>
+                        <artifactId>mybatis-spring</artifactId>
+                    </exclusion>
+                </exclusions>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+
+            <!-- ruoyi-ehcache-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-ehcache</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- ehcache-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-ehcache</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
-
-            <!-- ehcache-->
+            <!-- mybatis-jpa-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-mybatis-jpa</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <!-- mybatis-plus-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-mybatis-plus</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
@@ -68,6 +82,7 @@
     <modules>
         <module>ruoyi-ehcache</module>
         <module>ruoyi-mybatis-jpa</module>
+        <module>ruoyi-mybatis-plus</module>
         <module>ruoyi-websocket</module>
         <module>ruoyi-plugins-starter</module>
     </modules>

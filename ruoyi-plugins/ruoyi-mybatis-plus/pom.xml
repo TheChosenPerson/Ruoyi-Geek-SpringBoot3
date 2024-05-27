@@ -8,10 +8,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ruoyi-plugins-starter</artifactId>
+    <artifactId>ruoyi-mybatis-plus</artifactId>
 
     <description>
-        中间件
+        ruoyi-mybatis-plus模块
     </description>
 
     <dependencies>
@@ -22,29 +22,12 @@
             <artifactId>ruoyi-common</artifactId>
         </dependency>
 
-        <!-- ehcache-->
+        <!-- mybatis-plus 增强CRUD -->
         <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-ehcache</artifactId>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
 
-        <!-- websocket -->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-websocket</artifactId>
-        </dependency>
-
-        <!-- mybatis-jpa -->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-mybatis-jpa</artifactId>
-        </dependency>
-
-        <!-- mybatis-plus -->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-mybatis-plus</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

@@ -1,69 +1,84 @@
-// package com.ruoyi.mybatis.utils;
+package com.ruoyi.mybatis.utils;
 
-// import java.util.Arrays;
-// import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
-// import org.springframework.core.annotation.AnnotationUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.mybatis.annotation.Query;
+import com.ruoyi.mybatis.domain.TableInfo;
 
-// import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-// import com.ruoyi.common.core.domain.BaseEntity;
-// import com.ruoyi.mybatis.annotation.Query;
+public class QueryWrapperUtil {
+    public static List<String> getArrayFromParam(Object obj) {
+        List<String> list = new ArrayList<>();
+        if (obj instanceof String) {
+            for (String split : ((String) obj).split(",")) {
+                list.add(split);
+            }
+        } else if (obj instanceof Collection) {
+            for (Object split : ((Collection<?>) obj)) {
+                list.add(split.toString());
+            }
+        }
+        return list;
+    }
 
-// public class QueryWrapperUtil {
-//     public static <T extends BaseEntity> QueryWrapper<T> initQueryWrapper(T entity) {
-//         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+    public static <T extends BaseEntity> QueryWrapper<T> initQueryWrapper(T entity) {
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+        TableInfo tableInfo = TableContainer.getTableInfo(entity);
+        Map<String, Object> params = entity.getParams();
 
-//         Class<?> clazz = entity.getClass();
-//         Map<String, Object> params = entity.getParams();
-//         Arrays.stream(clazz.getDeclaredFields())
-//                 .filter(field -> AnnotationUtils.findAnnotation(field, Query.class) != null)
-//                 .forEach(field -> {
-//                     field.setAccessible(true);
-//                     Query queryAnnotation = field.getAnnotation(Query.class);
+        tableInfo.getNotNullColumnsForQuery(entity).stream()
+                .forEach(field -> {
+                    Object fieldValue = null;
+                    try {
+                        fieldValue = field.getField().get(entity);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    Query queryAnnotation = field.getQuery();
+                    switch (queryAnnotation.operation()) {
+                        case eq -> queryWrapper.eq(field.getUnqualifiedColumnName(), fieldValue);
+                        case ne -> queryWrapper.ne(field.getUnqualifiedColumnName(), fieldValue);
+                        case gt -> queryWrapper.gt(field.getUnqualifiedColumnName(), fieldValue);
+                        case ge -> queryWrapper.ge(field.getUnqualifiedColumnName(), fieldValue);
+                        case le -> queryWrapper.le(field.getUnqualifiedColumnName(), fieldValue);
+                        case lt -> queryWrapper.lt(field.getUnqualifiedColumnName(), fieldValue);
+                        case between -> {
+                            String begin = queryAnnotation.sections()[0];
+                            String end = queryAnnotation.sections()[1];
+                            queryWrapper.between(field.getUnqualifiedColumnName(), params.get(begin), params.get(end));
+                        }
+                        case notBetween -> {
+                            String begin = queryAnnotation.sections()[0];
+                            String end = queryAnnotation.sections()[1];
+                            queryWrapper.notBetween(field.getUnqualifiedColumnName(), params.get(begin),
+                                    params.get(end));
+                        }
+                        case like -> queryWrapper.like(field.getUnqualifiedColumnName(), fieldValue);
+                        case notLike -> queryWrapper.notLike(field.getUnqualifiedColumnName(), fieldValue);
+                        case likeLeft -> queryWrapper.likeLeft(field.getUnqualifiedColumnName(), fieldValue);
+                        case likeRight -> queryWrapper.likeRight(field.getUnqualifiedColumnName(), fieldValue);
+                        case notLikeLeft -> queryWrapper.notLikeLeft(field.getUnqualifiedColumnName(), fieldValue);
+                        case notLikeRight -> queryWrapper.notLikeRight(field.getUnqualifiedColumnName(), fieldValue);
+                        case isNull -> queryWrapper.isNull(field.getUnqualifiedColumnName());
+                        case isNotNull -> queryWrapper.isNotNull(field.getUnqualifiedColumnName());
+                        case in -> queryWrapper.in(field.getUnqualifiedColumnName(),
+                                getArrayFromParam(params.get(queryAnnotation.section())));
+                        case notIn -> queryWrapper.notIn(field.getUnqualifiedColumnName(),
+                                getArrayFromParam(params.get(queryAnnotation.section())));
+                        case inSql -> queryWrapper.inSql(field.getUnqualifiedColumnName(), queryAnnotation.sql());
+                        case notInSql -> queryWrapper.notInSql(field.getUnqualifiedColumnName(), queryAnnotation.sql());
+                        default ->
+                            throw new IllegalArgumentException(
+                                    "Unsupported operation: " + queryAnnotation.operation());
+                    }
+                });
 
-//                     try {
-//                         Object fieldValue = field.get(entity);
-//                         if (fieldValue != null) { // 判断属性值是否非空
-//                             switch (queryAnnotation.operation()) {
-//                                 case eq -> queryWrapper.eq(queryAnnotation.column(), fieldValue);
-//                                 case ne -> queryWrapper.ne(queryAnnotation.column(), fieldValue);
-//                                 case gt -> queryWrapper.gt(queryAnnotation.column(), fieldValue);
-//                                 case ge -> queryWrapper.ge(queryAnnotation.column(), fieldValue);
-//                                 case le -> queryWrapper.le(queryAnnotation.column(), fieldValue);
-//                                 case lt -> queryWrapper.lt(queryAnnotation.column(), fieldValue);
-//                                 case between -> {
-//                                     String begin = queryAnnotation.section()[0];
-//                                     String end = queryAnnotation.section()[1];
-//                                     queryWrapper.between(queryAnnotation.column(), params.get(begin), params.get(end));
-//                                 }
-//                                 case notBetween -> {
-//                                     String begin = queryAnnotation.section()[0];
-//                                     String end = queryAnnotation.section()[1];
-//                                     queryWrapper.notBetween(queryAnnotation.column(), params.get(begin),
-//                                             params.get(end));
-//                                 }
-//                                 case like -> queryWrapper.like(queryAnnotation.column(), fieldValue);
-//                                 case notLike -> queryWrapper.notLike(queryAnnotation.column(), fieldValue);
-//                                 case likeLeft -> queryWrapper.likeLeft(queryAnnotation.column(), fieldValue);
-//                                 case likeRight -> queryWrapper.likeRight(queryAnnotation.column(), fieldValue);
-//                                 case notLikeLeft -> queryWrapper.notLikeLeft(queryAnnotation.column(), fieldValue);
-//                                 case notLikeRight -> queryWrapper.notLikeRight(queryAnnotation.column(), fieldValue);
-//                                 case isNull -> queryWrapper.isNull(queryAnnotation.column());
-//                                 case isNotNull -> queryWrapper.isNotNull(queryAnnotation.column());
-//                                 case in -> queryWrapper.in(queryAnnotation.column(), (Object[]) fieldValue);
-//                                 case notIn -> queryWrapper.notIn(queryAnnotation.column(), (Object[]) fieldValue);
-//                                 case inSql -> queryWrapper.inSql(queryAnnotation.column(), queryAnnotation.sql());
-//                                 case notInSql -> queryWrapper.notInSql(queryAnnotation.column(), queryAnnotation.sql());
-//                                 default ->
-//                                     throw new IllegalArgumentException(
-//                                             "Unsupported operation: " + queryAnnotation.operation());
-//                             }
-//                         }
-//                     } catch (IllegalAccessException e) {
-//                         throw new RuntimeException("Failed to access field for building query conditions.", e);
-//                     }
-//                 });
-
-//         return queryWrapper;
-//     }
-// }
+        return queryWrapper;
+    }
+}
