@@ -47,14 +47,12 @@ public class SQBController extends BaseController {
             @Parameter(name = "orderNumber", description = "订单号", required = true)
     })
     @PostMapping("/query")
-    @Anonymous
     public AjaxResult query(@RequestParam("orderNumber") String orderNumber) throws Exception {
         PayOrder payOrder = payOrderServicer.selectPayOrderByOrderNumber(orderNumber);
         return success(sqbServiceImpl.query(payOrder));
     }
 
     @PostMapping("/refund")
-    @Anonymous
     public AjaxResult refund(@RequestBody PayOrder payOrder) {
         String refund = sqbServiceImpl.refund(payOrder);
         if (refund == null) {
