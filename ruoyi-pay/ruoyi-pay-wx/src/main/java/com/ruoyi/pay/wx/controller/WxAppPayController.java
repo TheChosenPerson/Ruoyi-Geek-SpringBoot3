@@ -1,38 +1,29 @@
 package com.ruoyi.pay.wx.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ruoyi.common.annotation.Anonymous;
+import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.service.IPayOrderService;
 import com.ruoyi.pay.wx.config.WxPayAppConfig;
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
-import com.wechat.pay.java.core.exception.ValidationException;
-import com.wechat.pay.java.core.notification.NotificationConfig;
-import com.wechat.pay.java.core.notification.NotificationParser;
-import com.wechat.pay.java.core.notification.RequestParam;
-import com.wechat.pay.java.service.payments.nativepay.model.QueryOrderByIdRequest;
-import com.wechat.pay.java.service.wexinpayscoreparking.model.Transaction;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.ruoyi.common.core.controller.BaseController;
 import com.wechat.pay.java.service.payments.nativepay.NativePayService;
 import com.wechat.pay.java.service.payments.nativepay.model.Amount;
 import com.wechat.pay.java.service.payments.nativepay.model.PrepayRequest;
 import com.wechat.pay.java.service.payments.nativepay.model.PrepayResponse;
-import lombok.extern.slf4j.Slf4j;
+
+import io.swagger.v3.oas.annotations.Operation;
 
 /**
  * @author zlh
  */
-@Slf4j
 @RestController
 @RequestMapping("/wxPay")
 public class WxAppPayController extends BaseController {

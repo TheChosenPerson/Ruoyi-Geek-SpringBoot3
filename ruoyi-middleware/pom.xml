@@ -11,15 +11,13 @@
     <artifactId>ruoyi-middleware</artifactId>
 
     <properties>
-        <ruoyi.version>3.8.7.3.4</ruoyi.version>
         <minio.version>8.2.1</minio.version>
-        <spring-boot.version>3.2.5</spring-boot.version>
     </properties>
 
     <description>
         中间件
     </description>
-    
+
     <dependencyManagement>
         <dependencies>
             <!-- Minio 文件存储 -->

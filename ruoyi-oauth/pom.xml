@@ -11,9 +11,9 @@
     <artifactId>ruoyi-oauth</artifactId>
 
     <properties>
-        <ruoyi.version>3.8.7.3.4</ruoyi.version>
         <justauth.version>1.16.6</justauth.version>
         <alipay.version>3.7.4.ALL</alipay.version>
+        <dysmsapi.version>2.0.24</dysmsapi.version>
     </properties>
 
     <description>
@@ -28,15 +28,25 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- justauth第三方认证框架 -->
             <dependency>
                 <groupId>me.zhyd.oauth</groupId>
                 <artifactId>JustAuth</artifactId>
                 <version>${justauth.version}</version>
             </dependency>
+
+            <!-- 支付宝开发者sdk -->
             <dependency>
                 <groupId>com.alipay.sdk</groupId>
                 <artifactId>alipay-sdk-java</artifactId>
                 <version>${alipay.version}</version>
+            </dependency>
+
+            <!-- 阿里云短信认证 -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>dysmsapi20170525</artifactId>
+                <version>${dysmsapi.version}</version>
             </dependency>
 
             <!-- justauth通用认证 -->

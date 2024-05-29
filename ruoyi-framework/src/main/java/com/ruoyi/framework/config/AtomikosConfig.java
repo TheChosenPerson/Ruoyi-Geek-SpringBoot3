@@ -23,15 +23,17 @@ public class AtomikosConfig
     @Bean(name = "userTransaction")
     public UserTransaction userTransaction() throws Throwable
     {
-        UserTransactionImp userTransactionImp = new UserTransactionImp();
-        userTransactionImp.setTransactionTimeout(10000);
-        return userTransactionImp;
+        UserTransaction userTransaction = new UserTransactionImp();
+        // 设置事务超时时间为10000毫秒
+        userTransaction.setTransactionTimeout(10000);
+        return userTransaction;
     }
 
     @Bean(name = "atomikosTransactionManager", initMethod = "init", destroyMethod = "close")
     public TransactionManager atomikosTransactionManager() throws Throwable
     {
         UserTransactionManager userTransactionManager = new UserTransactionManager();
+        // 设置是否强制关闭事务管理器为false
         userTransactionManager.setForceShutdown(false);
         return userTransactionManager;
     }
