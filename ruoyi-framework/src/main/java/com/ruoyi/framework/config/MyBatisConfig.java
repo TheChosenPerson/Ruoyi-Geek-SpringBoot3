@@ -150,7 +150,7 @@ public class MyBatisConfig {
             Map<Object, SqlSessionFactory> sqlSessionFactoryMap) {
         try {
             SqlSessionFactory factorySlave = SpringUtils.getBean(sqlSessionFactoryName);
-            sqlSessionFactoryMap.put(dataSourceType, factorySlave);
+            sqlSessionFactoryMap.put(dataSourceType.name(), factorySlave);
         } catch (Exception e) {
             logger.error("Failed to register a SqlSessionFactory:{}", sqlSessionFactoryName);
         }
