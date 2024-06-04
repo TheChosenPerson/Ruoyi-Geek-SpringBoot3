@@ -58,7 +58,7 @@ public class AliPayConfig {
     }
 
     @Bean
-    protected Config config() throws Exception {
+    protected Config alipayBaseConfig() throws Exception {
         // 设置参数（全局只需设置一次）
         Config config = new Config();
         config.protocol = "https";

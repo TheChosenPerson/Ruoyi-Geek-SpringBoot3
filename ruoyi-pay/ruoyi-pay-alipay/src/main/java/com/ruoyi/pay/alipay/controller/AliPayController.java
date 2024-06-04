@@ -64,7 +64,6 @@ public class AliPayController {
             Map<String, String[]> requestParams = request.getParameterMap();
             for (String name : requestParams.keySet()) {
                 params.put(name, request.getParameter(name));
-                // System.out.println(name + " = " + request.getParameter(name));
             }
 
             String orderNumber = params.get("out_trade_no");
