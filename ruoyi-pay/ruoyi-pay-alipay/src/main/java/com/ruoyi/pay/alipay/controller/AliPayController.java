@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +23,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+
 /**
  * @author zlh
  */
 @RestController
 @RequestMapping("/alipay")
+@ConditionalOnProperty(prefix = "pay.alipay", name = "enabled", havingValue = "true")
 @Tag(name = "【支付宝】管理")
 public class AliPayController {
 
@@ -44,8 +47,11 @@ public class AliPayController {
         PayOrder aliPay = payOrderService.selectPayOrderByOrderNumber(orderNumber);
         try {
             // 发起API调用（以创建当面付收款二维码为例）
-            response = Factory.Payment.Page()
-                    .pay(aliPay.getOrderContent(), aliPay.getOrderNumber(), aliPay.getTotalAmount(), "");
+            response = Factory.Payment.Page().pay(
+                    aliPay.getOrderContent(),
+                    aliPay.getOrderNumber(),
+                    aliPay.getActualAmount(),
+                    "");
         } catch (Exception e) {
             System.err.println("调用遭遇异常，原因：" + e.getMessage());
             throw new RuntimeException(e.getMessage(), e);

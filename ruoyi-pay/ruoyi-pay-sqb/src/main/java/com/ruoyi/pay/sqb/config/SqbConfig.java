@@ -1,10 +1,12 @@
-package com.ruoyi.pay.sqb.constant;
+package com.ruoyi.pay.sqb.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SqbConstant {
+@ConditionalOnProperty(prefix = "pay.sqb", name = "enabled", havingValue = "true")
+public class SqbConfig {
     @Value("${pay.sqb.apiDomain}")
     private String apiDomain;
 

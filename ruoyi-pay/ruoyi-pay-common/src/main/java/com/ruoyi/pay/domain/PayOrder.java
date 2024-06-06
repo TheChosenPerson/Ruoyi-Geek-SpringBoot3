@@ -42,6 +42,11 @@ public class PayOrder extends BaseEntity {
     @Excel(name = "订单总金额")
     private String totalAmount;
 
+    /** 订单总金额 */
+    @Schema(title = "实际支付金额")
+    @Excel(name = "实际支付金额")
+    private String actualAmount;
+
     /** 订单内容 */
     @Schema(title = "订单内容")
     @Excel(name = "订单内容")
@@ -97,6 +102,14 @@ public class PayOrder extends BaseEntity {
         return totalAmount;
     }
 
+    public String getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(String actualAmount) {
+        this.actualAmount = actualAmount;
+    }
+
     public void setOrderContent(String orderContent) {
         this.orderContent = orderContent;
     }
@@ -129,6 +142,7 @@ public class PayOrder extends BaseEntity {
                 .append("orderNumber", getOrderNumber())
                 .append("orderStatus", getOrderStatus())
                 .append("totalAmount", getTotalAmount())
+                .append("actualAmount", getActualAmount())
                 .append("orderContent", getOrderContent())
                 .append("orderRemark", getOrderRemark())
                 .append("orderMessage", getOrderMessage())

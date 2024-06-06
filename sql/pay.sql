@@ -8,6 +8,7 @@ CREATE TABLE `pay_order`  (
   `order_number` varchar(255) NULL DEFAULT NULL COMMENT '订单号',
   `order_status` varchar(255) NULL DEFAULT NULL COMMENT '订单状态',
   `total_amount` varchar(255) NULL DEFAULT NULL COMMENT '订单总金额',
+  `actual_amount` varchar(255) NULL DEFAULT NULL COMMENT '实际支付金额',
   `order_content` varchar(255) NULL DEFAULT NULL COMMENT '订单内容',
   `order_remark` varchar(255) NULL DEFAULT NULL COMMENT '订单备注',
   `order_message` varchar(255) NULL DEFAULT NULL COMMENT '负载信息',

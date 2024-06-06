@@ -7,7 +7,7 @@ import java.nio.file.StandardCopyOption;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +23,8 @@ import com.wechat.pay.java.service.payments.nativepay.NativePayService;
  * @author ZlH
  */
 @Configuration
-@ConfigurationProperties(prefix = "wechat")
-public class WxPayAppConfig {
+@ConditionalOnProperty(prefix = "pay.wechat", name = "enabled", havingValue = "true")
+public class WxPayConfig {
 
     @Value("${pay.wechat.merchantId}")
     private String wxchantId;

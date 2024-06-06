@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.service.IPayOrderService;
-import com.ruoyi.pay.wx.config.WxPayAppConfig;
+import com.ruoyi.pay.wx.config.WxPayConfig;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.notification.NotificationParser;
 import com.wechat.pay.java.core.notification.RequestParam;
@@ -38,10 +39,11 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
+@ConditionalOnProperty(prefix = "pay.wechat", name = "enabled", havingValue = "true")
 @RequestMapping("/wxPay")
-public class WxAppPayController extends BaseController {
+public class WxPayController extends BaseController {
     @Autowired
-    private WxPayAppConfig wxPayAppConfig;
+    private WxPayConfig wxPayAppConfig;
     @Autowired
     private IPayOrderService payOrderService;
 
@@ -57,7 +59,7 @@ public class WxAppPayController extends BaseController {
     @GetMapping("/pay/{orderNumber}")
     public AjaxResult pay(@PathVariable String orderNumber) throws Exception {
         PayOrder aliPay = payOrderService.selectPayOrderByOrderNumber(orderNumber);
-        String amountStr = aliPay.getTotalAmount();
+        String amountStr = aliPay.getActualAmount();
         double amountDouble = Double.parseDouble(amountStr);
         int totalAmountInt = (int) (amountDouble * 100);
         PrepayRequest request = new PrepayRequest();

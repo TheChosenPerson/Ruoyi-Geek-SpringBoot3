@@ -1,5 +1,6 @@
 pay:
   sqb:
+    enabled: false
     apiDomain: "apiDomain"
     terminalSn: "terminalSn"
     terminalKey: "terminalKey"
@@ -7,13 +8,15 @@ pay:
     vendorSn: "vendorSn"
     vendorKey: "vendorKey"
   alipay:
+    enabled: false
     appId: appId
     appPrivateKey: appPrivateKey #classpath:pay/alipay/alipay_private_key.pem
     alipayPublicKey: alipayPublicKey #classpath:pay/alipay/alipay_public_key.pem
     notifyUrl: http://www.sdaizy.com/prod-api/alipay/notify
   wechat:
+    enabled: false
     merchantId: merchantId
-    privateKeyPath: privateKeyPath
+    privateKeyPath: privateKeyPath # classpath:pay/wx/apiclient_key.pem
     merchantSerialNumber: merchantSerialNumber
     apiV3Key: apiV3Key
     appId: appId

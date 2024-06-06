@@ -1,6 +1,7 @@
 package com.ruoyi.pay.sqb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "sqb支付")
 @RestController
 @RequestMapping("/pay/sql")
+@ConditionalOnProperty(prefix = "pay.sqb", name = "enabled", havingValue = "true")
 public class SQBController extends BaseController {
     @Autowired
     private SQBServiceImpl sqbServiceImpl;

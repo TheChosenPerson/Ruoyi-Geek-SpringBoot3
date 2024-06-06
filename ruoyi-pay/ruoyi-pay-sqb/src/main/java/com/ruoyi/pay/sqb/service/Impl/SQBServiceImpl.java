@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson2.JSON;
@@ -11,13 +12,14 @@ import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.sign.Md5Utils;
 import com.ruoyi.pay.domain.PayOrder;
-import com.ruoyi.pay.sqb.constant.SqbConstant;
+import com.ruoyi.pay.sqb.config.SqbConfig;
 import com.ruoyi.pay.sqb.utils.HttpUtil;
 
 @Service
+@ConditionalOnProperty(prefix = "pay.sqb", name = "enabled", havingValue = "true")
 public class SQBServiceImpl {
     @Autowired
-    private SqbConstant sqbConstant;
+    private SqbConfig sqbConstant;
 
     /**
      * 计算字符串的MD5值
@@ -107,7 +109,7 @@ public class SQBServiceImpl {
         try {
             params.put("terminal_sn", sqbConstant.getTerminalSn()); // 收钱吧终端ID
             params.put("client_sn", payOrder.getOrderNumber()); // 商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
-            params.put("refund_amount", payOrder.getTotalAmount()); // 退款金额
+            params.put("refund_amount", payOrder.getActualAmount()); // 退款金额
             params.put("refund_request_no", "1"); // 商户退款所需序列号,表明是第几次退款
             params.put("operator", "kay"); // 门店操作员
 
@@ -156,14 +158,14 @@ public class SQBServiceImpl {
                 "&return_url=" + "https://www.shouqianba.com/" +
                 "&subject=" + payOrder.getRemark() +
                 "&terminal_sn=" + sqbConstant.getTerminalSn() +
-                "&total_amount=" + payOrder.getTotalAmount();
+                "&total_amount=" + payOrder.getActualAmount();
         String urlParam = "" +
                 "client_sn=" + payOrder.getOrderNumber() +
                 "&operator=" + URLEncoder.encode("admin", "UTF-8") +
                 "&return_url=" + "https://www.shouqianba.com/" +
                 "&subject=" + URLEncoder.encode(payOrder.getRemark(), "UTF-8") +
                 "&terminal_sn=" + sqbConstant.getTerminalSn() +
-                "&total_amount=" + payOrder.getTotalAmount();
+                "&total_amount=" + payOrder.getActualAmount();
         String sign = getSign(param + "&key=" + sqbConstant.getTerminalKey());
         return "https://qr.shouqianba.com/gateway?" + urlParam + "&sign=" + sign.toUpperCase();
     }
@@ -179,7 +181,7 @@ public class SQBServiceImpl {
         try {
             params.put("terminal_sn", sqbConstant.getTerminalSn()); // 收钱吧终端ID
             params.put("client_sn", payOrder.getOrderNumber()); // 商户系统订单号,必须在商户系统内唯一；且长度不超过32字节
-            params.put("total_amount", payOrder.getTotalAmount()); // 交易总金额
+            params.put("total_amount", payOrder.getActualAmount()); // 交易总金额
             // params.put("payway", payway); // 支付方式
             params.put("subject", "无简介"); // 交易简介
             params.put("operator", SecurityUtils.getUsername()); // 门店操作员
