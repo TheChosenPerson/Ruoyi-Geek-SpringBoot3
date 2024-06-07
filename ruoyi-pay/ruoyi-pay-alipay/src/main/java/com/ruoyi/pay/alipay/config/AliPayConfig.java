@@ -15,6 +15,7 @@ import org.springframework.core.io.Resource;
 
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.kernel.Config;
+
 /**
  * @author zlh
  */
@@ -40,10 +41,9 @@ public class AliPayConfig {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String appPrivateKeyValue = bufferedReader.lines().collect(Collectors.joining(System.lineSeparator()));
             bufferedReader.close();
-            return appPrivateKeyValue;
-        } else {
-            return appPrivateKey;
+            appPrivateKey = appPrivateKeyValue;
         }
+        return appPrivateKey;
     }
 
     private String getAlipayPublicKey() throws Exception {
@@ -53,10 +53,10 @@ public class AliPayConfig {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String alipayPublicKeyValue = bufferedReader.lines().collect(Collectors.joining(System.lineSeparator()));
             bufferedReader.close();
-            return alipayPublicKeyValue;
-        } else {
-            return alipayPublicKey;
+            alipayPublicKey = alipayPublicKeyValue;
         }
+        return alipayPublicKey;
+
     }
 
     @Bean
