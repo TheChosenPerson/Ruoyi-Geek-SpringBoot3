@@ -1,20 +1,24 @@
 package com.ruoyi.pay.sqb.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.service.IPayOrderService;
+import com.ruoyi.pay.sqb.service.ISqbPayService;
 import com.ruoyi.pay.sqb.service.Impl.SQBServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "sqb支付")
 @RestController
-@RequestMapping("/pay/sql")
+@RequestMapping("/pay/sqb")
 @ConditionalOnProperty(prefix = "pay.sqb", name = "enabled", havingValue = "true")
 public class SQBController extends BaseController {
     @Autowired
@@ -32,13 +36,16 @@ public class SQBController extends BaseController {
     @Autowired
     private IPayOrderService payOrderServicer;
 
+    @Autowired(required = false)
+    private ISqbPayService sqbPayService;
+
     @Operation(summary = "获取支付url")
     @Parameters(value = {
             @Parameter(name = "orderNumber", description = "订单号", required = true)
     })
-    @PostMapping("/payUrl")
+    @PostMapping("/url/{orderNumber}")
     @Anonymous
-    public R<String> payUrl(@RequestParam("orderNumber") String orderNumber) throws Exception {
+    public R<String> payUrl(@PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         PayOrder payOrder = payOrderServicer.selectPayOrderByOrderNumber(orderNumber);
         String url = sqbServiceImpl.payUrl(payOrder);
         return R.ok(url);
@@ -48,8 +55,8 @@ public class SQBController extends BaseController {
     @Parameters(value = {
             @Parameter(name = "orderNumber", description = "订单号", required = true)
     })
-    @PostMapping("/query")
-    public AjaxResult query(@RequestParam("orderNumber") String orderNumber) throws Exception {
+    @PostMapping("/query/{orderNumber}")
+    public AjaxResult query(@PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         PayOrder payOrder = payOrderServicer.selectPayOrderByOrderNumber(orderNumber);
         return success(sqbServiceImpl.query(payOrder));
     }
@@ -63,4 +70,18 @@ public class SQBController extends BaseController {
         Object parse = JSON.parse(refund);
         return success(parse);
     }
+
+    @PostMapping("/notify")
+    @Anonymous
+    @Operation(summary = "支付回调")
+    public AjaxResult payNotify(@RequestBody JSONObject jsonObject) throws IOException {
+        // 验签
+        // 修改订单状态
+        // 用户自定义行为
+        if (sqbPayService != null) {
+            sqbPayService.callback(jsonObject);
+        }
+        return AjaxResult.success();
+    }
+
 }

@@ -18,6 +18,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.service.IPayOrderService;
 import com.ruoyi.pay.wx.config.WxPayConfig;
+import com.ruoyi.pay.wx.service.IWxPayService;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.notification.NotificationParser;
 import com.wechat.pay.java.core.notification.RequestParam;
@@ -32,18 +33,20 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author zlh
  */
-@Slf4j
 @RestController
 @ConditionalOnProperty(prefix = "pay.wechat", name = "enabled", havingValue = "true")
-@RequestMapping("/wxPay")
+@RequestMapping("/pay/wechat")
 public class WxPayController extends BaseController {
     @Autowired
     private WxPayConfig wxPayAppConfig;
+
+    @Autowired(required = false)
+    private IWxPayService wxPayService;
+
     @Autowired
     private IPayOrderService payOrderService;
 
@@ -56,8 +59,8 @@ public class WxPayController extends BaseController {
     @Parameters({
             @Parameter(name = "orderNumber", description = "订单号", required = true)
     })
-    @GetMapping("/pay/{orderNumber}")
-    public AjaxResult pay(@PathVariable String orderNumber) throws Exception {
+    @GetMapping("/url/{orderNumber}")
+    public AjaxResult pay(@PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         PayOrder aliPay = payOrderService.selectPayOrderByOrderNumber(orderNumber);
         String amountStr = aliPay.getActualAmount();
         double amountDouble = Double.parseDouble(amountStr);
@@ -72,7 +75,7 @@ public class WxPayController extends BaseController {
         request.setNotifyUrl(wxPayAppConfig.getNotifyUrl());
         request.setOutTradeNo(aliPay.getOrderNumber());
         PrepayResponse response = nativePayService.prepay(request);
-        return AjaxResult.success(response.getCodeUrl());
+        return success(response.getCodeUrl());
     }
 
     @Anonymous
@@ -80,8 +83,6 @@ public class WxPayController extends BaseController {
     @PostMapping("/notify")
     public AjaxResult WxPayList(HttpServletRequest servletRequest, HttpServletResponse response)
             throws Exception {
-        log.info("=========微信异步回调========");
-
         String timeStamp = servletRequest.getHeader("Wechatpay-Timestamp");
         String nonce = servletRequest.getHeader("Wechatpay-Nonce");
         String signature = servletRequest.getHeader("Wechatpay-Signature");
@@ -99,15 +100,15 @@ public class WxPayController extends BaseController {
 
             try {
                 Transaction transaction = notificationParser.parse(requestParam, Transaction.class);
-                String orderNumber = transaction.getOutTradeNo();
-                payOrderService.updateStatus(orderNumber, "已支付");
+                if (wxPayService != null) {
+                    wxPayService.callback(transaction);
+                }
                 return success();
             } catch (ValidationException e) {
                 return error();
             }
         } catch (IOException e) {
-            log.error("Error reading request body", e);
-            throw new RuntimeException("Error reading request body", e);
+            return error(e.getMessage());
         }
     }
 

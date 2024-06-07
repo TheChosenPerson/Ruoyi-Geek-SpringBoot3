@@ -4,22 +4,31 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.sign.Md5Utils;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.sqb.config.SqbConfig;
 import com.ruoyi.pay.sqb.utils.HttpUtil;
 
 @Service
-@ConditionalOnProperty(prefix = "pay.sqb", name = "enabled", havingValue = "true")
 public class SQBServiceImpl {
     @Autowired
-    private SqbConfig sqbConstant;
+    private SqbConfig sqbConfig;
+
+    @Value("${pay.sqb.notifyUrl}")
+    private String defaultNotifyUrl;
+
+    @Value("${pay.sqb.notifyBaseUrl}")
+    private String defaultNotifyBaseUrl;
+
+    @Value("${pay.sqb.proxy}")
+    private String proxyPath;
 
     /**
      * 计算字符串的MD5值
@@ -44,17 +53,16 @@ public class SQBServiceImpl {
      * @return {terminal_sn:"$终端号",terminal_key:"$终端密钥"}
      */
     public JSONObject activate(String code, String deviceId, String clientSn, String name) {
-        String url = sqbConstant.getApiDomain() + "/terminal/activate";
+        String url = sqbConfig.getApiDomain() + "/terminal/activate";
         JSONObject params = new JSONObject();
         try {
-            params.put("app_id", sqbConstant.getAppId()); // app_id，必填
+            params.put("app_id", sqbConfig.getAppId()); // app_id，必填
             params.put("code", code); // 激活码，必填
             params.put("device_id", deviceId); // 客户方收银终端序列号，需保证同一app_id下唯一，必填。为方便识别，建议格式为“品牌名+门店编号+‘POS’+POS编号“
             params.put("client_sn", clientSn); // 客户方终端编号，一般客户方或系统给收银终端的编号，必填
             params.put("name", name); // 客户方终端名称，必填
-
-            String sign = getSign(params.toString() + sqbConstant.getVendorKey());
-            String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConstant.getVendorSn());
+            String sign = getSign(params.toString() + sqbConfig.getVendorKey());
+            String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConfig.getVendorSn());
             JSONObject retObj = JSON.parseObject(result);
             String resCode = retObj.get("result_code").toString();
             if (!resCode.equals("200"))
@@ -75,15 +83,15 @@ public class SQBServiceImpl {
      * @return {terminal_sn:"$终端号",terminal_key:"$终端密钥"}
      */
     public JSONObject checkin() {
-        String url = sqbConstant.getApiDomain() + "/terminal/checkin";
+        String url = sqbConfig.getApiDomain() + "/terminal/checkin";
         JSONObject params = new JSONObject();
         try {
-            params.put("terminal_sn", sqbConstant.getTerminalSn());
+            params.put("terminal_sn", sqbConfig.getTerminalSn());
             params.put("device_id", "HUISUAN001POS01");
             params.put("os_info", "Mac OS");
             params.put("sdk_version", "Java SDK v1.0");
-            String sign = getSign(params.toString() + sqbConstant.getTerminalKey());
-            String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConstant.getTerminalSn());
+            String sign = getSign(params.toString() + sqbConfig.getTerminalKey());
+            String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConfig.getTerminalSn());
             JSONObject retObj = JSON.parseObject(result);
             String resCode = retObj.get("result_code").toString();
             if (!resCode.equals("200"))
@@ -104,17 +112,17 @@ public class SQBServiceImpl {
      * @return
      */
     public String refund(PayOrder payOrder) {
-        String url = sqbConstant.getApiDomain() + "/upay/v2/refund";
+        String url = sqbConfig.getApiDomain() + "/upay/v2/refund";
         JSONObject params = new JSONObject();
         try {
-            params.put("terminal_sn", sqbConstant.getTerminalSn()); // 收钱吧终端ID
+            params.put("terminal_sn", sqbConfig.getTerminalSn()); // 收钱吧终端ID
             params.put("client_sn", payOrder.getOrderNumber()); // 商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
-            params.put("refund_amount", payOrder.getActualAmount()); // 退款金额
+            params.put("refund_amount", payOrder.getTotalAmount()); // 退款金额
             params.put("refund_request_no", "1"); // 商户退款所需序列号,表明是第几次退款
             params.put("operator", "kay"); // 门店操作员
 
-            String sign = getSign(params.toString() + sqbConstant.getTerminalKey());
-            String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConstant.getTerminalSn());
+            String sign = getSign(params.toString() + sqbConfig.getTerminalKey());
+            String result = HttpUtil.httpPost(url, params, sign, sqbConfig.getTerminalSn());
 
             return result;
         } catch (Exception e) {
@@ -129,14 +137,14 @@ public class SQBServiceImpl {
      */
 
     public JSONObject query(PayOrder payOrder) {
-        String url = sqbConstant.getApiDomain() + "/upay/v2/query";
+        String url = sqbConfig.getApiDomain() + "/upay/v2/query";
         JSONObject params = new JSONObject();
         try {
-            params.put("terminal_sn", sqbConstant.getTerminalSn()); // 终端号
+            params.put("terminal_sn", sqbConfig.getTerminalSn()); // 终端号
             params.put("client_sn", payOrder.getOrderNumber()); // 商户系统订单号,必须在商户系统内唯一；且长度不超过64字节
-            System.out.println(params.toString() + sqbConstant.getTerminalKey());
-            String sign = getSign(params.toString() + sqbConstant.getTerminalKey());
-            String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConstant.getTerminalSn());
+            System.out.println(params.toString() + sqbConfig.getTerminalKey());
+            String sign = getSign(params.toString() + sqbConfig.getTerminalKey());
+            String result = HttpUtil.httpPost(url, params, sign, sqbConfig.getTerminalSn());
             JSONObject retObj = JSON.parseObject(result);
             String resCode = retObj.get("result_code").toString();
             if (!resCode.equals("200"))
@@ -149,24 +157,43 @@ public class SQBServiceImpl {
     }
 
     public String payUrl(PayOrder payOrder) throws UnsupportedEncodingException {
+        return payUrl(payOrder, null);
+    }
+
+    public String payUrl(PayOrder payOrder, String notifyBaseUrl) throws UnsupportedEncodingException {
         if (payOrder.getRemark() == null) {
             payOrder.setRemark("支付");
         }
+        String orderNotifyUrl;
+        if (notifyBaseUrl != null && !notifyBaseUrl.trim().equals("")) {
+            orderNotifyUrl = notifyBaseUrl + defaultNotifyUrl;
+        } else {
+            if (defaultNotifyBaseUrl != null && !defaultNotifyBaseUrl.trim().equals("")) {
+                orderNotifyUrl = defaultNotifyBaseUrl + proxyPath + defaultNotifyUrl;
+            } else {
+                orderNotifyUrl = "http://" + ServletUtils.getRequest().getServerName() + proxyPath + defaultNotifyUrl;
+            }
+        }
+        System.out.println(orderNotifyUrl);
         String param = "" +
                 "client_sn=" + payOrder.getOrderNumber() +
-                "&operator=" + "admin" +
+                "&notify_url=" + orderNotifyUrl +
+                "&operator=" + payOrder.getCreateBy() +
                 "&return_url=" + "https://www.shouqianba.com/" +
                 "&subject=" + payOrder.getRemark() +
-                "&terminal_sn=" + sqbConstant.getTerminalSn() +
-                "&total_amount=" + payOrder.getActualAmount();
+                "&terminal_sn=" + sqbConfig.getTerminalSn() +
+                "&total_amount=" + Long.valueOf(payOrder.getTotalAmount().toString());
         String urlParam = "" +
                 "client_sn=" + payOrder.getOrderNumber() +
-                "&operator=" + URLEncoder.encode("admin", "UTF-8") +
+                "&notify_url=" + URLEncoder.encode(orderNotifyUrl, "UTF-8") +
+                "&operator=" + URLEncoder.encode(payOrder.getCreateBy(), "UTF-8") +
                 "&return_url=" + "https://www.shouqianba.com/" +
                 "&subject=" + URLEncoder.encode(payOrder.getRemark(), "UTF-8") +
-                "&terminal_sn=" + sqbConstant.getTerminalSn() +
-                "&total_amount=" + payOrder.getActualAmount();
-        String sign = getSign(param + "&key=" + sqbConstant.getTerminalKey());
+                "&terminal_sn=" + sqbConfig.getTerminalSn() +
+                "&total_amount=" + Long.valueOf(payOrder.getTotalAmount().toString());
+        System.out.println(param);
+        System.out.println(orderNotifyUrl);
+        String sign = getSign(param + "&key=" + sqbConfig.getTerminalKey());
         return "https://qr.shouqianba.com/gateway?" + urlParam + "&sign=" + sign.toUpperCase();
     }
 
@@ -176,18 +203,18 @@ public class SQBServiceImpl {
      * @return
      */
     public String precreate(PayOrder payOrder, String sn, String payway) {
-        String url = sqbConstant.getApiDomain() + "/upay/v2/precreate";
+        String url = sqbConfig.getApiDomain() + "/upay/v2/precreate";
         JSONObject params = new JSONObject();
         try {
-            params.put("terminal_sn", sqbConstant.getTerminalSn()); // 收钱吧终端ID
+            params.put("terminal_sn", sqbConfig.getTerminalSn()); // 收钱吧终端ID
             params.put("client_sn", payOrder.getOrderNumber()); // 商户系统订单号,必须在商户系统内唯一；且长度不超过32字节
-            params.put("total_amount", payOrder.getActualAmount()); // 交易总金额
+            params.put("total_amount", payOrder.getTotalAmount()); // 交易总金额
             // params.put("payway", payway); // 支付方式
             params.put("subject", "无简介"); // 交易简介
             params.put("operator", SecurityUtils.getUsername()); // 门店操作员
 
-            String sign = getSign(params.toString() + sqbConstant.getTerminalKey());
-            String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConstant.getTerminalSn());
+            String sign = getSign(params.toString() + sqbConfig.getTerminalKey());
+            String result = HttpUtil.httpPost(url, params.toString(), sign, sqbConfig.getTerminalSn());
             return result;
         } catch (Exception e) {
             return null;
@@ -202,7 +229,7 @@ public class SQBServiceImpl {
      * @return
      */
     public String cancel(String terminal_sn, String terminal_key) {
-        String url = sqbConstant.getApiDomain() + "/upay/v2/cancel";
+        String url = sqbConfig.getApiDomain() + "/upay/v2/cancel";
         JSONObject params = new JSONObject();
         try {
             params.put("terminal_sn", terminal_sn); // 终端号

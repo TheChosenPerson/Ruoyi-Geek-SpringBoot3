@@ -7,6 +7,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 
@@ -15,14 +17,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
+
+import com.ruoyi.common.utils.http.HttpClientUtil;
 
 public class HttpUtil {
     public static String httpPostWithoutException(String url, String string, String sign, String sn) {
@@ -50,27 +52,33 @@ public class HttpUtil {
      * @param sn:      序列号
      * @return
      */
-    public static String httpPost(String url, String body, String sign, String sn)
+    public static String httpPost(String url, Object body, String sign, String sn)
             throws UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         String xmlRes = "{}";
-        HttpClient client = createSSLClientDefault();
-        HttpPost httpost = new HttpPost(url);
+        // HttpClient client = createSSLClientDefault();
+        // HttpPost httpost = new HttpPost(url);
         try {
-            // 所有请求的body都需采用UTF-8编码
-            StringEntity entity = new StringEntity(body, "UTF-8");//
-            entity.setContentType("application/json");
-            httpost.setEntity(entity);
-            // 支付平台所有的API仅支持JSON格式的请求调用，HTTP请求头Content-Type设为application/json
-            httpost.addHeader("Content-Type", "application/json");
-            // 支付平台所有的API调用都需要签名验证,签名首部: Authorization: sn + " " + sign
-            httpost.addHeader("Authorization", sn + " " + sign);
-            HttpResponse response = client.execute(httpost);
-            // 所有响应也采用UTF-8编码
-            xmlRes = EntityUtils.toString(response.getEntity(), "UTF-8");
-        } catch (ClientProtocolException e) {
+            Map<String, String> header = new HashMap<>();
+            header.put("Authorization", sn + " " + sign);
+            xmlRes = HttpClientUtil.sendHttpPost(url, body, header);
+            // System.out.println("Request string: " + body);
+            // // 所有请求的body都需采用UTF-8编码
+            // StringEntity entity = new StringEntity(body, "UTF-8");//
+            // entity.setContentType("application/json");
+            // httpost.setEntity(entity);
 
-        } catch (IOException e) {
+            // // 支付平台所有的API仅支持JSON格式的请求调用，HTTP请求头Content-Type设为application/json
+            // httpost.addHeader("Content-Type", "application/json");
 
+            // // 支付平台所有的API调用都需要签名验证,签名首部: Authorization: sn + " " + sign
+            // httpost.addHeader("Authorization", sn + " " + sign);
+            // System.out.println("Authorization" + sn + " " + sign);
+            // HttpResponse response = client.execute(httpost);
+
+            // // 所有响应也采用UTF-8编码
+            // xmlRes = EntityUtils.toString(response.getEntity(), "UTF-8");
+            // System.out.println("Response string: " + xmlRes);
+        } catch (Exception e) {
         }
         return xmlRes;
     }
@@ -97,7 +105,7 @@ public class HttpUtil {
     }
 
     public static String doGet(String url, String parameter) {
-        String uriAPI = url + "?" + parameter; // "http://XX?str=I+am+get+String";
+        String uriAPI = url + "?" + parameter; // "http://XXXXX?str=I+am+get+String";
         String result = "";
         HttpClient client = createSSLClientDefault();
         HttpGet httpRequst = new HttpGet(uriAPI);

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
 import com.ruoyi.common.annotation.Anonymous;
+import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.pay.alipay.service.IAliPayService;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.service.IPayOrderService;
 
@@ -28,13 +31,16 @@ import jakarta.servlet.http.HttpServletRequest;
  * @author zlh
  */
 @RestController
-@RequestMapping("/alipay")
+@RequestMapping("/pay/alipay")
 @ConditionalOnProperty(prefix = "pay.alipay", name = "enabled", havingValue = "true")
 @Tag(name = "【支付宝】管理")
-public class AliPayController {
+public class AliPayController extends BaseController {
 
     @Autowired
     private IPayOrderService payOrderService;
+
+    @Autowired(required = false)
+    private IAliPayService aliPayService;
 
     @Anonymous
     @Operation(summary = "支付宝支付")
@@ -42,7 +48,7 @@ public class AliPayController {
             @Parameter(name = "orderId", description = "订单号", required = true)
     })
     @GetMapping("/pay/{orderNumber}")
-    public AjaxResult pay(@PathVariable String orderNumber) {
+    public AjaxResult pay(@PathVariable(name = "orderNumber") String orderNumber) {
         AlipayTradePagePayResponse response;
         PayOrder aliPay = payOrderService.selectPayOrderByOrderNumber(orderNumber);
         try {
@@ -53,15 +59,15 @@ public class AliPayController {
                     aliPay.getActualAmount(),
                     "");
         } catch (Exception e) {
-            System.err.println("调用遭遇异常，原因：" + e.getMessage());
-            throw new RuntimeException(e.getMessage(), e);
+            return error(e.getMessage());
         }
-        return AjaxResult.success(response.getBody());
+        return success(response.getBody());
     }
 
     @Anonymous
     @Operation(summary = "支付宝支付回调")
-    @PostMapping("/notify") // 注意这里必须是POST接口
+    @Transactional
+    @PostMapping("/notify")
     public AjaxResult payNotify(HttpServletRequest request) throws Exception {
         if (request.getParameter("trade_status").equals("TRADE_SUCCESS")) {
             System.out.println("=========支付宝异步回调========");
@@ -87,8 +93,11 @@ public class AliPayController {
 
                 // // 更新订单未已支付
                 payOrderService.updateStatus(orderNumber, "已支付");
+                if (aliPayService != null) {
+                    aliPayService.callback(params);
+                }
             }
         }
-        return AjaxResult.success("success");
+        return success("success");
     }
 }
