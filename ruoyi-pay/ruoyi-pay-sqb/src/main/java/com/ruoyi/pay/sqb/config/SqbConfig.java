@@ -25,6 +25,39 @@ public class SqbConfig {
     @Value("${pay.sqb.vendorKey}")
     private String vendorKey;
 
+    @Value("${pay.sqb.notifyUrl}")
+    private String defaultNotifyUrl;
+
+    @Value("${pay.sqb.notifyBaseUrl}")
+    private String defaultNotifyBaseUrl;
+
+    @Value("${pay.sqb.proxy}")
+    private String proxyPath;
+
+    public String getDefaultNotifyUrl() {
+        return defaultNotifyUrl;
+    }
+
+    public void setDefaultNotifyUrl(String defaultNotifyUrl) {
+        this.defaultNotifyUrl = defaultNotifyUrl;
+    }
+
+    public String getDefaultNotifyBaseUrl() {
+        return defaultNotifyBaseUrl;
+    }
+
+    public void setDefaultNotifyBaseUrl(String defaultNotifyBaseUrl) {
+        this.defaultNotifyBaseUrl = defaultNotifyBaseUrl;
+    }
+
+    public String getProxyPath() {
+        return proxyPath;
+    }
+
+    public void setProxyPath(String proxyPath) {
+        this.proxyPath = proxyPath;
+    }
+
     public String getApiDomain() {
         return apiDomain;
     }
