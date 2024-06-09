@@ -60,7 +60,7 @@ public class WxPayController extends BaseController {
             @Parameter(name = "orderNumber", description = "订单号", required = true)
     })
     @GetMapping("/url/{orderNumber}")
-    public AjaxResult pay(@PathVariable(name = "orderNumber") String orderNumber) throws Exception {
+    public AjaxResult url(@PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         PayOrder aliPay = payOrderService.selectPayOrderByOrderNumber(orderNumber);
         String amountStr = aliPay.getActualAmount();
         double amountDouble = Double.parseDouble(amountStr);
@@ -81,7 +81,7 @@ public class WxPayController extends BaseController {
     @Anonymous
     @Operation(summary = "微信支付查询订单")
     @PostMapping("/notify")
-    public AjaxResult WxPayList(HttpServletRequest servletRequest, HttpServletResponse response)
+    public AjaxResult notify(HttpServletRequest servletRequest, HttpServletResponse response)
             throws Exception {
         String timeStamp = servletRequest.getHeader("Wechatpay-Timestamp");
         String nonce = servletRequest.getHeader("Wechatpay-Nonce");

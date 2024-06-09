@@ -30,7 +30,6 @@ public class WxPayConfig {
     private String wxchantId;
     @Value("${pay.wechat.merchantSerialNumber}")
     private String wxchantSerialNumber;
-
     @Value("${pay.wechat.apiV3Key}")
     private String wxapiV3Key;
     @Value("${pay.wechat.privateKeyPath}")

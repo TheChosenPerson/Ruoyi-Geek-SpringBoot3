@@ -45,7 +45,7 @@ public class SQBController extends BaseController {
     })
     @PostMapping("/url/{orderNumber}")
     @Anonymous
-    public R<String> payUrl(@PathVariable(name = "orderNumber") String orderNumber) throws Exception {
+    public R<String> url(@PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         PayOrder payOrder = payOrderServicer.selectPayOrderByOrderNumber(orderNumber);
         String url = sqbServiceImpl.payUrl(payOrder);
         return R.ok(url);
@@ -74,7 +74,7 @@ public class SQBController extends BaseController {
     @PostMapping("/notify")
     @Anonymous
     @Operation(summary = "支付回调")
-    public AjaxResult payNotify(@RequestBody JSONObject jsonObject) throws IOException {
+    public AjaxResult notify(@RequestBody JSONObject jsonObject) throws IOException {
         // 验签
         // 修改订单状态
         // 用户自定义行为
