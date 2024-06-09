@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson2.JSON;
@@ -22,6 +23,7 @@ import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.sqb.config.SqbConfig;
 
 @Service
+@ConditionalOnProperty(prefix = "pay.sqb", name = "enabled", havingValue = "true")
 public class SQBServiceImpl {
     @Autowired
     private SqbConfig sqbConfig;

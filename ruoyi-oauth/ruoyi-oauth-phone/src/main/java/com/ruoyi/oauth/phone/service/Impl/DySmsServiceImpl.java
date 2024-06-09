@@ -16,7 +16,6 @@ import com.ruoyi.common.utils.CacheUtils;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.framework.web.service.UserDetailsServiceImpl;
 import com.ruoyi.oauth.common.enums.OauthVerificationUse;
-import com.ruoyi.oauth.common.service.OauthVerificationCodeService;
 import com.ruoyi.oauth.phone.enums.DySmsTemplate;
 import com.ruoyi.oauth.phone.service.DySmsService;
 import com.ruoyi.oauth.phone.utils.DySmsUtil;
@@ -29,7 +28,7 @@ import com.ruoyi.system.service.ISysUserService;
  * @date 2024-04-16
  */
 @Service
-public class DySmsServiceImpl implements DySmsService, OauthVerificationCodeService {
+public class DySmsServiceImpl implements DySmsService {
 
     @Autowired
     private DySmsUtil dySmsUtil;
@@ -79,6 +78,7 @@ public class DySmsServiceImpl implements DySmsService, OauthVerificationCodeServ
     @Override
     public String checkCode(String phone, String code, OauthVerificationUse use) throws Exception {
         String cachedCode = CacheUtils.get(use.getValue(), use.getValue() + phone, String.class); // 从缓存中获取验证码
+        CacheUtils.remove(use.getValue(), use.getValue() + phone);
         boolean havePhoneFlag = userService.selectUserByPhone(phone) != null;
         if (use.equals(OauthVerificationUse.LOGIN) && havePhoneFlag) {// 登录校验
             if (code.equals(cachedCode)) {

@@ -16,3 +16,11 @@ oauth:
     dysms:
       appId: appId
       appSecret: appSecret
+
+spring:
+  mail:
+    host: smtp.qq.com
+    # 邮箱地址
+    username: username
+    # 授权码
+    password: password

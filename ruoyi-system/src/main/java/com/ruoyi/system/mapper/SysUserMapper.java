@@ -11,8 +11,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
  * 
  * @author ruoyi
  */
-public interface SysUserMapper
-{
+public interface SysUserMapper {
     /**
      * 根据条件分页查询用户列表
      * 
@@ -56,10 +55,18 @@ public interface SysUserMapper
     /**
      * 通过手机号查询用户
      * 
-     * @param userId 用户ID
+     * @param phone 手机号
      * @return 用户对象信息
      */
     public SysUser selectUserByPhone(String phone);
+
+    /**
+     * 通过邮箱查询用户
+     * 
+     * @param email 邮箱
+     * @return 用户对象信息
+     */
+    public SysUser selectUserByEmail(String email);
 
     /**
      * 新增用户信息
@@ -81,7 +88,7 @@ public interface SysUserMapper
      * 修改用户头像
      * 
      * @param userName 用户名
-     * @param avatar 头像地址
+     * @param avatar   头像地址
      * @return 结果
      */
     public int updateUserAvatar(@Param("userName") String userName, @Param("avatar") String avatar);

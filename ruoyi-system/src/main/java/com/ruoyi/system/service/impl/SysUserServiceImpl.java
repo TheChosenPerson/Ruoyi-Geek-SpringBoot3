@@ -124,12 +124,23 @@ public class SysUserServiceImpl implements ISysUserService {
     /**
      * 通过手机号查询用户
      * 
-     * @param userId 用户ID
+     * @param phone 用户ID
      * @return 用户对象信息
      */
     @Override
     public SysUser selectUserByPhone(String phone) {
         return userMapper.selectUserByPhone(phone);
+    }
+
+    /**
+     * 通过邮箱查询用户
+     * 
+     * @param email 用户名
+     * @return 用户对象信息
+     */
+    @Override
+    public SysUser selectUserByEmail(String email){
+        return userMapper.selectUserByEmail(email);
     }
 
     /**
