@@ -251,7 +251,7 @@
             <!-- 集成第三方登录启动器 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-oauth-starter</artifactId>
+                <artifactId>ruoyi-auth-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
@@ -290,7 +290,7 @@
         <module>ruoyi-framework</module>
         <module>ruoyi-system</module>
         <module>ruoyi-common</module>
-        <module>ruoyi-oauth</module>
+        <module>ruoyi-auth</module>
         <module>ruoyi-pay</module>
         <module>ruoyi-middleware</module>
         <module>ruoyi-plugins</module>

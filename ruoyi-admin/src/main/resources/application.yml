@@ -65,7 +65,7 @@ spring:
     # 国际化资源文件路径
     basename: i18n/messages
   profiles:
-    active: druid,mybatis,oauth,pay,middleware
+    active: druid,mybatis,auth,pay,middleware
   # 文件上传
   servlet:
     multipart:

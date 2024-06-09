@@ -42,6 +42,8 @@ public class CacheController
         caches.add(new SysCache(CacheConstants.SYS_CONFIG_KEY, "配置信息"));
         caches.add(new SysCache(CacheConstants.SYS_DICT_KEY, "数据字典"));
         caches.add(new SysCache(CacheConstants.CAPTCHA_CODE_KEY, "验证码"));
+        caches.add(new SysCache(CacheConstants.PHONE_CODES, "短信验证码"));
+        caches.add(new SysCache(CacheConstants.EMAIL_CODES, "邮箱验证码"));
         caches.add(new SysCache(CacheConstants.REPEAT_SUBMIT_KEY, "防重提交"));
         caches.add(new SysCache(CacheConstants.RATE_LIMIT_KEY, "限流处理"));
         caches.add(new SysCache(CacheConstants.PWD_ERR_CNT_KEY, "密码错误次数"));

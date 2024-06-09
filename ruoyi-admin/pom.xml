@@ -38,7 +38,7 @@
         <!-- 集成第三方登录启动器 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-oauth-starter</artifactId>
+            <artifactId>ruoyi-auth-starter</artifactId>
         </dependency>
 
         <!-- 集成第三方支付启动器 -->

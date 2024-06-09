@@ -5,8 +5,7 @@ package com.ruoyi.common.constant;
  * 
  * @author ruoyi
  */
-public class CacheConstants
-{
+public class CacheConstants {
     /**
      * 登录用户 redis key
      */
@@ -41,4 +40,14 @@ public class CacheConstants
      * 登录账户密码错误次数 redis key
      */
     public static final String PWD_ERR_CNT_KEY = "pwd_err_cnt";
+
+    /**
+     * 手机号验证码 phone codes
+     */
+    public static final String PHONE_CODES = "phone_codes";
+
+    /**
+     * 邮箱验证码
+     */
+    public static final String EMAIL_CODES = "email_codes";
 }
