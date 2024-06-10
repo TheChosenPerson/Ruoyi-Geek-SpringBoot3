@@ -12,7 +12,7 @@ import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.Common;
 import com.aliyun.teautil.models.RuntimeOptions;
 import com.ruoyi.common.utils.spring.SpringUtils;
-import com.ruoyi.tfa.phone.constant.DySmsConfig;
+import com.ruoyi.tfa.phone.config.DySmsConfig;
 import com.ruoyi.tfa.phone.enums.DySmsTemplate;
 
 public class DySmsUtil {

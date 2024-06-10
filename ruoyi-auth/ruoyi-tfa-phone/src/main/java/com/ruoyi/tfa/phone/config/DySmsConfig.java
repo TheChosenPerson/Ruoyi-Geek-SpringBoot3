@@ -1,4 +1,4 @@
-package com.ruoyi.tfa.phone.constant;
+package com.ruoyi.tfa.phone.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

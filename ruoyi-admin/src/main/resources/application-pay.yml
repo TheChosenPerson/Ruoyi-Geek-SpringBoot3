@@ -8,16 +8,20 @@ pay:
     vendorSn: "vendorSn"
     vendorKey: "vendorKey"
   alipay:
-    enabled: false
-    appId: appId
-    appPrivateKey: appPrivateKey #classpath:pay/alipay/alipay_private_key.pem
-    alipayPublicKey: alipayPublicKey #classpath:pay/alipay/alipay_public_key.pem
-    notifyUrl: http://www.sdaizy.com/prod-api/alipay/notify
+    enabled: true
+    # 应用id
+    appId: appid
+    # 应用私钥
+    appPrivateKey: classpath:pay/alipay/alipay_private_key.pem
+    # 支付宝公钥
+    alipayPublicKey: classpath:pay/alipay/alipay_public_key.pem
+    notifyUrl: http://e2vca6.natappfree.cc/alipay/notify
   wechat:
     enabled: false
-    merchantId: merchantId
-    privateKeyPath: privateKeyPath # classpath:pay/wx/apiclient_key.pem
-    merchantSerialNumber: merchantSerialNumber
+    appId: appid
     apiV3Key: apiV3Key
-    appId: appId
-    notifyUrl: http://g5vdrz.natappfree.cc/wxPay/notify
+    privateKeyPath: classpath:pay/wx/apiclient_key.pem
+    merchantId: merchantId
+    merchantSerialNumber: merchantSerialNumber
+    # 回调地址，此处使用的内网穿透http://e2vca6.natappfree.cc
+    notifyUrl: http://e2vca6.natappfree.cc/pay/wechat/notify

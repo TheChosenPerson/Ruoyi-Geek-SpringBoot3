@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.R;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.service.IPayOrderService;
 import com.ruoyi.pay.wx.config.WxPayConfig;
@@ -60,14 +61,11 @@ public class WxPayController extends BaseController {
             @Parameter(name = "orderNumber", description = "订单号", required = true)
     })
     @GetMapping("/url/{orderNumber}")
-    public AjaxResult url(@PathVariable(name = "orderNumber") String orderNumber) throws Exception {
+    public R<String> url(@PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         PayOrder aliPay = payOrderService.selectPayOrderByOrderNumber(orderNumber);
-        String amountStr = aliPay.getActualAmount();
-        double amountDouble = Double.parseDouble(amountStr);
-        int totalAmountInt = (int) (amountDouble * 100);
         PrepayRequest request = new PrepayRequest();
         Amount amount = new Amount();
-        amount.setTotal(totalAmountInt);
+        amount.setTotal(Integer.parseInt(aliPay.getActualAmount()));
         request.setAmount(amount);
         request.setAppid(wxPayAppConfig.getAppId());
         request.setMchid(wxPayAppConfig.getWxchantId());
@@ -75,7 +73,7 @@ public class WxPayController extends BaseController {
         request.setNotifyUrl(wxPayAppConfig.getNotifyUrl());
         request.setOutTradeNo(aliPay.getOrderNumber());
         PrepayResponse response = nativePayService.prepay(request);
-        return success(response.getCodeUrl());
+        return R.ok(response.getCodeUrl());
     }
 
     @Anonymous

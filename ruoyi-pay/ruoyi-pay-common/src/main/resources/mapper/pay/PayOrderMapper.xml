@@ -14,7 +14,7 @@
         <result property="orderMessage" column="order_message" />
     </resultMap>
 
-    <sql id="selectPayOrderVo"> select order_id, user_id, order_number, order_status, total_amount,
+    <sql id="selectPayOrderVo"> select order_id, user_id, order_number, order_status, total_amount,actual_amount,
         order_content, order_remark, order_message from pay_order </sql>
 
     <select id="selectPayOrderList" parameterType="PayOrder" resultMap="PayOrderResult">
