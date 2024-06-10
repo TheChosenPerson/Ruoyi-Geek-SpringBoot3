@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.pay.domain.PayOrder;
 import com.ruoyi.pay.mapper.PayOrderMapper;
 import com.ruoyi.pay.service.IPayOrderService;
@@ -12,8 +13,8 @@ import com.ruoyi.pay.service.IPayOrderService;
 /**
  * 订单Service业务层处理
  * 
- * @author Dftre
- * @date 2024-02-15
+ * @author ruoyi
+ * @date 2024-06-11
  */
 @Service
 public class PayOrderServiceImpl implements IPayOrderService {
@@ -72,6 +73,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
      */
     @Override
     public int updatePayOrder(PayOrder payOrder) {
+        payOrder.setUpdateTime(DateUtils.getNowDate());
         return payOrderMapper.updatePayOrder(payOrder);
     }
 

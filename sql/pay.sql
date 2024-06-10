@@ -3,15 +3,18 @@
 -- ----------------------------
 DROP TABLE IF EXISTS `pay_order`;
 CREATE TABLE `pay_order`  (
-  `order_id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单ID',
-  `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
-  `order_number` varchar(255) NULL DEFAULT NULL COMMENT '订单号',
-  `order_status` varchar(255) NULL DEFAULT NULL COMMENT '订单状态',
-  `total_amount` varchar(255) NULL DEFAULT NULL COMMENT '订单总金额',
-  `actual_amount` varchar(255) NULL DEFAULT NULL COMMENT '实际支付金额',
-  `order_content` varchar(255) NULL DEFAULT NULL COMMENT '订单内容',
-  `order_remark` varchar(255) NULL DEFAULT NULL COMMENT '订单备注',
-  `order_message` varchar(255) NULL DEFAULT NULL COMMENT '负载信息',
+  order_id         bigint          NOT NULL AUTO_INCREMENT    COMMENT '订单id',
+  order_number     varchar(255)    NULL DEFAULT NULL          COMMENT '订单号',
+  order_status     varchar(255)    NULL DEFAULT NULL          COMMENT '订单状态',
+  total_amount     varchar(255)    NULL DEFAULT NULL          COMMENT '订单总金额',
+  actual_amount    varchar(255)    NULL DEFAULT NULL          COMMENT '实际支付金额',
+  order_content    varchar(255)    NULL DEFAULT NULL          COMMENT '订单内容',
+  order_message    varchar(255)    NULL DEFAULT NULL          COMMENT '负载信息',
+  create_by        varchar(64)     default ''                 comment '创建者',
+  create_time      datetime                                   comment '创建时间',
+  update_by        varchar(64)     default ''                 comment '更新者',
+  update_time      datetime                                   comment '更新时间',
+  remark           varchar(500)    default null               comment '备注',
   PRIMARY KEY (`order_id`)
 ) ENGINE = InnoDB  COMMENT = '订单';
 
@@ -20,14 +23,19 @@ CREATE TABLE `pay_order`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `pay_invoice`;
 CREATE TABLE `pay_invoice`  (
-  `invoice_id` bigint NOT NULL COMMENT '发票id',
-  `order_number` varchar(255) NULL DEFAULT NULL COMMENT '订单号',
-  `invoice_type` varchar(255) NULL DEFAULT NULL COMMENT '发票类型',
-  `invoice_header` varchar(255) NULL DEFAULT NULL COMMENT '发票抬头',
-  `invoice_number` varchar(255) NULL DEFAULT NULL COMMENT '纳税人识别号',
-  `invoice_phone` varchar(255) NULL DEFAULT NULL COMMENT '收票人手机号',
-  `invoice_email` varchar(255) NULL DEFAULT NULL COMMENT '收票人邮箱',
-  `invoice_remark` varchar(255) NULL DEFAULT NULL COMMENT '发票备注',
+  invoice_id       bigint          NOT NULL AUTO_INCREMENT    COMMENT '发票id',
+  order_number     varchar(255)    NULL DEFAULT NULL          COMMENT '订单号',
+  invoice_type     varchar(255)    NULL DEFAULT NULL          COMMENT '发票类型',
+  invoice_header   varchar(255)    NULL DEFAULT NULL          COMMENT '发票抬头',
+  invoice_number   varchar(255)    NULL DEFAULT NULL          COMMENT '纳税人识别号',
+  invoice_phone    varchar(255)    NULL DEFAULT NULL          COMMENT '收票人手机号',
+  invoice_email    varchar(255)    NULL DEFAULT NULL          COMMENT '收票人邮箱',
+  invoice_remark   varchar(255)    NULL DEFAULT NULL          COMMENT '发票备注',
+  create_by        varchar(64)     default ''                 comment '创建者',
+  create_time      datetime                                   comment '创建时间',
+  update_by        varchar(64)     default ''                 comment '更新者',
+  update_time      datetime                                   comment '更新时间',
+  remark           varchar(500)    default null               comment '备注',
   PRIMARY KEY (`invoice_id`)
 ) ENGINE = InnoDB  COMMENT = '发票';
 

@@ -29,8 +29,8 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * 发票Controller
  * 
- * @author Dftre
- * @date 2024-02-15
+ * @author ruoyi
+ * @date 2024-06-11
  */
 @RestController
 @RequestMapping("/pay/invoice")

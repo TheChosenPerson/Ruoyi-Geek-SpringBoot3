@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.pay.domain.PayInvoice;
 import com.ruoyi.pay.mapper.PayInvoiceMapper;
 import com.ruoyi.pay.service.IPayInvoiceService;
@@ -12,8 +13,8 @@ import com.ruoyi.pay.service.IPayInvoiceService;
 /**
  * 发票Service业务层处理
  * 
- * @author Dftre
- * @date 2024-02-15
+ * @author ruoyi
+ * @date 2024-06-11
  */
 @Service
 public class PayInvoiceServiceImpl implements IPayInvoiceService 
@@ -54,6 +55,7 @@ public class PayInvoiceServiceImpl implements IPayInvoiceService
     @Override
     public int insertPayInvoice(PayInvoice payInvoice)
     {
+        payInvoice.setCreateTime(DateUtils.getNowDate());
         return payInvoiceMapper.insertPayInvoice(payInvoice);
     }
 
@@ -66,6 +68,7 @@ public class PayInvoiceServiceImpl implements IPayInvoiceService
     @Override
     public int updatePayInvoice(PayInvoice payInvoice)
     {
+        payInvoice.setUpdateTime(DateUtils.getNowDate());
         return payInvoiceMapper.updatePayInvoice(payInvoice);
     }
 

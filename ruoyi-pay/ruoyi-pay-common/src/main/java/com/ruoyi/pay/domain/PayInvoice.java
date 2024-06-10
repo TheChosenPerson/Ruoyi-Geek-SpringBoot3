@@ -11,12 +11,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * 发票对象 pay_invoice
  * 
- * @author Dftre
- * @date 2024-02-15
+ * @author ruoyi
+ * @date 2024-06-11
  */
 @Schema(description = "发票对象")
-public class PayInvoice extends BaseEntity {
+public class PayInvoice extends BaseEntity
+{
     private static final long serialVersionUID = 1L;
+
 
     /** 发票id */
     @Schema(title = "发票id")
@@ -56,82 +58,111 @@ public class PayInvoice extends BaseEntity {
     @Schema(title = "发票备注")
     @Excel(name = "发票备注")
     private String invoiceRemark;
-
-    public void setInvoiceId(Long invoiceId) {
+    public void setInvoiceId(Long invoiceId) 
+    {
         this.invoiceId = invoiceId;
     }
 
-    public Long getInvoiceId() {
+    public Long getInvoiceId() 
+    {
         return invoiceId;
     }
 
-    public void setOrderNumber(String orderNumber) {
+
+    public void setOrderNumber(String orderNumber) 
+    {
         this.orderNumber = orderNumber;
     }
 
-    public String getOrderNumber() {
+    public String getOrderNumber() 
+    {
         return orderNumber;
     }
 
-    public void setInvoiceType(String invoiceType) {
+
+    public void setInvoiceType(String invoiceType) 
+    {
         this.invoiceType = invoiceType;
     }
 
-    public String getInvoiceType() {
+    public String getInvoiceType() 
+    {
         return invoiceType;
     }
 
-    public void setInvoiceHeader(String invoiceHeader) {
+
+    public void setInvoiceHeader(String invoiceHeader) 
+    {
         this.invoiceHeader = invoiceHeader;
     }
 
-    public String getInvoiceHeader() {
+    public String getInvoiceHeader() 
+    {
         return invoiceHeader;
     }
 
-    public void setInvoiceNumber(String invoiceNumber) {
+
+    public void setInvoiceNumber(String invoiceNumber) 
+    {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public String getInvoiceNumber() {
+    public String getInvoiceNumber() 
+    {
         return invoiceNumber;
     }
 
-    public void setInvoicePhone(String invoicePhone) {
+
+    public void setInvoicePhone(String invoicePhone) 
+    {
         this.invoicePhone = invoicePhone;
     }
 
-    public String getInvoicePhone() {
+    public String getInvoicePhone() 
+    {
         return invoicePhone;
     }
 
-    public void setInvoiceEmail(String invoiceEmail) {
+
+    public void setInvoiceEmail(String invoiceEmail) 
+    {
         this.invoiceEmail = invoiceEmail;
     }
 
-    public String getInvoiceEmail() {
+    public String getInvoiceEmail() 
+    {
         return invoiceEmail;
     }
 
-    public void setInvoiceRemark(String invoiceRemark) {
+
+    public void setInvoiceRemark(String invoiceRemark) 
+    {
         this.invoiceRemark = invoiceRemark;
     }
 
-    public String getInvoiceRemark() {
+    public String getInvoiceRemark() 
+    {
         return invoiceRemark;
     }
 
+
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("invoiceId", getInvoiceId())
-                .append("orderNumber", getOrderNumber())
-                .append("invoiceType", getInvoiceType())
-                .append("invoiceHeader", getInvoiceHeader())
-                .append("invoiceNumber", getInvoiceNumber())
-                .append("invoicePhone", getInvoicePhone())
-                .append("invoiceEmail", getInvoiceEmail())
-                .append("invoiceRemark", getInvoiceRemark())
-                .toString();
+        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+            .append("invoiceId", getInvoiceId())
+            .append("orderNumber", getOrderNumber())
+            .append("invoiceType", getInvoiceType())
+            .append("invoiceHeader", getInvoiceHeader())
+            .append("invoiceNumber", getInvoiceNumber())
+            .append("invoicePhone", getInvoicePhone())
+            .append("invoiceEmail", getInvoiceEmail())
+            .append("invoiceRemark", getInvoiceRemark())
+            .append("createBy", getCreateBy())
+            .append("createTime", getCreateTime())
+            .append("updateBy", getUpdateBy())
+            .append("updateTime", getUpdateTime())
+            .append("remark", getRemark())
+            .toString();
     }
 }

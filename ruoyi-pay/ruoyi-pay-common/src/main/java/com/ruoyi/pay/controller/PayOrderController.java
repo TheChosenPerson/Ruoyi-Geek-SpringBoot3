@@ -88,7 +88,7 @@ public class PayOrderController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody PayOrder payOrder)
     {
-        payOrder.setUserId(getUserId());
+        payOrder.setCreateBy(getUsername());
         payOrder.setOrderNumber(Seq.getId().toString());
         AjaxResult result = toAjax(payOrderService.insertPayOrder(payOrder));
         result.put(AjaxResult.DATA_TAG, payOrder);

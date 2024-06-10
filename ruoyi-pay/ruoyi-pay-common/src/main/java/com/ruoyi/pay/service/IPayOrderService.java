@@ -7,10 +7,11 @@ import com.ruoyi.pay.domain.PayOrder;
 /**
  * 订单Service接口
  * 
- * @author Dftre
- * @date 2024-02-15
+ * @author ruoyi
+ * @date 2024-06-11
  */
-public interface IPayOrderService {
+public interface IPayOrderService 
+{
     /**
      * 查询订单
      * 

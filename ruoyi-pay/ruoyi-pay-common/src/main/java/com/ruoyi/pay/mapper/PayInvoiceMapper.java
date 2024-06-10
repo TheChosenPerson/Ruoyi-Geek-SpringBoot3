@@ -7,8 +7,8 @@ import com.ruoyi.pay.domain.PayInvoice;
 /**
  * 发票Mapper接口
  * 
- * @author Dftre
- * @date 2024-02-15
+ * @author ruoyi
+ * @date 2024-06-11
  */
 public interface PayInvoiceMapper 
 {

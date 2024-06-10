@@ -13,8 +13,6 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.domain.TreeEntity;
 #end
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
 /**
  * ${functionName}对象 ${tableName}
  * 

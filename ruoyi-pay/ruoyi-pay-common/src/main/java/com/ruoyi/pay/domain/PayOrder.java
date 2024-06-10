@@ -11,21 +11,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * 订单对象 pay_order
  * 
- * @author Dftre
- * @date 2024-02-15
+ * @author ruoyi
+ * @date 2024-06-11
  */
-@Schema(title = "订单对象")
+@Schema(description = "订单对象")
 public class PayOrder extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 订单ID */
     @Schema(title = "订单ID")
     private Long orderId;
-
-    /** 用户id */
-    @Schema(title = "用户id")
-    @Excel(name = "用户id")
-    private Long userId;
 
     /** 订单号 */
     @Schema(title = "订单号")
@@ -42,7 +37,7 @@ public class PayOrder extends BaseEntity {
     @Excel(name = "订单总金额")
     private String totalAmount;
 
-    /** 订单总金额 */
+    /** 实际支付金额 */
     @Schema(title = "实际支付金额")
     @Excel(name = "实际支付金额")
     private String actualAmount;
@@ -51,11 +46,6 @@ public class PayOrder extends BaseEntity {
     @Schema(title = "订单内容")
     @Excel(name = "订单内容")
     private String orderContent;
-
-    /** 订单备注 */
-    @Schema(title = "订单备注")
-    @Excel(name = "订单备注")
-    private String orderRemark;
 
     /** 负载信息 */
     @Schema(title = "负载信息")
@@ -68,14 +58,6 @@ public class PayOrder extends BaseEntity {
 
     public Long getOrderId() {
         return orderId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getUserId() {
-        return userId;
     }
 
     public void setOrderNumber(String orderNumber) {
@@ -102,12 +84,12 @@ public class PayOrder extends BaseEntity {
         return totalAmount;
     }
 
-    public String getActualAmount() {
-        return actualAmount;
-    }
-
     public void setActualAmount(String actualAmount) {
         this.actualAmount = actualAmount;
+    }
+
+    public String getActualAmount() {
+        return actualAmount;
     }
 
     public void setOrderContent(String orderContent) {
@@ -116,14 +98,6 @@ public class PayOrder extends BaseEntity {
 
     public String getOrderContent() {
         return orderContent;
-    }
-
-    public void setOrderRemark(String orderRemark) {
-        this.orderRemark = orderRemark;
-    }
-
-    public String getOrderRemark() {
-        return orderRemark;
     }
 
     public void setOrderMessage(String orderMessage) {
@@ -138,14 +112,17 @@ public class PayOrder extends BaseEntity {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("orderId", getOrderId())
-                .append("userId", getUserId())
                 .append("orderNumber", getOrderNumber())
                 .append("orderStatus", getOrderStatus())
                 .append("totalAmount", getTotalAmount())
                 .append("actualAmount", getActualAmount())
                 .append("orderContent", getOrderContent())
-                .append("orderRemark", getOrderRemark())
                 .append("orderMessage", getOrderMessage())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .append("remark", getRemark())
                 .toString();
     }
 }
