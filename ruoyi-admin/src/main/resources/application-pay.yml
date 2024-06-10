@@ -1,15 +1,14 @@
 pay:
   sqb:
     enabled: false
+    appId: "appId"
     apiDomain: "apiDomain"
     terminalSn: "terminalSn"
     terminalKey: "terminalKey"
-    appId: "appId"
     vendorSn: "vendorSn"
     vendorKey: "vendorKey"
   alipay:
-    enabled: true
-    # 应用id
+    enabled: false
     appId: appid
     # 应用私钥
     appPrivateKey: classpath:pay/alipay/alipay_private_key.pem
