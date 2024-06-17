@@ -25,7 +25,11 @@ spring:
 
 # Minio配置
 minio:
-  url: http://localhost:9000
-  accessKey: minioadmin
-  secretKey: minioadmin
-  bucketName: ruoyi
+  enable: true
+  downLoadLimit: 1024
+  client:
+    master:
+      url: http://localhost:9000
+      accessKey: root
+      secretKey: 123456
+      defaultBuket: ruoyi
