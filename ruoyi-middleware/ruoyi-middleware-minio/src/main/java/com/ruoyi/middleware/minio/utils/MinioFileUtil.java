@@ -52,14 +52,14 @@ public class MinioFileUtil implements FileUtil {
 
     @Override
     public InputStream downLoad(String fileUrl) throws Exception {
-        String filePath = StringUtils.substringAfter(fileUrl, "?filePath=");
+        String filePath = StringUtils.substringAfter(fileUrl, "?fileName=");
         MinioFileVO file = MinioUtil.getFile(minioConfig.getMasterClient().getDefaultBuket(), filePath);
         return file.getFileInputSteam();
     }
 
     @Override
     public boolean deleteFile(String fileUrl) throws Exception {
-        String filePath = StringUtils.substringAfter(fileUrl, "?filePath=");
+        String filePath = StringUtils.substringAfter(fileUrl, "?fileName=");
         MinioUtil.removeFile(minioConfig.getMasterClient().getDefaultBuket(), filePath);
         return true;
     }
