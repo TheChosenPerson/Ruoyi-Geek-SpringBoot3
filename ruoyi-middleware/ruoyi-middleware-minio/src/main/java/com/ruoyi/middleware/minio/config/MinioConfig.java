@@ -1,11 +1,17 @@
 package com.ruoyi.middleware.minio.config;
 
+import com.ruoyi.common.utils.StringUtils;
 import io.minio.MinioClient;
+import io.minio.errors.*;
+import io.minio.messages.Bucket;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,27 +36,17 @@ public class MinioConfig {
     @PostConstruct
     public void init() {
         List<MinioClientConfig.MinioClientEntity> collect = minioClientConfig.getSlave().stream().map(item -> {
-            try {
-                item.setClient(MinioClient.builder().endpoint(item.getUrl())
-                        .credentials(item.getAccessKey(), item.getSecretKey()).build());
-            } catch (Exception exception) {
-                item.setClient(MinioClient.builder().endpoint(item.getUrl()).build());
-            }
-
+            setClient(item);
+            isBuketExist(item);
             return item;
         }).toList();
         collect.forEach(item -> {
             slaveClients.put(item.getName(), item);
             slaveClientsList.add(item);
         });
-
         MinioClientConfig.MinioClientEntity master = minioClientConfig.getMaster();
-        try {
-            master.setClient(MinioClient.builder().endpoint(master.getUrl())
-                    .credentials(master.getAccessKey(), master.getSecretKey()).build());
-        } catch (Exception exception) {
-            master.setClient(MinioClient.builder().endpoint(master.getUrl()).build());
-        }
+        setClient(master);
+        isBuketExist(master);
         masterClient = master;
     }
 
@@ -72,6 +68,45 @@ public class MinioConfig {
 
     public MinioClientConfig.MinioClientEntity getMasterClient() {
         return this.masterClient;
+    }
+
+    private static void setClient(MinioClientConfig.MinioClientEntity entity){
+        try {
+            MinioClient build = MinioClient.builder().endpoint(entity.getUrl())
+                    .credentials(entity.getAccessKey(), entity.getSecretKey()).build();
+            build.listBuckets();
+            entity.setClient(build);
+        } catch (Exception exception) {
+            MinioClient build = MinioClient.builder().endpoint(entity.getUrl()).build();
+            try {
+                build.listBuckets();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            entity.setClient(build);
+        }
+    }
+
+    private static void isBuketExist(MinioClientConfig.MinioClientEntity entity) {
+        try {
+            String defaultBuket = entity.getDefaultBuket();
+            if(StringUtils.isEmpty(defaultBuket)){
+                throw new RuntimeException("defaultBuket without a default value ");
+            }
+            List<Bucket> buckets = entity.getClient().listBuckets();
+            if (buckets.isEmpty()) {
+                throw new RuntimeException("minioClient without any buket");
+            }
+            for (Bucket bucket : buckets) {
+                if (bucket.name().equals(entity.getDefaultBuket())) {
+                    return;
+                }
+            }
+            throw new RuntimeException("configured defaultBucket does not exist");
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

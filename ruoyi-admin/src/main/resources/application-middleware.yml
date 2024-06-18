@@ -31,5 +31,5 @@ minio:
     master:
       url: http://localhost:9000
       accessKey: root
-      secretKey: 123456
-      defaultBuket: ruoyi
+      secretKey: wky20031018
+      defaultBuket: bim-model
