@@ -94,7 +94,7 @@ public class MinioClientConfig {
             this.accessKey = accessKey;
             this.secretKey = secretKey;
             this.name = name;
-            this.defaultBuket=defaultBuket;
+            this.defaultBuket = defaultBuket;
         }
 
         public MinioClientEntity() {

@@ -27,8 +27,7 @@ public class MinioFileUtil implements FileUtil {
         if (FileUtils.isAbsolutePath(filePath)) {
             relativePath = FileUtils.getRelativePath(filePath);
         } else {
-            String absPath = RuoYiConfig.getProfile() + File.separator + filePath;
-            relativePath = FileUtils.getRelativePath(absPath);
+            relativePath = filePath;
         }
         return MinioUtil.uploadFile(minioConfig.getMasterClient().getDefaultBuket(), relativePath, file);
     }
