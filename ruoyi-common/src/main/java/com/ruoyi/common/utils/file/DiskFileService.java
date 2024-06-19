@@ -20,12 +20,12 @@ import static com.ruoyi.common.utils.file.FileUtils.getPathFileName;
  * 磁盘文件操作实现类
  */
 @Component("file:strategy:disk")
-public class DiskFileUtil implements FileUtil {
+public class DiskFileService implements FileService {
 
     private static String defaultBaseDir = RuoYiConfig.getProfile();
 
     public static void setDefaultBaseDir(String defaultBaseDir) {
-        DiskFileUtil.defaultBaseDir = defaultBaseDir;
+        DiskFileService.defaultBaseDir = defaultBaseDir;
     }
 
     public static String getDefaultBaseDir() {

@@ -16,7 +16,7 @@ import java.io.OutputStream;
  */
 public class FileOperateUtils {
 
-    private static FileUtil fileUtil = SpringUtils.getBean("file:strategy:" + RuoYiConfig.getFileServer());
+    private static FileService fileService = SpringUtils.getBean("file:strategy:" + RuoYiConfig.getFileServer());
     /**
      * 默认大小 50M
      */
@@ -36,7 +36,7 @@ public class FileOperateUtils {
     public static final String upload(MultipartFile file) throws IOException {
         try {
             FileUtils.assertAllowed(file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
-            return fileUtil.upload(file);
+            return fileService.upload(file);
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);
         }
@@ -53,7 +53,7 @@ public class FileOperateUtils {
      */
     public static final String upload(String filePath, MultipartFile file, String[] allowedExtension) throws Exception {
         FileUtils.assertAllowed(file, allowedExtension);
-        return fileUtil.upload(filePath, file);
+        return fileService.upload(filePath, file);
     }
 
     /**
@@ -86,7 +86,7 @@ public class FileOperateUtils {
      * @throws IOException
      */
     public static final void downLoad(String fileUrl, OutputStream outputStream) throws Exception {
-        InputStream inputStream = fileUtil.downLoad(fileUrl);
+        InputStream inputStream = fileService.downLoad(fileUrl);
         FileUtils.writeBytes(inputStream, outputStream);
     }
 
@@ -98,6 +98,6 @@ public class FileOperateUtils {
      * @throws IOException
      */
     public static final boolean deleteFile(String fileUrl) throws Exception {
-        return fileUtil.deleteFile(fileUrl);
+        return fileService.deleteFile(fileUrl);
     }
 }

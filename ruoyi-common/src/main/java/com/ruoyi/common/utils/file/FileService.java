@@ -9,7 +9,7 @@ import java.io.InputStream;
 /**
  * 文件操作接口
  */
-public interface FileUtil {
+public interface FileService {
 
     /**
      * 文件上传
@@ -18,7 +18,7 @@ public interface FileUtil {
      * @param file     文件对象
      * @return 返回上传成功的文路径
      * @throws IOException 比如读写文件出错时
-     * 
+     *
      */
     public String upload(String filePath, MultipartFile file) throws Exception;
 
@@ -29,17 +29,17 @@ public interface FileUtil {
      * @param file     文件对象
      * @return 返回上传成功的文路径
      * @throws IOException 比如读写文件出错时
-     * 
+     *
      */
     public String upload(MultipartFile file, String name) throws Exception;
 
     /**
      * 文件上传
-     * 
+     *
      * @param file 文件对象
      * @return 返回上传成功的文路径
      * @throws IOException 比如读写文件出错时
-     * 
+     *
      */
     public String upload(MultipartFile file) throws Exception;
 
@@ -51,7 +51,7 @@ public interface FileUtil {
      * @param file     文件对象
      * @return 返回上传成功的文路径
      * @throws IOException 比如读写文件出错时
-     * 
+     *
      */
     public String upload(String baseDir, String fileName, MultipartFile file) throws Exception;
 
@@ -61,7 +61,7 @@ public interface FileUtil {
      * @param filePath 下载的文件路径
      * @return 返回上传成功的文路径
      * @throws IOException 比如读写文件出错时
-     * 
+     *
      */
     public InputStream downLoad(String filePath) throws Exception;
 
@@ -71,7 +71,7 @@ public interface FileUtil {
      * @param filePath 删除的文件路径
      * @return 返回上传成功的文路径
      * @throws IOException 比如读写文件出错时
-     * 
+     *
      */
     public boolean deleteFile(String filePath) throws Exception;
 }

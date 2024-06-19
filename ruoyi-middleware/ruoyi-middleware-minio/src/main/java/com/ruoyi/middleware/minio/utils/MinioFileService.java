@@ -1,9 +1,8 @@
 package com.ruoyi.middleware.minio.utils;
 
 import com.ruoyi.common.config.RuoYiConfig;
-import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.file.FileUtil;
+import com.ruoyi.common.utils.file.FileService;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.middleware.minio.config.MinioConfig;
@@ -18,7 +17,7 @@ import java.io.InputStream;
  * Minio文件操作实现类
  */
 @Component("file:strategy:minio")
-public class MinioFileUtil implements FileUtil {
+public class MinioFileService implements FileService {
     private static MinioConfig minioConfig = SpringUtils.getBean(MinioConfig.class);
 
     @Override
