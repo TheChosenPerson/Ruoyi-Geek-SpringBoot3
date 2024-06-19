@@ -1,10 +1,16 @@
 package com.ruoyi.middleware.minio.config;
 
+import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.file.FileUtils;
 import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
+import io.minio.RemoveObjectsArgs;
 import io.minio.errors.*;
 import io.minio.messages.Bucket;
 import jakarta.annotation.PostConstruct;
+import org.apache.http.impl.io.EmptyInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
@@ -78,11 +84,6 @@ public class MinioConfig {
             entity.setClient(build);
         } catch (Exception exception) {
             MinioClient build = MinioClient.builder().endpoint(entity.getUrl()).build();
-            try {
-                build.listBuckets();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
             entity.setClient(build);
         }
     }
@@ -93,16 +94,8 @@ public class MinioConfig {
             if(StringUtils.isEmpty(defaultBuket)){
                 throw new RuntimeException("defaultBuket without a default value ");
             }
-            List<Bucket> buckets = entity.getClient().listBuckets();
-            if (buckets.isEmpty()) {
-                throw new RuntimeException("minioClient without any buket");
-            }
-            for (Bucket bucket : buckets) {
-                if (bucket.name().equals(entity.getDefaultBuket())) {
-                    return;
-                }
-            }
-            throw new RuntimeException("configured defaultBucket does not exist");
+            RemoveObjectArgs remove = RemoveObjectArgs.builder().bucket(entity.getDefaultBuket()).object("test").build();
+            entity.getClient().removeObject(remove);
         }catch (Exception e){
             throw new RuntimeException(e);
         }
