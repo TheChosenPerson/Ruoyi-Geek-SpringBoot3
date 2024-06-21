@@ -32,4 +32,4 @@ minio:
       url: http://localhost:9000
       accessKey:
       secretKey:
-      defaultBuket: ruoyi
+      defaultBuket:

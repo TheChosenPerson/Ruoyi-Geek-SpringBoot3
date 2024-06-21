@@ -1,20 +1,21 @@
 package com.ruoyi.middleware.minio.config;
 
+import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.file.FileOperateUtils;
 import com.ruoyi.common.utils.file.FileUtils;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.RemoveObjectArgs;
-import io.minio.RemoveObjectsArgs;
+import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Bucket;
+import io.minio.messages.Item;
 import jakarta.annotation.PostConstruct;
 import org.apache.http.impl.io.EmptyInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -43,7 +44,7 @@ public class MinioConfig {
     public void init() {
         List<MinioClientConfig.MinioClientEntity> collect = minioClientConfig.getSlave().stream().map(item -> {
             setClient(item);
-            isBuketExist(item);
+            isBuketExistOnAnonymous(item);
             return item;
         }).toList();
         collect.forEach(item -> {
@@ -52,7 +53,7 @@ public class MinioConfig {
         });
         MinioClientConfig.MinioClientEntity master = minioClientConfig.getMaster();
         setClient(master);
-        isBuketExist(master);
+        isBuketExistOnAnonymous(master);
         masterClient = master;
     }
 
@@ -77,25 +78,37 @@ public class MinioConfig {
     }
 
     private static void setClient(MinioClientConfig.MinioClientEntity entity){
-        try {
+        if (StringUtils.isEmpty(entity.getAccessKey())){
+            MinioClient build = MinioClient.builder().endpoint(entity.getUrl()).build();
+            entity.setClient(build);
+        }else {
             MinioClient build = MinioClient.builder().endpoint(entity.getUrl())
                     .credentials(entity.getAccessKey(), entity.getSecretKey()).build();
-            build.listBuckets();
             entity.setClient(build);
-        } catch (Exception exception) {
-            MinioClient build = MinioClient.builder().endpoint(entity.getUrl()).build();
+            BucketExistsArgs bucketExistArgs = BucketExistsArgs.builder().bucket(entity.getDefaultBuket()).build();
+            try {
+                boolean b = entity.getClient().bucketExists(bucketExistArgs);
+                if (!b){
+                    throw new RuntimeException("defaultBucket does not exist");
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
+            }
             entity.setClient(build);
         }
     }
 
-    private static void isBuketExist(MinioClientConfig.MinioClientEntity entity) {
+
+    private static void isBuketExistOnAnonymous(MinioClientConfig.MinioClientEntity entity) {
         try {
             String defaultBuket = entity.getDefaultBuket();
             if(StringUtils.isEmpty(defaultBuket)){
                 throw new RuntimeException("defaultBuket without a default value ");
             }
-            RemoveObjectArgs remove = RemoveObjectArgs.builder().bucket(entity.getDefaultBuket()).object("test").build();
-            entity.getClient().removeObject(remove);
+            PutObjectArgs putObjectArgs= PutObjectArgs.builder().object(FileUtils.getRelativePath(RuoYiConfig.getProfile())+ "/")
+                    .stream(EmptyInputStream.nullInputStream(),0,-1).bucket(entity.getDefaultBuket()).build();
+            entity.getClient().putObject(putObjectArgs);
+
         }catch (Exception e){
             throw new RuntimeException(e);
         }

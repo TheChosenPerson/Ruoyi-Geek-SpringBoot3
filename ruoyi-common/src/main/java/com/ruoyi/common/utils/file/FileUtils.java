@@ -366,6 +366,9 @@ public class FileUtils {
 
     public static final String getRelativePath(String filePath) {
         Path absolute = Paths.get(filePath);
+        if (!absolute.isAbsolute()){
+            return filePath;
+        }
         Path root = absolute.getRoot();
         Path normalize = absolute.normalize();
         return normalize.subpath(root.getNameCount(), normalize.getNameCount()).toString().replace("\\", "/");
