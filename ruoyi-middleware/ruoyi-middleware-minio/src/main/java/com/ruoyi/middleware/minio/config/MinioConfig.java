@@ -1,80 +1,118 @@
 package com.ruoyi.middleware.minio.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
+import com.ruoyi.common.annotation.Anonymous;
+import com.ruoyi.common.config.RuoYiConfig;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.file.FileOperateUtils;
+import com.ruoyi.common.utils.file.FileUtils;
+import io.minio.*;
+import io.minio.errors.*;
+import io.minio.messages.Bucket;
+import io.minio.messages.Item;
+import jakarta.annotation.PostConstruct;
+import org.apache.http.impl.io.EmptyInputStream;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
-import io.minio.MinioClient;
+import java.io.File;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * Minio 配置信息
- *
- * @author ruoyi
- */
-@Configuration
-@ConfigurationProperties(prefix = "minio")
+@Configuration("MinioConfiguration")
+@ConditionalOnProperty(prefix = "minio", name = { "enable" }, havingValue = "true", matchIfMissing = false)
 public class MinioConfig {
 
-    /**
-     * 服务地址
-     */
-    private static String url;
+    public int maxSize;
 
-    /**
-     * 用户名
-     */
-    private static String accessKey;
+    public static String prefix = "/minio";
+    @Autowired
+    private MinioClientConfig minioClientConfig;
 
-    /**
-     * 密码
-     */
-    private static String secretKey;
+    private Map<String, MinioClientConfig.MinioClientEntity> slaveClients = new ConcurrentHashMap<>();
 
-    /**
-     * 存储桶名称
-     */
-    private static String bucketName;
+    private List<MinioClientConfig.MinioClientEntity> slaveClientsList = new CopyOnWriteArrayList<>();
 
-    public static String getUrl() {
-        return url;
+    private MinioClientConfig.MinioClientEntity masterClient;
+
+    @PostConstruct
+    public void init() {
+        List<MinioClientConfig.MinioClientEntity> collect = minioClientConfig.getSlave().stream().map(item -> {
+            setClient(item);
+            isBuketExistOnAnonymous(item);
+            return item;
+        }).toList();
+        collect.forEach(item -> {
+            slaveClients.put(item.getName(), item);
+            slaveClientsList.add(item);
+        });
+        MinioClientConfig.MinioClientEntity master = minioClientConfig.getMaster();
+        setClient(master);
+        isBuketExistOnAnonymous(master);
+        masterClient = master;
     }
 
-    public void setUrl(String url) {
-        MinioConfig.url = url;
+    public int getMaxSize() {
+        return maxSize;
     }
 
-    public static String getAccessKey() {
-        return accessKey;
+    private void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
     }
 
-    public void setAccessKey(String accessKey) {
-        MinioConfig.accessKey = accessKey;
+    public List<MinioClientConfig.MinioClientEntity> getSlaveClientsList() {
+        return slaveClientsList;
     }
 
-    public static String getSecretKey() {
-        return secretKey;
+    public Map<String, MinioClientConfig.MinioClientEntity> getSlaveClients() {
+        return this.slaveClients;
     }
 
-    public void setSecretKey(String secretKey) {
-        MinioConfig.secretKey = secretKey;
+    public MinioClientConfig.MinioClientEntity getMasterClient() {
+        return this.masterClient;
     }
 
-    public static String getBucketName() {
-        return bucketName;
+    private static void setClient(MinioClientConfig.MinioClientEntity entity){
+        if (StringUtils.isEmpty(entity.getAccessKey())){
+            MinioClient build = MinioClient.builder().endpoint(entity.getUrl()).build();
+            entity.setClient(build);
+        }else {
+            MinioClient build = MinioClient.builder().endpoint(entity.getUrl())
+                    .credentials(entity.getAccessKey(), entity.getSecretKey()).build();
+            entity.setClient(build);
+            BucketExistsArgs bucketExistArgs = BucketExistsArgs.builder().bucket(entity.getDefaultBuket()).build();
+            try {
+                boolean b = entity.getClient().bucketExists(bucketExistArgs);
+                if (!b){
+                    throw new RuntimeException("defaultBucket does not exist");
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
+            }
+            entity.setClient(build);
+        }
     }
 
-    public void setBucketName(String bucketName) {
-        MinioConfig.bucketName = bucketName;
-    }
 
-    @Bean
-    public MinioClient getMinioClient() {
+    private static void isBuketExistOnAnonymous(MinioClientConfig.MinioClientEntity entity) {
         try {
-            return MinioClient.builder().endpoint(url).credentials(accessKey, secretKey).build();
-        } catch (Exception e) {
+            String defaultBuket = entity.getDefaultBuket();
+            if(StringUtils.isEmpty(defaultBuket)){
+                throw new RuntimeException("defaultBuket without a default value ");
+            }
+            PutObjectArgs putObjectArgs= PutObjectArgs.builder().object(FileUtils.getRelativePath(RuoYiConfig.getProfile())+ "/")
+                    .stream(EmptyInputStream.nullInputStream(),0,-1).bucket(entity.getDefaultBuket()).build();
+            entity.getClient().putObject(putObjectArgs);
 
-            return null;
+        }catch (Exception e){
+            throw new RuntimeException(e);
         }
 
     }
+
 }

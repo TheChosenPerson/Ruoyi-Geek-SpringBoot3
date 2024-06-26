@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 读取项目相关配置
- * 
+ *
  * @author ruoyi
  */
 @Component
@@ -24,11 +24,16 @@ public class RuoYiConfig
     /** 上传路径 */
     private static String profile;
 
+
+
+    private static String fileServer;
+
     /** 获取地址开关 */
     private static boolean addressEnabled;
 
     /** 验证码类型 */
     private static String captchaType;
+
 
     public String getName()
     {
@@ -86,6 +91,14 @@ public class RuoYiConfig
 
     public void setCaptchaType(String captchaType) {
         RuoYiConfig.captchaType = captchaType;
+    }
+
+    public static String getFileServer() {
+        return fileServer;
+    }
+
+    public void setFileServer(String fileServer) {
+        RuoYiConfig.fileServer = fileServer;
     }
 
     /**
