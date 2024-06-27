@@ -6,8 +6,10 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.util.Set;
-import com.ruoyi.common.utils.StringUtils;
+
 import org.apache.commons.lang3.ArrayUtils;
+
+import com.ruoyi.common.utils.StringUtils;
 
 /**
  * 类型转换器
@@ -364,6 +366,10 @@ public class Convert
      */
     public static String[] toStrArray(String str)
     {
+        if (StringUtils.isEmpty(str))
+        {
+            return new String[] {};
+        }
         return toStrArray(",", str);
     }
 
