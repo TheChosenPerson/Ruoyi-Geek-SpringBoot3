@@ -1,9 +1,13 @@
 package com.ruoyi.middleware.minio.utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ruoyi.common.exception.file.FileException;
-import com.ruoyi.common.exception.file.FileNameLengthLimitExceededException;
-import com.ruoyi.common.exception.file.FileSizeLimitExceededException;
-import com.ruoyi.common.exception.file.InvalidExtensionException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
@@ -13,14 +17,14 @@ import com.ruoyi.middleware.minio.config.MinioConfig;
 import com.ruoyi.middleware.minio.domain.MinioFileVO;
 import com.ruoyi.middleware.minio.exception.MinioClientErrorException;
 import com.ruoyi.middleware.minio.exception.MinioClientNotFundException;
-import io.minio.*;
-import io.minio.messages.DeleteError;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import io.minio.GetObjectArgs;
+import io.minio.GetObjectResponse;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
+import io.minio.RemoveObjectsArgs;
+import io.minio.Result;
+import io.minio.messages.DeleteError;
 
 /**
  * Minio工具
@@ -28,7 +32,18 @@ import java.util.List;
  */
 public class MinioUtil {
 
-    private static MinioConfig minioConfig = SpringUtils.getBean(MinioConfig.class);
+    private static MinioConfig minioConfig;
+
+    private static MinioConfig getMinioConfig() {
+        if (minioConfig == null) {
+            synchronized (MinioFileService.class) {
+                if (minioConfig == null) {
+                    minioConfig = SpringUtils.getBean(MinioConfig.class);
+                }
+            }
+        }
+        return minioConfig;
+    }
 
     /**
      * 文件上传
@@ -58,7 +73,7 @@ public class MinioUtil {
      */
     public static String uploadFile(PutObjectArgs putObjectArgs) throws Exception {
         try {
-            MinioClientConfig.MinioClientEntity masterClient = minioConfig.getMasterClient();
+            MinioClientConfig.MinioClientEntity masterClient = getMinioConfig().getMasterClient();
             masterClient.getClient().putObject(putObjectArgs);
             StringBuilder url = new StringBuilder();
             url.append(MinioConfig.prefix).append("/").append(masterClient.getDefaultBuket())
@@ -79,7 +94,7 @@ public class MinioUtil {
      * @return 返回上传成功的文件路径
      */
     private static String uploadFileIterator(int index, PutObjectArgs putObjectArgs) {
-        List<MinioClientConfig.MinioClientEntity> slaveClientsList = minioConfig.getSlaveClientsList();
+        List<MinioClientConfig.MinioClientEntity> slaveClientsList = getMinioConfig().getSlaveClientsList();
         if (index >= slaveClientsList.size()) {
             throw new MinioClientNotFundException();
         }
@@ -135,7 +150,7 @@ public class MinioUtil {
      * @throws IOException 比如读写文件出错时
      */
     public static void removeFile(RemoveObjectArgs removeObjectArgs) throws Exception {
-        minioConfig.getMasterClient().getClient().removeObject(removeObjectArgs);
+        getMinioConfig().getMasterClient().getClient().removeObject(removeObjectArgs);
     }
 
     /**
@@ -158,7 +173,7 @@ public class MinioUtil {
      * @throws IOException 比如读写文件出错时
      */
     public static Iterable<Result<DeleteError>> removeFiles(RemoveObjectsArgs removeObjectsArgs) {
-        return minioConfig.getMasterClient().getClient().removeObjects(removeObjectsArgs);
+        return getMinioConfig().getMasterClient().getClient().removeObjects(removeObjectsArgs);
     }
 
     /**
@@ -169,9 +184,9 @@ public class MinioUtil {
      * @throws IOException 比如读写文件出错时
      */
     public static MinioFileVO getFile(GetObjectArgs getObjectArgs) throws Exception {
-        GetObjectResponse inputStream = minioConfig.getMasterClient().getClient().getObject(getObjectArgs);
+        GetObjectResponse inputStream = getMinioConfig().getMasterClient().getClient().getObject(getObjectArgs);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byte[] bytes = new byte[minioConfig.maxSize];
+        byte[] bytes = new byte[getMinioConfig().maxSize];
         int length = 0;
         while (true) {
             try {
@@ -214,7 +229,7 @@ public class MinioUtil {
         }
 
         public static String uploadFile(String clientName, PutObjectArgs putObjectArgs) throws Exception {
-            MinioClientConfig.MinioClientEntity minioClientEntity = minioConfig.getSlaveClients().get(clientName);
+            MinioClientConfig.MinioClientEntity minioClientEntity = getMinioConfig().getSlaveClients().get(clientName);
             minioClientEntity.getClient().putObject(putObjectArgs);
             StringBuilder url = new StringBuilder();
             url.append(MinioConfig.prefix).append("/").append(minioClientEntity.getDefaultBuket())
@@ -235,7 +250,7 @@ public class MinioUtil {
         }
 
         public static void removeFile(String clientName, RemoveObjectArgs removeObjectArgs) throws Exception {
-            minioConfig.getSlaveClients().get(clientName).getClient().removeObject(removeObjectArgs);
+            getMinioConfig().getSlaveClients().get(clientName).getClient().removeObject(removeObjectArgs);
         }
 
         public static void removeFile(String clientName, String buketName, String fileName) throws Exception {
@@ -244,14 +259,14 @@ public class MinioUtil {
         }
 
         public static Iterable<Result<DeleteError>> removeFiles(RemoveObjectsArgs removeObjectsArgs) {
-            return minioConfig.getMasterClient().getClient().removeObjects(removeObjectsArgs);
+            return getMinioConfig().getMasterClient().getClient().removeObjects(removeObjectsArgs);
         }
 
         public static MinioFileVO getFile(String clientName, GetObjectArgs getObjectArgs) throws Exception {
-            GetObjectResponse inputStream = minioConfig.getSlaveClients().get(clientName).getClient()
+            GetObjectResponse inputStream = getMinioConfig().getSlaveClients().get(clientName).getClient()
                     .getObject(getObjectArgs);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            byte[] bytes = new byte[minioConfig.maxSize];
+            byte[] bytes = new byte[getMinioConfig().maxSize];
             int length = 0;
             while (true) {
                 try {

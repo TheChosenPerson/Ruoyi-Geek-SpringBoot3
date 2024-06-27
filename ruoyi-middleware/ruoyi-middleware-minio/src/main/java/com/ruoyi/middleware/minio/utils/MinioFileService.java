@@ -1,24 +1,28 @@
 package com.ruoyi.middleware.minio.utils;
 
+import java.io.File;
+import java.io.InputStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileService;
 import com.ruoyi.common.utils.file.FileUtils;
-import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.middleware.minio.config.MinioConfig;
 import com.ruoyi.middleware.minio.domain.MinioFileVO;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.InputStream;
 
 /**
  * Minio文件操作实现类
  */
 @Component("file:strategy:minio")
+@ConditionalOnProperty(prefix = "minio", name = { "enable" }, havingValue = "true", matchIfMissing = false)
 public class MinioFileService implements FileService {
-    private static MinioConfig minioConfig = SpringUtils.getBean(MinioConfig.class);
+    @Autowired
+    private MinioConfig minioConfig;
 
     @Override
     public String upload(String filePath, MultipartFile file) throws Exception {
