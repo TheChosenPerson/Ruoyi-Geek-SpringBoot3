@@ -34,7 +34,7 @@
         <poi.version>5.2.3</poi.version>
         <httpclient.version>4.5.2</httpclient.version>
         <velocity.version>2.3</velocity.version>
-        <jwt.version>0.9.1</jwt.version>
+        <jwt.version>0.12.5</jwt.version>
         <knife4j.version>4.5.0</knife4j.version>
         <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
         <mysql.version>8.2.0</mysql.version>
@@ -190,7 +190,19 @@
             <!-- Token生成与解析-->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
                 <version>${jwt.version}</version>
             </dependency>
 
