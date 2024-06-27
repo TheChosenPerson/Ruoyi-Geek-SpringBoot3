@@ -25,7 +25,7 @@ spring:
 
 # Minio配置
 minio:
-  enable: true
+  enable: false
   downLoadLimit: 1024
   client:
     master:
