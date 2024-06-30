@@ -65,17 +65,17 @@
         <uni-forms-item label="${comment}" prop="${field}">
           <uni-data-checkbox v-model="form.${field}" :localdata="[{text:'请选择字典生成'}]"></uni-data-checkbox>
         </uni-forms-item>
-#elseif($column.list && $column.htmlType == "time")
+#elseif($column.htmlType == "time")
         <uni-forms-item label="${comment}" prop="${field}">
           <picker mode="time" :value="form.${field}" start="00:00:00" end="23:59:59">
 						  <view>{{form.${field}}}</view>
 					</picker>
         </uni-forms-item>
-#elseif($column.list && $column.htmlType == "date")
+#elseif($column.htmlType == "date")
         <uni-forms-item label="${comment}" prop="${field}">
           <uni-datetime-picker type="date" v-model="form.${field}"/>
         </uni-forms-item>
-#elseif($column.list && $column.htmlType == "datetime")
+#elseif($column.htmlType == "datetime")
         <uni-forms-item label="${comment}" prop="${field}">
           <uni-datetime-picker type="datetime" v-model="form.${field}"/>
         </uni-forms-item>
@@ -91,22 +91,23 @@
   </view>
 </template>
 
-<script>
+<script setup>
 import { get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName} } from "@/api/${moduleName}/${businessName}";
+import {onLoad,onShow} from "@dcloudio/uni-app";
+import { ref } from "vue";
+#if(${dicts} != '')
+import DictTag from "@/components/dict-tag/dict-tag; 
+import { getDicts } from "@/api/system/dict/data";
+#end
 
-
-export default {
-  name: "${BusinessName}Edit",
-  data() {
-    return {
 #foreach($column in $columns)    
 #set($javaField=$column.javaField)
-#if($column.list && "" != $column.dictType)
-      ${javaField}Options:[]
+#if("" != $column.dictType)
+const ${javaField}Options = ref([])
 #end
 #end
-      // 表单参数
-      ${businessName}: {
+// 表单参数
+const ${businessName} = ref({
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
         $column.javaField: []#if($foreach.count != $columns.size()),#end
@@ -114,44 +115,41 @@ export default {
         $column.javaField: null#if($foreach.count != $columns.size()),#end
 #end
 #end
-      },
-    };
-  },
-  onShow(params) {
-    if(params.${pkColumn.javaField}){
+      })
+onShow(params=>{
+  if(params.${pkColumn.javaField}){
       get${BusinessName}(params.${pkColumn.javaField}).then(res=>{
-        this.${businessName} = res.data
+        ${businessName}.value = res.data
       })
     }
-  },
-  created() {
+})
+onLoad(()=> {
 #foreach($column in $columns)   
 #set($javaField=$column.javaField) 
-#if($column.list && "" != $column.dictType)  
-    this.getDicts(${column.dictType}).then(response => {
-      for(let opt in response.data){
-        this.${javaField}Options.push({text: opt.dictLabel,value: opt.dictValue})
-      }
-    });
+#if("" != $column.dictType)  
+  getDicts(${column.dictType}).then(response => {
+    ${javaField}Options.value = []
+    for(let opt in response.data){
+      ${javaField}Options.value.push({text: opt.dictLabel,value: opt.dictValue})
+    }
+  });
 #end
 #end  
-  },
-  methods: {
-    /** 删除按钮操作 */
-    handleDelete(${pkColumn.javaField}) {
-      del${BusinessName}(${pkColumn.javaField}).then(()=>{
-        this.navigateTo("/pages/${moduleName}/${businessName}/list")
-      })
-    },
-    /** ${subTable.functionName}添加按钮操作 */
-    handleAdd${BusinessName}() {
-      add${BusinessName}(this.${businessName}).then(()=>{
-        this.navigateTo("/pages/${moduleName}/${businessName}/list")
-      })
-    },
-    navigateTo(url){
-        this.$tab.navigateTo(url)
-    }
-  }
-};
+})
+
+/** 删除按钮操作 */
+function handleDelete(${pkColumn.javaField}) {
+  del${BusinessName}(${pkColumn.javaField}).then(()=>{
+    navigateTo("/pages/${moduleName}/${businessName}/list")
+  })
+}
+/** ${subTable.functionName}添加按钮操作 */
+function handleAdd${BusinessName}() {
+  add${BusinessName}(${businessName}.value).then(()=>{
+    navigateTo("/pages/${moduleName}/${businessName}/list")
+  })
+}
+function navigateTo(url){
+    tab.navigateTo(url)
+}
 </script>

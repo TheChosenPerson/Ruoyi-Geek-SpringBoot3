@@ -35,54 +35,51 @@
   </view>
 </template>
 
-<script>
+<script setup>
 import  config  from "@/config"
 import { get${BusinessName} } from "@/api/${moduleName}/${businessName}";
+import {onLoad,onShow} from "@dcloudio/uni-app";
+import { ref } from "vue";
 #if(${dicts} != '')
 import DictTag from "@/components/dict-tag/dict-tag; 
 import { getDicts } from "@/api/system/dict/data";
 #end
 
-export default {
-#if(${dicts} != '')
-  components:{ DictTag },
+#foreach($column in $columns)    
+#set($javaField=$column.javaField)
+#if("" != $column.dictType)
+const ${javaField}Options = ref([])
 #end
-  name: "${BusinessName}Show",
-  data() {
-    return {
-      // 表单参数
-      ${businessName}: {
+#end
+// 表单参数
+const ${businessName} = ref({
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
-        $column.javaField: []#if($foreach.count != $columns.size()),#end
+  $column.javaField: []#if($foreach.count != $columns.size()),#end
 #elseif($column.htmlType == "imageUpload")
-        $column.javaField: ""#if($foreach.count != $columns.size()),#end
+  $column.javaField: ""#if($foreach.count != $columns.size()),#end
 #else
-        $column.javaField: null#if($foreach.count != $columns.size()),#end
+  $column.javaField: null#if($foreach.count != $columns.size()),#end
 #end
 #end
-      },
-    };
-  },
-  created() {
+})
+
+onLoad(() => {
 #foreach($column in $columns)   
 #set($javaField=$column.javaField) 
 #if($column.list && "" != $column.dictType)  
-    getDicts(${column.dictType}).then(response => {
-      this.${javaField}Options = response.data;
-    });
+  getDicts(${column.dictType}).then(response => {
+    ${javaField}Options.value = response.data;
+  });
 #end
 #end  
-  },
-  onShow(params) {
-    get${BusinessName}(params.${pkColumn.javaField}).then(res=>{
-      this.${businessName} = res.data
-    })
-  },
-  methods: {
-    addBaseUrl(arr){
-		  return arr.map(item => config.baseUrl+item)
-	  },
-  }
-};
+})
+onShow(params => {
+  get${BusinessName}(params.${pkColumn.javaField}).then(res=>{
+    ${businessName}.value = res.data
+  })
+})
+function addBaseUrl(arr){
+  return arr.map(item => config.baseUrl+item)
+}
 </script>
