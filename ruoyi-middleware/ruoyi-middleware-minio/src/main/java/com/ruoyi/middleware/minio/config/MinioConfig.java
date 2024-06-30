@@ -1,28 +1,23 @@
 package com.ruoyi.middleware.minio.config;
 
-import com.ruoyi.common.annotation.Anonymous;
-import com.ruoyi.common.config.RuoYiConfig;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.file.FileOperateUtils;
-import com.ruoyi.common.utils.file.FileUtils;
-import io.minio.*;
-import io.minio.errors.*;
-import io.minio.messages.Bucket;
-import io.minio.messages.Item;
-import jakarta.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.apache.http.impl.io.EmptyInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import com.ruoyi.common.config.RuoYiConfig;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.file.FileUtils;
+
+import io.minio.BucketExistsArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import jakarta.annotation.PostConstruct;
 
 @Configuration("MinioConfiguration")
 @ConditionalOnProperty(prefix = "minio", name = { "enable" }, havingValue = "true", matchIfMissing = false)
@@ -59,10 +54,6 @@ public class MinioConfig {
 
     public int getMaxSize() {
         return maxSize;
-    }
-
-    private void setMaxSize(int maxSize) {
-        this.maxSize = maxSize;
     }
 
     public List<MinioClientConfig.MinioClientEntity> getSlaveClientsList() {

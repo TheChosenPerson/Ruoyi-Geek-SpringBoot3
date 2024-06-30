@@ -3,7 +3,6 @@ package com.ruoyi.middleware.minio.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +15,6 @@ import com.ruoyi.middleware.minio.config.MinioClientConfig;
 import com.ruoyi.middleware.minio.config.MinioConfig;
 import com.ruoyi.middleware.minio.domain.MinioFileVO;
 import com.ruoyi.middleware.minio.exception.MinioClientErrorException;
-import com.ruoyi.middleware.minio.exception.MinioClientNotFundException;
 
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
@@ -93,27 +91,27 @@ public class MinioUtil {
      * @param putObjectArgs Minio上传文件参数
      * @return 返回上传成功的文件路径
      */
-    private static String uploadFileIterator(int index, PutObjectArgs putObjectArgs) {
-        List<MinioClientConfig.MinioClientEntity> slaveClientsList = getMinioConfig().getSlaveClientsList();
-        if (index >= slaveClientsList.size()) {
-            throw new MinioClientNotFundException();
-        }
-        try {
-            MinioClientConfig.MinioClientEntity minioClientEntity = slaveClientsList.get(index);
-            PutObjectArgs build = PutObjectArgs.builder().contentType(putObjectArgs.contentType())
-                    .object(putObjectArgs.object())
-                    .stream(putObjectArgs.stream(), putObjectArgs.stream().available(), -1)
-                    .bucket(minioClientEntity.getDefaultBuket()).build();
-            minioClientEntity.getClient().putObject(build);
-            StringBuilder url = new StringBuilder();
-            url.append(MinioConfig.prefix).append("/").append(minioClientEntity.getDefaultBuket())
-                    .append("?").append("fileName=").append(putObjectArgs.object())
-                    .append("&").append("clientName=").append(minioClientEntity.getName());
-            return url.toString();
-        } catch (Exception e) {
-            return uploadFileIterator(index + 1, putObjectArgs);
-        }
-    }
+    // private static String uploadFileIterator(int index, PutObjectArgs putObjectArgs) {
+    //     List<MinioClientConfig.MinioClientEntity> slaveClientsList = getMinioConfig().getSlaveClientsList();
+    //     if (index >= slaveClientsList.size()) {
+    //         throw new MinioClientNotFundException();
+    //     }
+    //     try {
+    //         MinioClientConfig.MinioClientEntity minioClientEntity = slaveClientsList.get(index);
+    //         PutObjectArgs build = PutObjectArgs.builder().contentType(putObjectArgs.contentType())
+    //                 .object(putObjectArgs.object())
+    //                 .stream(putObjectArgs.stream(), putObjectArgs.stream().available(), -1)
+    //                 .bucket(minioClientEntity.getDefaultBuket()).build();
+    //         minioClientEntity.getClient().putObject(build);
+    //         StringBuilder url = new StringBuilder();
+    //         url.append(MinioConfig.prefix).append("/").append(minioClientEntity.getDefaultBuket())
+    //                 .append("?").append("fileName=").append(putObjectArgs.object())
+    //                 .append("&").append("clientName=").append(minioClientEntity.getName());
+    //         return url.toString();
+    //     } catch (Exception e) {
+    //         return uploadFileIterator(index + 1, putObjectArgs);
+    //     }
+    // }
 
     /**
      * 文件上传
