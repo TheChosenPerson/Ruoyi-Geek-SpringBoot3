@@ -5,6 +5,7 @@ pagehelper:
   params: count=countSql
 
 createSqlSessionFactory:
+  # 选择MyBatis配置方式，mybatis / mybatis-plus
   use: mybatis
 
 # MyBatis配置
