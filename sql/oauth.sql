@@ -23,24 +23,24 @@ CREATE TABLE oauth_user (
 ) ENGINE = InnoDB  COMMENT = '第三方登录';
 
 -- 菜单 SQL
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values('第三方认证', '1', '1', 'oauth', 'system/oauth/index', 1, 0, 'C', '0', '0', 'system:oauth:list', 'checkbox', 'admin', sysdate(), '', null, '第三方认证菜单');
+insert into sys_menu (menu_name, parent_id, order_num, path, component, route_name,is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('第三方认证', '1', '1', 'oauth', 'system/oauth/index',"", 1, 0, 'C', '0', '0', 'system:oauth:list', 'checkbox', 'admin', sysdate(), '', null, '第三方认证菜单');
 
 -- 按钮父菜单ID
 SELECT @parentId := LAST_INSERT_ID();
 
 -- 按钮 SQL
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values('第三方认证查询', @parentId, '1',  '#', '', 1, 0, 'F', '0', '0', 'system:oauth:query',        '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu (menu_name, parent_id, order_num, path, component, route_name,is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('第三方认证查询', @parentId, '1',  '#', '','', 1, 0, 'F', '0', '0', 'system:oauth:query',        '#', 'admin', sysdate(), '', null, '');
 
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values('第三方认证新增', @parentId, '2',  '#', '', 1, 0, 'F', '0', '0', 'system:oauth:add',          '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu (menu_name, parent_id, order_num, path, component, route_name,is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('第三方认证新增', @parentId, '2',  '#', '','', 1, 0, 'F', '0', '0', 'system:oauth:add',          '#', 'admin', sysdate(), '', null, '');
 
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values('第三方认证修改', @parentId, '3',  '#', '', 1, 0, 'F', '0', '0', 'system:oauth:edit',         '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu (menu_name, parent_id, order_num, path, component, route_name,is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('第三方认证修改', @parentId, '3',  '#', '','', 1, 0, 'F', '0', '0', 'system:oauth:edit',         '#', 'admin', sysdate(), '', null, '');
 
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values('第三方认证删除', @parentId, '4',  '#', '', 1, 0, 'F', '0', '0', 'system:oauth:remove',       '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu (menu_name, parent_id, order_num, path, component, route_name,is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('第三方认证删除', @parentId, '4',  '#', '','', 1, 0, 'F', '0', '0', 'system:oauth:remove',       '#', 'admin', sysdate(), '', null, '');
 
-insert into sys_menu (menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values('第三方认证导出', @parentId, '5',  '#', '', 1, 0, 'F', '0', '0', 'system:oauth:export',       '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu (menu_name, parent_id, order_num, path, component, route_name,is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('第三方认证导出', @parentId, '5',  '#', '','', 1, 0, 'F', '0', '0', 'system:oauth:export',       '#', 'admin', sysdate(), '', null, '');
