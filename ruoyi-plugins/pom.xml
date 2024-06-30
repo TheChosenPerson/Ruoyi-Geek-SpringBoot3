@@ -29,7 +29,7 @@
             </dependency>
 
             <!-- mybatis-plus 增强CRUD -->
-            <dependency>
+            <!-- <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <exclusions>
@@ -39,6 +39,11 @@
                     </exclusion>
                 </exclusions>
                 <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency> -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>3.5.7</version>
             </dependency>
 
             <!-- ruoyi-ehcache-->

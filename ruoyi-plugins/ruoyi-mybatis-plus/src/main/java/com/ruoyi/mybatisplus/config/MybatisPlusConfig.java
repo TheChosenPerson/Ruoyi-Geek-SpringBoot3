@@ -1,14 +1,27 @@
 package com.ruoyi.mybatisplus.config;
 
+import javax.sql.DataSource;
+
+import org.apache.ibatis.io.VFS;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.autoconfigure.SpringBootVFS;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.ruoyi.common.interceptor.mybatis.CreateSqlSessionFactory;
+import com.ruoyi.common.utils.MybatisUtils;
+import com.ruoyi.common.utils.StringUtils;
 
 /**
  * Mybatis Plus 配置
@@ -17,11 +30,9 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
  */
 @EnableTransactionManagement(proxyTargetClass = true)
 @Configuration
-public class MybatisPlusConfig
-{
+public class MybatisPlusConfig {
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor()
-    {
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 分页插件
         interceptor.addInnerInterceptor(paginationInnerInterceptor());
@@ -35,8 +46,7 @@ public class MybatisPlusConfig
     /**
      * 分页插件，自动识别数据库类型 https://baomidou.com/guide/interceptor-pagination.html
      */
-    public PaginationInnerInterceptor paginationInnerInterceptor()
-    {
+    public PaginationInnerInterceptor paginationInnerInterceptor() {
         PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
         // 设置数据库类型为mysql
         paginationInnerInterceptor.setDbType(DbType.MYSQL);
@@ -48,16 +58,39 @@ public class MybatisPlusConfig
     /**
      * 乐观锁插件 https://baomidou.com/guide/interceptor-optimistic-locker.html
      */
-    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor()
-    {
+    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
         return new OptimisticLockerInnerInterceptor();
     }
 
     /**
-     * 如果是对全表的删除或更新操作，就会终止该操作 https://baomidou.com/guide/interceptor-block-attack.html
+     * 如果是对全表的删除或更新操作，就会终止该操作
+     * https://baomidou.com/guide/interceptor-block-attack.html
      */
-    public BlockAttackInnerInterceptor blockAttackInnerInterceptor()
-    {
+    public BlockAttackInnerInterceptor blockAttackInnerInterceptor() {
         return new BlockAttackInnerInterceptor();
     }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "createSqlSessionFactory", name = "use", havingValue = "mybatis-plus")
+    public CreateSqlSessionFactory createSqlSessionFactory() {
+        return new CreateSqlSessionFactory() {
+            public SqlSessionFactory createSqlSessionFactory(Environment env, DataSource dataSource) throws Exception {
+                String typeAliasesPackage = env.getProperty("mybatis-plus.typeAliasesPackage");
+                String mapperLocations = env.getProperty("mybatis-plus.mapperLocations");
+                String configLocation = env.getProperty("mybatis-plus.configLocation");
+                typeAliasesPackage = MybatisUtils.setTypeAliasesPackage(typeAliasesPackage);
+                VFS.addImplClass(SpringBootVFS.class);
+
+                final MybatisSqlSessionFactoryBean sessionFactory = new MybatisSqlSessionFactoryBean();
+                sessionFactory.setPlugins(new Interceptor[] { mybatisPlusInterceptor() });
+                sessionFactory.setDataSource(dataSource);
+                sessionFactory.setTypeAliasesPackage(typeAliasesPackage);
+                sessionFactory.setMapperLocations(
+                        MybatisUtils.resolveMapperLocations(StringUtils.split(mapperLocations, ",")));
+                sessionFactory.setConfigLocation(new DefaultResourceLoader().getResource(configLocation));
+                return sessionFactory.getObject();
+            }
+        };
+    }
+
 }
