@@ -6,6 +6,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 import com.ruoyi.common.enums.DataSourceType;
 
 /**
@@ -19,10 +20,15 @@ import com.ruoyi.common.enums.DataSourceType;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-public @interface DataSource
-{
+public @interface DataSource {
+
     /**
-     * 切换数据源名称
+     * 切换数据源名称 - 枚举方式
      */
     public DataSourceType value() default DataSourceType.MASTER;
+
+    /**
+     * 切换数据源名称 - 字符串方式
+     */
+    public String name() default "";
 }

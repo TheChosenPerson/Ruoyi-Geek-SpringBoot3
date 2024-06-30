@@ -3,20 +3,20 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
+        dynamic:
+            primary: MASTER
+            datasource:
+                # 主库数据源
+                MASTER:
+                    url: jdbc:mysql://127.0.0.1/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                    username: root
+                    password: 123456
+                # 从库数据源
+                # SLAVE:
+                #     url: jdbc:mysql://127.0.0.1/ruoyi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                #     username: root
+                #     password: 123456
         druid:
-            # 主库数据源
-            master:
-                url: jdbc:mysql://127.0.0.1/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-                username: root
-                password: 123456
-            # 从库数据源
-            slave:
-                # 从数据源开关/默认关闭
-                enabled: false
-                url: jdbc:mysql://127.0.0.1/ruoyi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-                username: root
-                password: 123456
-
             # 初始连接数
             initialSize: 5
             # 最小连接池数量

@@ -1,7 +1,5 @@
 package com.ruoyi.framework.web.exception;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,6 +18,8 @@ import com.ruoyi.common.exception.DemoModeException;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.html.EscapeUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 全局异常处理器
