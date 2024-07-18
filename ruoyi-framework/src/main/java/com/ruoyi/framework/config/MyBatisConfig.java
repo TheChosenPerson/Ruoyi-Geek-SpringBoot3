@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 
+import com.github.pagehelper.PageInterceptor;
+import com.github.pagehelper.autoconfigure.PageHelperStandardProperties;
 import com.ruoyi.common.interceptor.mybatis.CreateSqlSessionFactory;
 import com.ruoyi.common.utils.MybatisUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -30,7 +32,7 @@ public class MyBatisConfig {
 
     @Bean
     @ConditionalOnProperty(prefix = "createSqlSessionFactory", name = "use", havingValue = "mybatis")
-    public CreateSqlSessionFactory createSqlSessionFactory() {
+    public CreateSqlSessionFactory createSqlSessionFactory(PageHelperStandardProperties packageHelperStandardProperties) {
         return new CreateSqlSessionFactory() {
             public SqlSessionFactory createSqlSessionFactory(Environment env, DataSource dataSource) throws Exception {
                 String typeAliasesPackage = env.getProperty("mybatis.typeAliasesPackage");
@@ -38,13 +40,16 @@ public class MyBatisConfig {
                 String configLocation = env.getProperty("mybatis.configLocation");
                 typeAliasesPackage = MybatisUtils.setTypeAliasesPackage(typeAliasesPackage);
                 VFS.addImplClass(SpringBootVFS.class);
-
+                
                 final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
                 sessionFactory.setDataSource(dataSource);
                 sessionFactory.setTypeAliasesPackage(typeAliasesPackage);
                 sessionFactory.setMapperLocations(
                         MybatisUtils.resolveMapperLocations(StringUtils.split(mapperLocations, ",")));
                 sessionFactory.setConfigLocation(new DefaultResourceLoader().getResource(configLocation));
+                PageInterceptor interceptor = new PageInterceptor();
+                interceptor.setProperties(packageHelperStandardProperties.getProperties());
+                sessionFactory.addPlugins(interceptor);
                 return sessionFactory.getObject();
             }
         };
