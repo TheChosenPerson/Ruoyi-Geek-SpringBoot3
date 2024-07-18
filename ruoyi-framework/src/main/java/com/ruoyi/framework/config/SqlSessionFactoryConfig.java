@@ -1,7 +1,6 @@
 package com.ruoyi.framework.config;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -26,12 +25,11 @@ public class SqlSessionFactoryConfig {
     DynamicDataSourceProperties dataSourceProperties;
 
     @Bean(name = "sqlSessionTemplate")
-    public DynamicSqlSessionTemplate sqlSessionTemplate(Environment env,List<SqlSessionFactory> sqlSessionFactoryList) throws Exception {
+    public DynamicSqlSessionTemplate sqlSessionTemplate(Environment env) throws Exception {
         Map<Object, SqlSessionFactory> sqlSessionFactoryMap = new HashMap<>();
         Map<String, DataSource> targetDataSources = dataSourceProperties.getTargetDataSources();
         for (Map.Entry<String, DataSource> entry : targetDataSources.entrySet()) {
             SqlSessionFactory sessionFactory = createSqlSessionFactory.createSqlSessionFactory(env, entry.getValue());
-            sqlSessionFactoryList.add(sessionFactory);
             sqlSessionFactoryMap.put(entry.getKey(), sessionFactory);
             // 应对热重载的特殊处理
             Object ret = com.atomikos.icatch.config.Configuration.removeResource(entry.getKey());
