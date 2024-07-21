@@ -31,7 +31,6 @@ public class SqlSessionFactoryConfig {
         for (Map.Entry<String, DataSource> entry : targetDataSources.entrySet()) {
             SqlSessionFactory sessionFactory = createSqlSessionFactory.createSqlSessionFactory(env, entry.getValue());
             sqlSessionFactoryMap.put(entry.getKey(), sessionFactory);
-
             // 应对热重载的特殊处理
             Object ret = com.atomikos.icatch.config.Configuration.removeResource(entry.getKey());
             if (ret != null) {
