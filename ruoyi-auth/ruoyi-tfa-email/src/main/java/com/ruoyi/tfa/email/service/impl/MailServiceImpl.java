@@ -33,6 +33,7 @@ public class MailServiceImpl implements IMailService {
     private TokenService tokenService;
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
+    
     private static final Logger log = LoggerFactory.getLogger(MailServiceImpl.class);
 
     @Override
@@ -78,6 +79,7 @@ public class MailServiceImpl implements IMailService {
                     sysUser.setUserName(loginBody.getEmail());
                     sysUser.setPassword(SecurityUtils.encryptPassword(RandomCodeUtil.code(16)));
                     sysUser.setEmail(loginBody.getEmail());
+                    userService.registerUser(sysUser);
                 } else {
                     throw new ServiceException("该邮箱未绑定用户");
                 }
@@ -104,6 +106,7 @@ public class MailServiceImpl implements IMailService {
             sysUser.setUserName(registerBody.getEmail());
             sysUser.setPassword(SecurityUtils.encryptPassword(registerBody.getPassword()));
             sysUser.setEmail(registerBody.getEmail());
+            userService.registerUser(sysUser);
         } else {
             throw new ServiceException("验证码错误");
         }
