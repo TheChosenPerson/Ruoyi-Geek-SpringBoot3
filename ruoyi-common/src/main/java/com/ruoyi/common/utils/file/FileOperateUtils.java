@@ -1,6 +1,10 @@
 package com.ruoyi.common.utils.file;
 
 import com.ruoyi.common.config.RuoYiConfig;
+import com.ruoyi.common.constant.CacheConstants;
+import com.ruoyi.common.utils.CacheUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.sign.Md5Utils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,8 +39,15 @@ public class FileOperateUtils {
      */
     public static final String upload(MultipartFile file) throws IOException {
         try {
+            String md5 = Md5Utils.getMd5(file);
+            String pathForMd5 = FileOperateUtils.getFilePathForMd5(md5);
+            if (StringUtils.isNotEmpty(pathForMd5)) {
+                return pathForMd5;
+            }
             FileUtils.assertAllowed(file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
-            return fileService.upload(file);
+            String pathFileName = fileService.upload(file);
+            FileOperateUtils.saveFileAndMd5(pathFileName, md5);
+            return pathFileName;
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);
         }
@@ -52,8 +63,15 @@ public class FileOperateUtils {
      * @throws IOException
      */
     public static final String upload(String filePath, MultipartFile file, String[] allowedExtension) throws Exception {
+        String md5 = Md5Utils.getMd5(file);
+        String pathForMd5 = FileOperateUtils.getFilePathForMd5(md5);
+        if (StringUtils.isNotEmpty(pathForMd5)) {
+            return pathForMd5;
+        }
         FileUtils.assertAllowed(file, allowedExtension);
-        return fileService.upload(filePath, file);
+        String pathFileName = fileService.upload(filePath, file);
+        FileOperateUtils.saveFileAndMd5(pathFileName, md5);
+        return pathFileName;
     }
 
     /**
@@ -67,7 +85,7 @@ public class FileOperateUtils {
      * @throws IOException
      */
     public static final String upload(String baseDir, String fileName, MultipartFile file,
-            String[] allowedExtension)
+                                      String[] allowedExtension)
             throws IOException {
         try {
             String filePath = baseDir + File.separator + fileName;
@@ -99,5 +117,47 @@ public class FileOperateUtils {
      */
     public static final boolean deleteFile(String fileUrl) throws Exception {
         return fileService.deleteFile(fileUrl);
+    }
+
+    /**
+     * 根据md5获取文件的路径
+     *
+     * @param md5 文件的md5
+     * @return
+     */
+    public static String getFilePathForMd5(String md5) {
+        return CacheUtils.get(CacheConstants.FILE_MD5_PATH_KEY, md5, String.class);
+    }
+
+    /**
+     * 保存文件的md5
+     *
+     * @param path 文件的路径
+     * @param md5  文件的md5
+     */
+    public static void saveFileAndMd5(String path, String md5) {
+        CacheUtils.put(CacheConstants.FILE_MD5_PATH_KEY, md5, path);
+        CacheUtils.put(CacheConstants.FILE_PATH_MD5_KEY, path, md5);
+    }
+
+    /**
+     * 删除文件的md5
+     *
+     * @param md5 文件的md5
+     */
+    public static void deleteFileAndMd5ByMd5(String md5) {
+        String filePathByMd5 = getFilePathForMd5(md5);
+        if (StringUtils.isNotEmpty(filePathByMd5)) {
+            CacheUtils.remove(CacheConstants.FILE_MD5_PATH_KEY, md5);
+            CacheUtils.remove(CacheConstants.FILE_PATH_MD5_KEY, filePathByMd5);
+        }
+    }
+
+    public static void deleteFileAndMd5ByFilePath(String filePath) {
+        String md5ByFilePath = CacheUtils.get(CacheConstants.FILE_PATH_MD5_KEY, filePath, String.class);
+        if (StringUtils.isNotEmpty(md5ByFilePath)) {
+            CacheUtils.remove(CacheConstants.FILE_PATH_MD5_KEY, filePath);
+            CacheUtils.remove(CacheConstants.FILE_MD5_PATH_KEY, md5ByFilePath);
+        }
     }
 }

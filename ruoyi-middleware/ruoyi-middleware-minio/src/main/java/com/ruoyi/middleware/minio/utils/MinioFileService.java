@@ -3,6 +3,8 @@ package com.ruoyi.middleware.minio.utils;
 import java.io.File;
 import java.io.InputStream;
 
+import com.ruoyi.common.utils.file.FileOperateUtils;
+import com.ruoyi.common.utils.sign.Md5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,8 @@ import com.ruoyi.common.utils.file.FileService;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.middleware.minio.config.MinioConfig;
 import com.ruoyi.middleware.minio.domain.MinioFileVO;
+
+import static com.ruoyi.common.utils.file.FileUtils.getPathFileName;
 
 /**
  * Minio文件操作实现类
@@ -32,6 +36,7 @@ public class MinioFileService implements FileService {
         } else {
             relativePath = filePath;
         }
+
         return MinioUtil.uploadFile(minioConfig.getMasterClient().getDefaultBuket(), relativePath, file);
     }
 
@@ -63,6 +68,7 @@ public class MinioFileService implements FileService {
     public boolean deleteFile(String fileUrl) throws Exception {
         String filePath = StringUtils.substringAfter(fileUrl, "?fileName=");
         MinioUtil.removeFile(minioConfig.getMasterClient().getDefaultBuket(), filePath);
+        FileOperateUtils.deleteFileAndMd5ByFilePath(filePath);
         return true;
     }
 }
