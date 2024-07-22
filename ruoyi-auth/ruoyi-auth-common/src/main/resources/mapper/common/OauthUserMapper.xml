@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="checkAuthUser" parameterType="OauthUser" resultType="int">
-		select count(1) from sys_auth_user where user_id=#{userId} and source=#{source} limit 1
+		select count(1) from oauth_user where user_id=#{userId} and source=#{source} limit 1
     </select>
 
     <select id="selectOauthUserList" parameterType="OauthUser" resultMap="OauthUserResult">
