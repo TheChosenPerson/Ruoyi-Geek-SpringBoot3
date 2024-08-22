@@ -5,6 +5,7 @@ import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.exception.file.FileNameLengthLimitExceededException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.sign.Md5Utils;
 import com.ruoyi.common.utils.uuid.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -96,7 +97,11 @@ public class DiskFileService implements FileService {
         File file = new File(fileAbs);
         // 路径为文件且不为空则进行删除
         if (file.isFile() && file.exists()) {
+            String md5 = Md5Utils.getMd5(file);
             flag = file.delete();
+            if(flag) {
+                FileOperateUtils.deleteFileAndMd5ByMd5(md5);
+            }
         }
         return flag;
     }
