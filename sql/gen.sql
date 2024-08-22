@@ -12,7 +12,7 @@ CREATE TABLE `gen_table`  (
   `sub_table_fk_name`   varchar(64)     DEFAULT NULL COMMENT '子表关联的外键名',
   `class_name`          varchar(100)    DEFAULT '' COMMENT '实体类名称',
   `tpl_category`        varchar(200)    DEFAULT 'crud' COMMENT '使用的模板（crud单表操作 tree树表操作）',
-  `tpl_web_type`        varchar(200)    DEFAULT '0' COMMENT '使用的模板类型',
+  `tpl_web_type`        varchar(200)    DEFAULT 'element-plus' COMMENT '使用的模板类型',
   `package_name`        varchar(100)    DEFAULT NULL COMMENT '生成包路径',
   `module_name`         varchar(30)     DEFAULT NULL COMMENT '生成模块名',
   `business_name`       varchar(30)     DEFAULT NULL COMMENT '生成业务名',
