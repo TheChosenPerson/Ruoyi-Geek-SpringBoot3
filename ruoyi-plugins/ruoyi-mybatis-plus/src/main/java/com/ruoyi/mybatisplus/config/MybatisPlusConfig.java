@@ -19,6 +19,8 @@ import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerIntercep
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.github.pagehelper.PageInterceptor;
+import com.github.pagehelper.autoconfigure.PageHelperStandardProperties;
 import com.ruoyi.common.interceptor.mybatis.CreateSqlSessionFactory;
 import com.ruoyi.common.utils.MybatisUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -72,7 +74,7 @@ public class MybatisPlusConfig {
 
     @Bean
     @ConditionalOnProperty(prefix = "createSqlSessionFactory", name = "use", havingValue = "mybatis-plus")
-    public CreateSqlSessionFactory createSqlSessionFactory() {
+    public CreateSqlSessionFactory createSqlSessionFactory(PageHelperStandardProperties packageHelperStandardProperties) {
         return new CreateSqlSessionFactory() {
             public SqlSessionFactory createSqlSessionFactory(Environment env, DataSource dataSource) throws Exception {
                 String typeAliasesPackage = env.getProperty("mybatis-plus.typeAliasesPackage");
@@ -88,6 +90,9 @@ public class MybatisPlusConfig {
                 sessionFactory.setMapperLocations(
                         MybatisUtils.resolveMapperLocations(StringUtils.split(mapperLocations, ",")));
                 sessionFactory.setConfigLocation(new DefaultResourceLoader().getResource(configLocation));
+                PageInterceptor interceptor = new PageInterceptor();
+                interceptor.setProperties(packageHelperStandardProperties.getProperties());
+                sessionFactory.addPlugins(interceptor);
                 return sessionFactory.getObject();
             }
         };

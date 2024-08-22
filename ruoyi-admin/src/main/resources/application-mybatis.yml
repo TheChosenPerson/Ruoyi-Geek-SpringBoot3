@@ -6,7 +6,7 @@ pagehelper:
 
 createSqlSessionFactory:
   # 选择MyBatis配置方式，mybatis / mybatis-plus
-  use: mybatis
+  use: mybatis-plus
 
 # MyBatis配置
 mybatis:

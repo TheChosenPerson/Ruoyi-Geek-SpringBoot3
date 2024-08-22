@@ -25,4 +25,20 @@
     "maven.executable.preferMavenWrapper": true,
     "java.import.maven.enabled": true,
     "java.dependency.packagePresentation": "hierarchical",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "localhost",
+            "database": "ry",
+            "username": "root",
+            "password": "123456"
+        }
+    ],
 }
