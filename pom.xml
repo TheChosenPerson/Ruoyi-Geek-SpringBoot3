@@ -28,7 +28,7 @@
         <pagehelper.boot.version>2.1.0</pagehelper.boot.version>
         <fastjson.version>2.0.45</fastjson.version>
         <jackson.version>2.9.8</jackson.version>
-        <oshi.version>6.4.11</oshi.version>
+        <oshi.version>6.6.3</oshi.version>
         <commons.io.version>2.11.0</commons.io.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <poi.version>5.2.3</poi.version>

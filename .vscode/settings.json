@@ -1,8 +1,5 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "files.associations": {
-        "*.yml": "yaml"
-    },
     "java.compile.nullAnalysis.mode": "disabled",
     "maven.view": "hierarchical",
     "maven.executable.options": "-T 4",
@@ -10,7 +7,6 @@
     "java.debug.settings.hotCodeReplace": "auto",
     "spring-boot.ls.java.home": "",
     "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=9 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms4G -Xlog:disable",
-    // "java.compile.nullAnalysis.mode": "automatic"
     "maven.excludedFolders": [
         "**/.vscode",
         "**/.idea",
