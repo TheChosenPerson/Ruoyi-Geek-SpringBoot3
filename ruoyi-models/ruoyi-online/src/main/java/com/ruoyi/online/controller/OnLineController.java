@@ -72,7 +72,7 @@ public class OnLineController extends BaseController {
         return object;
     }
 
-    public Boolean checkPermission(String permissionType,String permissionValue) {
+    public Boolean checkPermission(String permissionType, String permissionValue) {
         if (permissionType == null)
             return true;
         return switch (permissionType) {
@@ -89,18 +89,22 @@ public class OnLineController extends BaseController {
     public Object processingMapper(String sqlContext, String actuatot, Map<String, Object> params) {
         String sql = "<script>\n" + sqlContext + "\n</script>";
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        SqlMapper sqlMapper = new SqlMapper(sqlSession);
-        Object res = null;
-        res = switch (actuatot) {
-            case "selectList" -> getDataTable(sqlMapper.selectList(sql, params));
-            case "insert" -> toAjax(sqlMapper.insert(sql, params));
-            case "selectOne" -> success(sqlMapper.selectOne(sql, params));
-            case "update" -> toAjax(sqlMapper.update(sql, params));
-            case "delete" -> toAjax(sqlMapper.delete(sql, params));
-            default -> AjaxResult.error(500, "系统错误，执行器错误");
-        };
-        sqlSession.close();
-        return res;
+        try {
+            SqlMapper sqlMapper = new SqlMapper(sqlSession);
+            Object res = null;
+            res = switch (actuatot) {
+                case "selectList" -> getDataTable(sqlMapper.selectList(sql, params));
+                case "insert" -> toAjax(sqlMapper.insert(sql, params));
+                case "selectOne" -> success(sqlMapper.selectOne(sql, params));
+                case "update" -> toAjax(sqlMapper.update(sql, params));
+                case "delete" -> toAjax(sqlMapper.delete(sql, params));
+                default -> AjaxResult.error(500, "系统错误，执行器错误");
+            };
+            return res;
+        } finally {
+            sqlSession.close();
+        }
+
     }
 
     @RequestMapping("/api/**")
@@ -120,7 +124,7 @@ public class OnLineController extends BaseController {
             return AjaxResult.error(500, "系统错误，在线接口重复");
         } else {
             OnlineMb onlineMb = selectOnlineMbList.get(0);
-            if (!checkPermission(onlineMb.getPermissionType(),onlineMb.getPermissionValue()))
+            if (!checkPermission(onlineMb.getPermissionType(), onlineMb.getPermissionValue()))
                 return AjaxResult.error(403, "没有权限，请联系管理员授权");
 
             if (onlineMb.getDeptId() != null && onlineMb.getDeptId().equals("1")) {

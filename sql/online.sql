@@ -15,7 +15,7 @@ CREATE TABLE online_mb (
     dept_id char(1) NULL COMMENT '是否需要deptId',
     permission_type varchar(255) NULL COMMENT '许可类型',
     permission_value varchar(255) NULL COMMENT '许可值',
-    del_flag varchar(10) NOT NULL COMMENT '删除标志（0代表存在 1代表删除）',
+    del_flag varchar(10) NOT NULL DEFAULT '0' COMMENT '删除标志（0代表存在 1代表删除）',
     PRIMARY KEY (mb_id)
 ) ENGINE = InnoDB  COMMENT = '在线接口';
 
