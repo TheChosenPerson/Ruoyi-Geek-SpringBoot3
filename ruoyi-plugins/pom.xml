@@ -80,6 +80,12 @@
                 <artifactId>ruoyi-plugins-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-mybatis-interceptor</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -90,6 +96,7 @@
         <module>ruoyi-mybatis-plus</module>
         <module>ruoyi-websocket</module>
         <module>ruoyi-plugins-starter</module>
+        <module>ruoyi-mybatis-interceptor</module>
     </modules>
     <packaging>pom</packaging>
 </project>
