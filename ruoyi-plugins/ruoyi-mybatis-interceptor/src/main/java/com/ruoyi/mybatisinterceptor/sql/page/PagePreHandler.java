@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.ruoyi.mybatisinterceptor.annotation.MybatisHandlerOrder;
-import com.ruoyi.mybatisinterceptor.context.page.PageContextHolder;
-import com.ruoyi.mybatisinterceptor.context.page.model.PageInfo;
-import com.ruoyi.mybatisinterceptor.sql.MybatisPreHandler;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -20,7 +16,13 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
+
 import com.ruoyi.common.utils.sql.SqlUtil;
+import com.ruoyi.mybatisinterceptor.annotation.MybatisHandlerOrder;
+import com.ruoyi.mybatisinterceptor.context.page.PageContextHolder;
+import com.ruoyi.mybatisinterceptor.context.page.model.PageInfo;
+import com.ruoyi.mybatisinterceptor.sql.MybatisPreHandler;
+
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.Limit;
