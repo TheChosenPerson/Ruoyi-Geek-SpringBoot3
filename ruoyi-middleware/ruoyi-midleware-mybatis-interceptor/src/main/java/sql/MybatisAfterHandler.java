@@ -1,4 +1,4 @@
-package com.ruoyi.common.handler.sql;
+package sql;
 
 public interface MybatisAfterHandler {
 

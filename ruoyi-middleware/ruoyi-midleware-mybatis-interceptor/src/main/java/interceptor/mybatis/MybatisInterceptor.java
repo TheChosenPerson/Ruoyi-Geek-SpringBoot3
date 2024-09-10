@@ -1,6 +1,5 @@
-package com.ruoyi.framework.interceptor.mybatis;
+package interceptor.mybatis;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,10 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ruoyi.common.annotation.sql.MybatisHandlerOrder;
-import com.ruoyi.common.handler.sql.MybatisAfterHandler;
-import com.ruoyi.common.handler.sql.MybatisPreHandler;
+
 
 import jakarta.annotation.PostConstruct;
+import sql.MybatisAfterHandler;
+import sql.MybatisPreHandler;
 
 @Component
 @Intercepts({

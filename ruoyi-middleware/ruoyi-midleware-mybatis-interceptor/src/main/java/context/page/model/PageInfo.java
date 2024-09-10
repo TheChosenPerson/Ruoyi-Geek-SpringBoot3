@@ -1,4 +1,4 @@
-package com.ruoyi.common.context.page.model;
+package context.page.model;
 
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.ServletUtils;

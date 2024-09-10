@@ -1,4 +1,4 @@
-package com.ruoyi.common.handler.sql.dataSecurity;
+package sql.dataSecurity;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
 import com.ruoyi.common.annotation.sql.MybatisHandlerOrder;
-import com.ruoyi.common.context.dataSecurity.DataSecurityContextHolder;
-import com.ruoyi.common.handler.sql.MybatisPreHandler;
+import context.dataSecurity.SqlContextHolder;
+import sql.MybatisPreHandler;
 import com.ruoyi.common.model.JoinTableModel;
 import com.ruoyi.common.model.WhereModel;
 import com.ruoyi.common.utils.StringUtils;
@@ -44,7 +44,7 @@ public class DataSecurityPreHandler implements MybatisPreHandler {
    @Override
    public void preHandle(Executor executor, MappedStatement mappedStatement, Object params, RowBounds rowBounds,
          ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql) throws Throwable {
-      if (DataSecurityContextHolder.isSecurity()) {
+      if (SqlContextHolder.isSecurity()) {
          Statement sql = parseSql(SqlUtil.parseSql(boundSql.getSql()));
          sqlFiled.set(boundSql, sql.toString());
       }
@@ -67,10 +67,10 @@ public class DataSecurityPreHandler implements MybatisPreHandler {
       Expression expWhere = plain.getWhere();
       StringBuilder whereParam = new StringBuilder(" ");
       String where = expWhere != null ? expWhere.toString() : null;
-      if (DataSecurityContextHolder.getWhere() == null || DataSecurityContextHolder.getWhere().size() <= 0) {
+      if (SqlContextHolder.getWhere() == null || SqlContextHolder.getWhere().size() <= 0) {
          return;
       }
-      DataSecurityContextHolder.getWhere().forEach(item -> {
+      SqlContextHolder.getWhere().forEach(item -> {
          whereParam.append(((WhereModel) item).getSqlString());
       });
       where = StringUtils.isEmpty(where) ? whereParam.toString().substring(5, whereParam.length())
@@ -80,10 +80,10 @@ public class DataSecurityPreHandler implements MybatisPreHandler {
 
    private static void handleJoin(Select select) {
       PlainSelect selectBody = select.getPlainSelect();
-      if (DataSecurityContextHolder.getJoinTables() == null || DataSecurityContextHolder.getJoinTables().size() <= 0) {
+      if (SqlContextHolder.getJoinTables() == null || SqlContextHolder.getJoinTables().size() <= 0) {
          return;
       }
-      DataSecurityContextHolder.getJoinTables().forEach(item -> {
+      SqlContextHolder.getJoinTables().forEach(item -> {
          JoinTableModel tableModel = (JoinTableModel) item;
          Table table = new Table(tableModel.getJoinTable());
          table.setAlias(new Alias(tableModel.getJoinTableAlise()));

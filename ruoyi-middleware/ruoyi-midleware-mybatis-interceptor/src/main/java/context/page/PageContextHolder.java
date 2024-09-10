@@ -1,7 +1,7 @@
-package com.ruoyi.common.context.page;
+package context.page;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.ruoyi.common.context.page.model.PageInfo;
+import context.page.model.PageInfo;
 
 public class PageContextHolder {
    private static final ThreadLocal<JSONObject> PAGE_CONTEXT_HOLDER = new ThreadLocal<>();

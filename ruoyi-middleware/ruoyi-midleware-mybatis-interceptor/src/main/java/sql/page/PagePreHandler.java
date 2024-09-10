@@ -1,4 +1,4 @@
-package com.ruoyi.common.handler.sql.page;
+package sql.page;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
 import com.ruoyi.common.annotation.sql.MybatisHandlerOrder;
-import com.ruoyi.common.context.page.PageContextHolder;
-import com.ruoyi.common.context.page.model.PageInfo;
-import com.ruoyi.common.handler.sql.MybatisPreHandler;
+import context.page.PageContextHolder;
+import context.page.model.PageInfo;
+import sql.MybatisPreHandler;
 import com.ruoyi.common.utils.sql.SqlUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;

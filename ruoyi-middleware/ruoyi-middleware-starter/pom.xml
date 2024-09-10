@@ -32,6 +32,11 @@
             <artifactId>ruoyi-middleware-redis</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-midleware-mybatis-interceptor</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

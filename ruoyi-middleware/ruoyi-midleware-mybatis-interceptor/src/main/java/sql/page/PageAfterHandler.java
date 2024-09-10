@@ -1,14 +1,13 @@
-package com.ruoyi.common.handler.sql.page;
+package sql.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.ruoyi.common.annotation.sql.MybatisHandlerOrder;
-import com.ruoyi.common.context.page.PageContextHolder;
-import com.ruoyi.common.context.page.model.TableInfo;
-import com.ruoyi.common.handler.sql.MybatisAfterHandler;
+import context.page.PageContextHolder;
+import context.page.model.TableInfo;
+import sql.MybatisAfterHandler;
 
 @MybatisHandlerOrder(1)
 @Component

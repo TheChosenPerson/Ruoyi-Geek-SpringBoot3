@@ -1,4 +1,4 @@
-package com.ruoyi.common.handler.sql;
+package sql;
 
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;

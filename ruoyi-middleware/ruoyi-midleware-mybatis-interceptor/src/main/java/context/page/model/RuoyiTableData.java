@@ -1,4 +1,4 @@
-package com.ruoyi.common.context.page.model;
+package context.page.model;
 
 import java.util.List;
 

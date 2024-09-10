@@ -1,23 +1,18 @@
-package com.ruoyi.framework.aspectj;
+package aspectj;
 
-import java.util.List;
-
+import context.dataSecurity.SqlContextHolder;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 import com.ruoyi.common.annotation.sql.DataSecurity;
-import com.ruoyi.common.context.dataSecurity.DataSecurityContextHolder;
-import com.ruoyi.common.enums.DataSecurityStrategy;
+
 import com.ruoyi.common.model.JoinTableModel;
 import com.ruoyi.common.model.WhereModel;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
-
-import ch.qos.logback.core.util.StringUtil;
 
 @Aspect
 @Component
@@ -25,7 +20,7 @@ public class DataSecurityAspect {
 
    @Before(value = "@annotation(dataSecurity)")
    public void doBefore(final JoinPoint point, DataSecurity dataSecurity) throws Throwable {
-      DataSecurityContextHolder.startDataSecurity();
+      SqlContextHolder.startDataSecurity();
       switch (dataSecurity.strategy()) {
          case CREEATE_BY:
             WhereModel createByModel = new WhereModel();
@@ -34,7 +29,7 @@ public class DataSecurityAspect {
             createByModel.setWhereColumn("create_by");
             createByModel.setMethod(WhereModel.METHOD_EQUAS);
             createByModel.setConnectType(WhereModel.CONNECT_AND);
-            DataSecurityContextHolder.addWhereParam(createByModel);
+            SqlContextHolder.addWhereParam(createByModel);
             break;
          case USER_ID:
             WhereModel userIdModel = new WhereModel();
@@ -43,7 +38,7 @@ public class DataSecurityAspect {
             userIdModel.setValue(SecurityUtils.getUserId());
             userIdModel.setConnectType(WhereModel.CONNECT_AND);
             userIdModel.setMethod(WhereModel.METHOD_EQUAS);
-            DataSecurityContextHolder.addWhereParam(userIdModel);
+            SqlContextHolder.addWhereParam(userIdModel);
             break;
          case JOINTABLE_CREATE_BY:
             JoinTableModel createByTableModel = new JoinTableModel();
@@ -56,7 +51,7 @@ public class DataSecurityAspect {
 
             createByTableModel.setFromTableColumn("create_by");
             createByTableModel.setJoinTableColumn("user_name");
-            DataSecurityContextHolder.addJoinTable(createByTableModel);
+            SqlContextHolder.addJoinTable(createByTableModel);
             break;
          case JOINTABLE_USER_ID:
             JoinTableModel userIdTableModel = new JoinTableModel();
@@ -69,7 +64,7 @@ public class DataSecurityAspect {
 
             userIdTableModel.setFromTableColumn("user_id");
             userIdTableModel.setJoinTableColumn("user_id");
-            DataSecurityContextHolder.addJoinTable(userIdTableModel);
+            SqlContextHolder.addJoinTable(userIdTableModel);
             break;
 
          default:
@@ -80,6 +75,6 @@ public class DataSecurityAspect {
 
    @After(value = " @annotation(dataSecurity)")
    public void doAfter(final JoinPoint point, DataSecurity dataSecurity) {
-      DataSecurityContextHolder.clearCache();
+      SqlContextHolder.clearCache();
    }
 }
