@@ -45,11 +45,6 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-midleware-mybatis-interceptor</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -58,7 +53,7 @@
         <module>ruoyi-middleware-minio</module>
         <module>ruoyi-middleware-redis</module>
         <module>ruoyi-middleware-starter</module>
-        <module>ruoyi-midleware-mybatis-interceptor</module>
+
     </modules>
     <packaging>pom</packaging>
 </project>
