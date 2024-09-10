@@ -113,6 +113,10 @@ public class GenTableColumn extends BaseEntity
         return subColumnFkName;
     }
 
+    public String getSubColumnFkJavaField(){
+        return StringUtils.toCamelCase(this.subColumnFkName);
+    }
+
     public void setSubColumnFkName(String subColumnFkName) {
         this.subColumnFkName = subColumnFkName;
     }

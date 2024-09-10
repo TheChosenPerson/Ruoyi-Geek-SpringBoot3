@@ -24,10 +24,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="select${ClassName}Vo">
 #if($table.haveSubColumn=="1")
-        select#foreach($column in $columns) #if($column.subColumnTableName)${column.subColumnTableName}.${column.subColumnName},#end${tableName}.${column.columnName}#if($foreach.count != $columns.size()),#end#end from ${tableName}
+        select#foreach($column in $columns) #if($column.subColumnTableName)${column.subColumnTableName}.${column.subColumnName},#end${businessName}.${column.columnName}#if($foreach.count != $columns.size()),#end#end from ${tableName} as ${businessName}
 #foreach($column in $columns)
 #if($column.subColumnTableName)
-            left join ${column.subColumnTableName} on ${column.subColumnTableName}.${column.subColumnFkName}=${tableName}.${column.columnName}
+            left join ${column.subColumnTableName} on ${column.subColumnTableName}.${column.subColumnFkName}=${businessName}.${column.columnName}
 #end
 #end
 #else
