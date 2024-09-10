@@ -3,11 +3,6 @@ package com.ruoyi.mybatisinterceptor.sql.dataSecurity;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import com.ruoyi.mybatisinterceptor.annotation.MybatisHandlerOrder;
-import com.ruoyi.mybatisinterceptor.context.dataSecurity.SqlContextHolder;
-import com.ruoyi.mybatisinterceptor.model.JoinTableModel;
-import com.ruoyi.mybatisinterceptor.model.WhereModel;
-import com.ruoyi.mybatisinterceptor.sql.MybatisPreHandler;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -16,8 +11,15 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
+
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.sql.SqlUtil;
+import com.ruoyi.mybatisinterceptor.annotation.MybatisHandlerOrder;
+import com.ruoyi.mybatisinterceptor.context.dataSecurity.SqlContextHolder;
+import com.ruoyi.mybatisinterceptor.model.JoinTableModel;
+import com.ruoyi.mybatisinterceptor.model.WhereModel;
+import com.ruoyi.mybatisinterceptor.sql.MybatisPreHandler;
+
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.Expression;

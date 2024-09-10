@@ -2,13 +2,12 @@ package com.ruoyi.mybatisinterceptor.sql.page;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.ruoyi.mybatisinterceptor.annotation.MybatisHandlerOrder;
 import com.ruoyi.mybatisinterceptor.context.page.PageContextHolder;
 import com.ruoyi.mybatisinterceptor.context.page.model.TableInfo;
 import com.ruoyi.mybatisinterceptor.sql.MybatisAfterHandler;
-import org.springframework.stereotype.Component;
-
-
 
 @MybatisHandlerOrder(1)
 @Component

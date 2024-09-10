@@ -1,12 +1,8 @@
 package com.ruoyi.mybatisinterceptor.interceptor.mybatis;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ruoyi.mybatisinterceptor.annotation.MybatisHandlerOrder;
-import com.ruoyi.mybatisinterceptor.sql.MybatisAfterHandler;
-import com.ruoyi.mybatisinterceptor.sql.MybatisPreHandler;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -20,6 +16,9 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.ruoyi.mybatisinterceptor.annotation.MybatisHandlerOrder;
+import com.ruoyi.mybatisinterceptor.sql.MybatisAfterHandler;
+import com.ruoyi.mybatisinterceptor.sql.MybatisPreHandler;
 
 import jakarta.annotation.PostConstruct;
 
@@ -46,43 +45,23 @@ public class MybatisInterceptor implements Interceptor {
 
    @PostConstruct
    public void init() {
-      List<MybatisPreHandler> sortedPreHandlers = preHandlerBeans.stream().sorted((item1, item2) -> {
-         int a;
-         int b;
-         MybatisHandlerOrder ann1 = item1.getClass().getAnnotation(MybatisHandlerOrder.class);
-         MybatisHandlerOrder ann2 = item2.getClass().getAnnotation(MybatisHandlerOrder.class);
-         if (ann1 == null) {
-            a = 0;
-         } else {
-            a = ann1.value();
-         }
-         if (ann2 == null) {
-            b = 0;
-         } else {
-            b = ann2.value();
-         }
-         return a - b;
-      }).collect(Collectors.toList());
-      preHandlersChain = sortedPreHandlers;
+      preHandlerBeans = preHandlerBeans.stream()
+            .sorted((item1, item2) -> {
+               MybatisHandlerOrder ann1 = item1.getClass().getAnnotation(MybatisHandlerOrder.class);
+               MybatisHandlerOrder ann2 = item2.getClass().getAnnotation(MybatisHandlerOrder.class);
+               int a = ann1 == null ? 0 : ann1.value();
+               int b = ann2 == null ? 0 : ann2.value();
+               return a - b;
+            }).collect(Collectors.toList());
 
-      List<MybatisAfterHandler> sortedAfterHandlers = afterHandlerBeans.stream().sorted((item1, item2) -> {
-         int a;
-         int b;
-         MybatisHandlerOrder ann1 = item1.getClass().getAnnotation(MybatisHandlerOrder.class);
-         MybatisHandlerOrder ann2 = item2.getClass().getAnnotation(MybatisHandlerOrder.class);
-         if (ann1 == null) {
-            a = 0;
-         } else {
-            a = ann1.value();
-         }
-         if (ann2 == null) {
-            b = 0;
-         } else {
-            b = ann2.value();
-         }
-         return a - b;
-      }).collect(Collectors.toList());
-      afterHandlersChain = sortedAfterHandlers;
+      afterHandlersChain = afterHandlerBeans.stream()
+            .sorted((item1, item2) -> {
+               MybatisHandlerOrder ann1 = item1.getClass().getAnnotation(MybatisHandlerOrder.class);
+               MybatisHandlerOrder ann2 = item2.getClass().getAnnotation(MybatisHandlerOrder.class);
+               int a = ann1 == null ? 0 : ann1.value();
+               int b = ann2 == null ? 0 : ann2.value();
+               return a - b;
+            }).collect(Collectors.toList());
    }
 
    @Override
