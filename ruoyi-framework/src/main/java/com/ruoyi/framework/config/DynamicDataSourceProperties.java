@@ -37,14 +37,10 @@ public class DynamicDataSourceProperties implements InitializingBean {
         dataSource.setConnectProperties(prop);
         AtomikosDataSourceBean ds = new AtomikosDataSourceBean();
         ds.setXaDataSourceClassName("com.alibaba.druid.pool.xa.DruidXADataSource");
-        // 添加连接池限制
-        ds.setMaxPoolSize(10);
-        ds.setMinPoolSize(3);
-        ds.setBorrowConnectionTimeout(60);
         ds.setUniqueResourceName(name);
         ds.setXaProperties(prop);
-        setProperties(dataSource, prop);
         ds.setXaDataSource(dataSource);
+        setProperties(dataSource, prop);
         return ds;
     }
 
@@ -72,37 +68,38 @@ public class DynamicDataSourceProperties implements InitializingBean {
         dataSource.setUrl(prop.getProperty("url"));
         dataSource.setUsername(prop.getProperty("username"));
         dataSource.setPassword(prop.getProperty("password"));
-        if(prop.getProperty("initialSize") != null){
+        if (prop.getProperty("initialSize") != null) {
             dataSource.setInitialSize(Integer.parseInt(prop.getProperty("initialSize")));
         }
-        if(prop.getProperty("minIdle") != null){
+        if (prop.getProperty("minIdle") != null) {
             dataSource.setMinIdle(Integer.parseInt(prop.getProperty("minIdle")));
         }
-        if(prop.getProperty("maxActive") != null){
+        if (prop.getProperty("maxActive") != null) {
             dataSource.setMaxActive(Integer.parseInt(prop.getProperty("maxActive")));
         }
-        if(prop.getProperty("maxWait") != null){
+        if (prop.getProperty("maxWait") != null) {
             dataSource.setMaxWait(Long.parseLong(prop.getProperty("maxWait")));
         }
-        if(prop.getProperty("timeBetweenEvictionRunsMillis") != null){
-            dataSource.setTimeBetweenEvictionRunsMillis(Long.parseLong(prop.getProperty("timeBetweenEvictionRunsMillis")));
+        if (prop.getProperty("timeBetweenEvictionRunsMillis") != null) {
+            dataSource.setTimeBetweenEvictionRunsMillis(
+                    Long.parseLong(prop.getProperty("timeBetweenEvictionRunsMillis")));
         }
-        if(prop.getProperty("minEvictableIdleTimeMillis") != null){
+        if (prop.getProperty("minEvictableIdleTimeMillis") != null) {
             dataSource.setMinEvictableIdleTimeMillis(Long.parseLong(prop.getProperty("minEvictableIdleTimeMillis")));
         }
-        if(prop.getProperty("maxEvictableIdleTimeMillis") != null){
+        if (prop.getProperty("maxEvictableIdleTimeMillis") != null) {
             dataSource.setMaxEvictableIdleTimeMillis(Long.parseLong(prop.getProperty("maxEvictableIdleTimeMillis")));
         }
-        if(prop.getProperty("validationQuery") != null){
+        if (prop.getProperty("validationQuery") != null) {
             dataSource.setValidationQuery(prop.getProperty("validationQuery"));
         }
-        if(prop.getProperty("testWhileIdle") != null){
+        if (prop.getProperty("testWhileIdle") != null) {
             dataSource.setTestWhileIdle(Boolean.parseBoolean(prop.getProperty("testWhileIdle")));
         }
-        if(prop.getProperty("testOnBorrow") != null){
+        if (prop.getProperty("testOnBorrow") != null) {
             dataSource.setTestOnBorrow(Boolean.parseBoolean(prop.getProperty("testOnBorrow")));
         }
-        if(prop.getProperty("testOnReturn") != null){
+        if (prop.getProperty("testOnReturn") != null) {
             dataSource.setTestOnReturn(Boolean.parseBoolean(prop.getProperty("testOnReturn")));
         }
     }
