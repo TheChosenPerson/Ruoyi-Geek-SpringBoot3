@@ -12,8 +12,6 @@
 
     <properties>
         <ruoyi.version>3.8.8.3.1</ruoyi.version>
-        <ehcache.version>3.10.8</ehcache.version>
-        <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
     </properties>
 
     <description>
@@ -28,22 +26,16 @@
                 <version>${ehcache.version}</version>
             </dependency>
 
-            <!-- mybatis-plus 增强CRUD -->
-            <!-- <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.mybatis</groupId>
-                        <artifactId>mybatis-spring</artifactId>
-                    </exclusion>
-                </exclusions>
-                <version>${mybatis-plus-boot-starter.version}</version>
-            </dependency> -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.boot.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-                <version>3.5.7</version>
+                <version>${mybatis.plus}</version>
             </dependency>
 
             <!-- ruoyi-ehcache-->
