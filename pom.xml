@@ -7,6 +7,13 @@
     <artifactId>ruoyi</artifactId>
     <version>3.8.8.3.1</version>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.3</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <name>ruoyi</name>
     <url>http://www.ruoyi.vip</url>
     <description>若依Geek管理系统</description>
@@ -17,7 +24,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-        <spring-boot.version>3.3.1</spring-boot.version>
+        <mybatis.plus>3.5.7</mybatis.plus>
         <druid.version>1.2.21</druid.version>
         <dynamic.version>3.5.2</dynamic.version>
         <transactions.version>6.0.0</transactions.version>
@@ -41,51 +48,37 @@
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jaxb.version>4.0.5</jaxb.version>
         <springdoc.version>2.1.0</springdoc.version>
-        <jakarta.version>6.0.0</jakarta.version>
+        <ehcache.version>3.10.8</ehcache.version>
     </properties>
 
 
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>${ehcache.version}</version>
+            </dependency>
             <!-- spring-boot -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <artifactId>spring-boot-starter</artifactId>
             </dependency>
 
-            <!-- mybatis 简化JDBC -->
+            <!-- mybatis plus -->
             <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-spring-boot.version}</version>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis.plus}</version>
             </dependency>
+
+            <!-- 某个未找出的 mybatis 版本过低，缺少必要方法，这里使用该版本进行显式覆盖 -->
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
                 <version>3.5.16</version>
             </dependency>
-
-            <!-- jaxb 处理xml -->
-            <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${jaxb-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>${jaxb.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-core</artifactId>
-                <version>${jaxb.version}</version>
-            </dependency>
-
 
             <!-- Mysql驱动包 -->
             <dependency>
@@ -120,6 +113,23 @@
                 <groupId>javax.transaction</groupId>
                 <artifactId>jta</artifactId>
                 <version>${jta.version}</version>
+            </dependency>
+
+            <!-- jaxb 处理xml -->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>${jaxb.version}</version>
             </dependency>
 
             <!-- 解析客户端操作系统、浏览器等 -->
@@ -236,12 +246,6 @@
                         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>jakarta.servlet</groupId>
-                <artifactId>jakarta.servlet-api</artifactId>
-                <version>${jakarta.version}</version>
             </dependency>
 
             <!-- 核心模块-->
