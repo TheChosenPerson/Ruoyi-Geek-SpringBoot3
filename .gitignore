@@ -46,3 +46,5 @@ nbdist/
 !*/build/*.java
 !*/build/*.html
 !*/build/*.xml
+
+effective-pom.xml

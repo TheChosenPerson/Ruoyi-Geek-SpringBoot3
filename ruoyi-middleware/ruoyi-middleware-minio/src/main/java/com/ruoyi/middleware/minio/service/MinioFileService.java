@@ -1,4 +1,4 @@
-package com.ruoyi.middleware.minio.utils;
+package com.ruoyi.middleware.minio.service;
 
 import java.io.File;
 import java.io.InputStream;
@@ -16,8 +16,7 @@ import com.ruoyi.common.utils.file.FileService;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.middleware.minio.config.MinioConfig;
 import com.ruoyi.middleware.minio.domain.MinioFileVO;
-
-import static com.ruoyi.common.utils.file.FileUtils.getPathFileName;
+import com.ruoyi.middleware.minio.utils.MinioUtil;
 
 /**
  * Minio文件操作实现类
@@ -37,12 +36,12 @@ public class MinioFileService implements FileService {
             relativePath = filePath;
         }
 
-        return MinioUtil.uploadFile(minioConfig.getMasterClient().getDefaultBuket(), relativePath, file);
+        return MinioUtil.uploadFile(minioConfig.getPrimary(), relativePath, file);
     }
 
     @Override
     public String upload(MultipartFile file, String name) throws Exception {
-        return MinioUtil.uploadFile(minioConfig.getMasterClient().getDefaultBuket(), name, file);
+        return MinioUtil.uploadFile(minioConfig.getPrimary(), name, file);
     }
 
     @Override
@@ -53,21 +52,20 @@ public class MinioFileService implements FileService {
 
     @Override
     public String upload(String baseDir, String fileName, MultipartFile file) throws Exception {
-
         return upload(baseDir + File.pathSeparator + fileName, file);
     }
 
     @Override
     public InputStream downLoad(String fileUrl) throws Exception {
         String filePath = StringUtils.substringAfter(fileUrl, "?fileName=");
-        MinioFileVO file = MinioUtil.getFile(minioConfig.getMasterClient().getDefaultBuket(), filePath);
+        MinioFileVO file = MinioUtil.getFile(minioConfig.getPrimary(), filePath);
         return file.getFileInputSteam();
     }
 
     @Override
     public boolean deleteFile(String fileUrl) throws Exception {
         String filePath = StringUtils.substringAfter(fileUrl, "?fileName=");
-        MinioUtil.removeFile(minioConfig.getMasterClient().getDefaultBuket(), filePath);
+        MinioUtil.removeFile(minioConfig.getPrimary(), filePath);
         FileOperateUtils.deleteFileAndMd5ByFilePath(filePath);
         return true;
     }

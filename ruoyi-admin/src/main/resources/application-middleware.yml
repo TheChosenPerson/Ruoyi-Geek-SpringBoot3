@@ -25,11 +25,17 @@ spring:
 
 # Minio配置
 minio:
-  enable: false
+  enable: true
   downLoadLimit: 1024
+  primary: MASTER
   client:
-    master:
-      url: http://localhost:9000
+    MASTER:
+      url: http://192.168.3.13:9000
       accessKey:
       secretKey:
-      defaultBuket:
+      buketName: plaform
+    SLAVE:
+      url: http://192.168.3.13:9000
+      accessKey:
+      secretKey:
+      buketName: plaform

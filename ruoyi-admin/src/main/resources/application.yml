@@ -13,7 +13,7 @@ ruoyi:
   # 验证码类型 math 数组计算 char 字符验证
   captchaType: math
   # 指定默认文件服务类型(值为disk代表使用磁盘作为文件操作服务,minio代表使用minio作为文件操作服务)
-  fileServer: disk
+  fileServer: minio
 
 # 开发环境配置
 server:
