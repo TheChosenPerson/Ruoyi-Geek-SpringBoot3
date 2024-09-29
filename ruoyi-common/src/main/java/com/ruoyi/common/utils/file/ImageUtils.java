@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
@@ -70,7 +71,8 @@ public class ImageUtils
             if (url.startsWith("http"))
             {
                 // 网络地址
-                URL urlObj = new URL(url);
+                URI uriObj = new URI(url);
+                URL urlObj = uriObj.toURL();
                 URLConnection urlConnection = urlObj.openConnection();
                 urlConnection.setConnectTimeout(30 * 1000);
                 urlConnection.setReadTimeout(60 * 1000);

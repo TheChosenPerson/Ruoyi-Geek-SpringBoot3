@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -251,7 +250,7 @@ public class HttpClientUtil {
         try {
             // 创建默认的httpClient实例.
             PublicSuffixMatcher publicSuffixMatcher = PublicSuffixMatcherLoader
-                    .load(new URL(httpGet.getURI().toString()));
+                    .load(httpGet.getURI().toURL());
             DefaultHostnameVerifier hostnameVerifier = new DefaultHostnameVerifier(publicSuffixMatcher);
             httpClient = HttpClients.custom().setSSLHostnameVerifier(hostnameVerifier).build();
             httpGet.setConfig(requestConfig);

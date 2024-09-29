@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.InputStream;
 
 import com.ruoyi.common.utils.file.FileOperateUtils;
-import com.ruoyi.common.utils.sign.Md5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
