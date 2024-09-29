@@ -3,7 +3,6 @@ package com.ruoyi.middleware.minio.service;
 import java.io.File;
 import java.io.InputStream;
 
-import com.ruoyi.common.utils.file.FileOperateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -11,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.file.FileOperateUtils;
 import com.ruoyi.common.utils.file.FileService;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.middleware.minio.config.MinioConfig;
@@ -62,8 +62,7 @@ public class MinioFileService implements FileService {
     }
 
     @Override
-    public boolean deleteFile(String fileUrl) throws Exception {
-        String filePath = StringUtils.substringAfter(fileUrl, "?fileName=");
+    public boolean deleteFile(String filePath) throws Exception {
         MinioUtil.removeFile(minioConfig.getPrimary(), filePath);
         FileOperateUtils.deleteFileAndMd5ByFilePath(filePath);
         return true;

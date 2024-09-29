@@ -1,17 +1,18 @@
 package com.ruoyi.common.utils.file;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.utils.CacheUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.sign.Md5Utils;
 import com.ruoyi.common.utils.spring.SpringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * 文件上传工具类
@@ -69,9 +70,9 @@ public class FileOperateUtils {
             return pathForMd5;
         }
         FileUtils.assertAllowed(file, allowedExtension);
-        String pathFileName = fileService.upload(filePath, file);
-        FileOperateUtils.saveFileAndMd5(pathFileName, md5);
-        return pathFileName;
+        fileService.upload(filePath, file);
+        FileOperateUtils.saveFileAndMd5(filePath, md5);
+        return filePath;
     }
 
     /**
