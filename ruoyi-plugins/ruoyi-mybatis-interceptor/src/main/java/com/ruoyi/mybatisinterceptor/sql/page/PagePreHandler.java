@@ -44,7 +44,7 @@ public class PagePreHandler implements MybatisPreHandler {
 
       @Override
       public void preHandle(Executor executor, MappedStatement mappedStatement, Object params, RowBounds rowBounds,
-                  ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql) throws Throwable {
+                  ResultHandler<?> resultHandler, CacheKey cacheKey, BoundSql boundSql) throws Throwable {
             if (PageContextHolder.isPage()) {
                   String originSql = boundSql.getSql();
                   Statement sql = SqlUtil.parseSql(originSql);
@@ -95,7 +95,7 @@ public class PagePreHandler implements MybatisPreHandler {
       }
 
       public static Long getCount(Executor executor, MappedStatement mappedStatement, Object parameter,
-                  BoundSql boundSql, RowBounds rowBounds, ResultHandler resultHandler, String countSql)
+                  BoundSql boundSql, RowBounds rowBounds, ResultHandler<?> resultHandler, String countSql)
                   throws SQLException {
 
             Map<String, Object> additionalParameters = boundSql.getAdditionalParameters();

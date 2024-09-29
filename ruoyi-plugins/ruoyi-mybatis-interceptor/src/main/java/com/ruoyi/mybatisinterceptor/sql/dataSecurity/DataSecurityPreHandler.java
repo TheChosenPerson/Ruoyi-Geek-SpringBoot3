@@ -43,7 +43,7 @@ public class DataSecurityPreHandler implements MybatisPreHandler {
 
    @Override
    public void preHandle(Executor executor, MappedStatement mappedStatement, Object params, RowBounds rowBounds,
-         ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql) throws Throwable {
+          ResultHandler<?> resultHandler, CacheKey cacheKey, BoundSql boundSql) throws Throwable {
       if (SqlContextHolder.isSecurity()) {
          Statement sql = parseSql(SqlUtil.parseSql(boundSql.getSql()));
          sqlFiled.set(boundSql, sql.toString());

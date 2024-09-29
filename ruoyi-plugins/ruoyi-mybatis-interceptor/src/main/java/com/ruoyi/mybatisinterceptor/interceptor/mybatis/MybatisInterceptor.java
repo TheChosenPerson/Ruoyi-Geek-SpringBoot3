@@ -79,7 +79,7 @@ public class MybatisInterceptor implements Interceptor {
             CacheKey cacheKey = executor.createCacheKey(ms, parameterObject, rowBounds, boundSql);
             for (MybatisPreHandler item : preHandlersChain) {
                item.preHandle(targetExecutor, ms, args[1], (RowBounds) args[2],
-                     (ResultHandler) args[3], cacheKey, boundSql);
+                     (ResultHandler<?>) args[3], cacheKey, boundSql);
             }
          }
          Object result = invocation.proceed();
@@ -93,7 +93,7 @@ public class MybatisInterceptor implements Interceptor {
       if (preHandlersChain != null && preHandlersChain.size() > 0) {
          for (MybatisPreHandler item : preHandlersChain) {
             item.preHandle(targetExecutor, (MappedStatement) args[0], args[1], (RowBounds) args[2],
-                  (ResultHandler) args[3], (CacheKey) args[4], (BoundSql) args[5]);
+                  (ResultHandler<?>) args[3], (CacheKey) args[4], (BoundSql) args[5]);
          }
       }
       Object result = invocation.proceed();

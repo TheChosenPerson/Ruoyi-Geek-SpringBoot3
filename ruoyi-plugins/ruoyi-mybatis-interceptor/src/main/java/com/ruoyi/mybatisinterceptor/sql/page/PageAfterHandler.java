@@ -17,7 +17,7 @@ public class PageAfterHandler implements MybatisAfterHandler {
    public Object handleObject(Object object) throws Throwable {
       if (PageContextHolder.isPage()) {
          if (object instanceof List) {
-            TableInfo tableInfo = new TableInfo<>((List) object);
+            TableInfo<Object> tableInfo = new TableInfo<Object>((List<?>) object);
             tableInfo.setTotal(PageContextHolder.getTotal());
             PageContextHolder.clear();
             return tableInfo;
