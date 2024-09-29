@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ruoyi.common.annotation.Anonymous;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.middleware.minio.domain.MinioFileVO;
 import com.ruoyi.middleware.minio.utils.MinioUtil;
