@@ -1,4 +1,4 @@
-package com.ruoyi.common.interceptor.cache;
+package com.ruoyi.common.service.cache;
 
 import java.util.Set;
 

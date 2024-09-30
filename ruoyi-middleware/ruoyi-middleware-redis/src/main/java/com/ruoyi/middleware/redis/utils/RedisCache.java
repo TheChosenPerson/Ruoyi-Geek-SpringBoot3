@@ -17,8 +17,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import com.ruoyi.common.interceptor.cache.CacheKeys;
-import com.ruoyi.common.interceptor.cache.CacheTimeOut;
+import com.ruoyi.common.service.cache.CacheKeys;
+import com.ruoyi.common.service.cache.CacheTimeOut;
 import com.ruoyi.common.utils.StringUtils;
 
 /**

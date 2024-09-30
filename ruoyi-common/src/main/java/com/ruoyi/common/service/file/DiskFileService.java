@@ -1,21 +1,27 @@
-package com.ruoyi.common.utils.file;
+package com.ruoyi.common.service.file;
+
+import static com.ruoyi.common.utils.file.FileUtils.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.Objects;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.exception.file.FileNameLengthLimitExceededException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.file.FileOperateUtils;
+import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.sign.Md5Utils;
 import com.ruoyi.common.utils.uuid.UUID;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.*;
-import java.nio.file.Paths;
-import java.util.Objects;
-
-import static com.ruoyi.common.utils.file.FileUtils.getAbsoluteFile;
-import static com.ruoyi.common.utils.file.FileUtils.getPathFileName;
 
 /**
  * 磁盘文件操作实现类

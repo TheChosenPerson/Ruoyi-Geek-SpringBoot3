@@ -14,8 +14,8 @@ import org.springframework.cache.jcache.JCacheCache;
 import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.stereotype.Component;
 
-import com.ruoyi.common.interceptor.cache.CacheKeys;
-import com.ruoyi.common.interceptor.cache.CacheNoTimeOut;
+import com.ruoyi.common.service.cache.CacheKeys;
+import com.ruoyi.common.service.cache.CacheNoTimeOut;
 
 @Component
 @ConditionalOnProperty(prefix = "spring.cache", name = { "type" }, havingValue = "jcache", matchIfMissing = false)

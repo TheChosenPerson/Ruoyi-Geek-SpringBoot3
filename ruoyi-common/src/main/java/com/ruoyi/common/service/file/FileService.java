@@ -1,9 +1,9 @@
-package com.ruoyi.common.utils.file;
-
-import org.springframework.web.multipart.MultipartFile;
+package com.ruoyi.common.service.file;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.springframework.web.multipart.MultipartFile;
 
 //默认上传下载
 /**

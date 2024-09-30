@@ -1,4 +1,4 @@
-package com.ruoyi.common.interceptor.mybatis;
+package com.ruoyi.common.service.mybatis;
 
 import javax.sql.DataSource;
 

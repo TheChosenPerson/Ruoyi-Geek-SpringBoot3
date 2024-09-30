@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import com.atomikos.util.IntraVmObjectRegistry;
-import com.ruoyi.common.interceptor.mybatis.CreateSqlSessionFactory;
+import com.ruoyi.common.service.mybatis.CreateSqlSessionFactory;
 import com.ruoyi.framework.datasource.DynamicSqlSessionTemplate;
 
 @Configuration
