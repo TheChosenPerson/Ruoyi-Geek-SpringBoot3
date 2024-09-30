@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.service.file.FileService;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileOperateUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.middleware.minio.config.MinioConfig;
@@ -55,8 +54,7 @@ public class MinioFileService implements FileService {
     }
 
     @Override
-    public InputStream downLoad(String fileUrl) throws Exception {
-        String filePath = StringUtils.substringAfter(fileUrl, "?fileName=");
+    public InputStream downLoad(String filePath) throws Exception {
         MinioFileVO file = MinioUtil.getFile(minioConfig.getPrimary(), filePath);
         return file.getFileInputSteam();
     }
