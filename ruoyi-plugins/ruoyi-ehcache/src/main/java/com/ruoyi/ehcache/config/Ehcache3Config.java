@@ -40,6 +40,7 @@ public class Ehcache3Config {
         cacheManager.createCache("repeat_submit", mutableConfiguration);
         cacheManager.createCache("captcha_codes", mutableConfiguration);
         cacheManager.createCache("login_tokens", mutableConfiguration);
+        cacheManager.createCache("ip_err_cnt_key", mutableConfiguration);
         cacheManager.createCache("rate_limit", mutableConfiguration);
         cacheManager.createCache("pwd_err_cnt", mutableConfiguration);
 

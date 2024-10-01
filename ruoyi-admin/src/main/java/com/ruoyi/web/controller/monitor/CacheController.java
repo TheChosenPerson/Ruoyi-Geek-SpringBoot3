@@ -47,6 +47,9 @@ public class CacheController
         caches.add(new SysCache(CacheConstants.REPEAT_SUBMIT_KEY, "防重提交"));
         caches.add(new SysCache(CacheConstants.RATE_LIMIT_KEY, "限流处理"));
         caches.add(new SysCache(CacheConstants.PWD_ERR_CNT_KEY, "密码错误次数"));
+        caches.add(new SysCache(CacheConstants.IP_ERR_CNT_KEY, "IP错误次数"));
+        caches.add(new SysCache(CacheConstants.FILE_MD5_PATH_KEY, "path-md5"));
+        caches.add(new SysCache(CacheConstants.FILE_PATH_MD5_KEY, "md5-path"));
     }
 
 
