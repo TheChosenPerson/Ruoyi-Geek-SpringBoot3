@@ -30,12 +30,12 @@ minio:
   primary: MASTER
   client:
     MASTER:
-      url: http://192.168.3.13:9000
+      url: http://localhost:9000
       accessKey:
       secretKey:
-      buketName: plaform
-    SLAVE:
-      url: http://192.168.3.13:9000
-      accessKey:
-      secretKey:
-      buketName: plaform
+      buketName: ruoyi
+    # SLAVE:
+    #   url: http://127.0.0.1:9000
+    #   accessKey:
+    #   secretKey:
+    #   buketName: ry

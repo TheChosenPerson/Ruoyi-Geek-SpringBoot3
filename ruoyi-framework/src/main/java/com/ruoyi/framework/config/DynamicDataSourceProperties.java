@@ -1,11 +1,17 @@
 package com.ruoyi.framework.config;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -22,6 +28,7 @@ import com.ruoyi.framework.config.properties.DruidProperties;
 @DependsOn({ "transactionManager" })
 @ConfigurationProperties(prefix = "spring.datasource.dynamic")
 public class DynamicDataSourceProperties implements InitializingBean {
+    private static final Logger logger = LoggerFactory.getLogger(DynamicDataSourceProperties.class);
     private Map<String, DataSourceProperties> datasource;
     private String primary;
     private Map<String, DataSource> targetDataSources = new HashMap<>();
@@ -35,13 +42,29 @@ public class DynamicDataSourceProperties implements InitializingBean {
         Properties prop = build(dataSourceProperties);
         DruidXADataSource dataSource = new DruidXADataSource();
         dataSource.setConnectProperties(prop);
+        setProperties(dataSource, prop);
+        validateDataSource(dataSource);
+        logger.info("数据源：{} 链接成功", name);
         AtomikosDataSourceBean ds = new AtomikosDataSourceBean();
         ds.setXaDataSourceClassName("com.alibaba.druid.pool.xa.DruidXADataSource");
         ds.setUniqueResourceName(name);
         ds.setXaProperties(prop);
         ds.setXaDataSource(dataSource);
-        setProperties(dataSource, prop);
         return ds;
+    }
+
+    private void validateDataSource(DataSource dataSource) {
+        try (Connection conn = dataSource.getConnection()) {
+            String validationQuery = "SELECT 1";
+            try (Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(validationQuery)) {
+                if (!(rs.next() && rs.getInt(1) == 1)) {
+                    throw new RuntimeException("数据源连接验证失败：查询结果不正确");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("数据源连接验证失败", e);
+        }
     }
 
     protected Properties build(DataSourceProperties dataSourceProperties) {

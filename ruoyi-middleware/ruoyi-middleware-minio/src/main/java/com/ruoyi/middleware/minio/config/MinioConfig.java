@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.impl.io.EmptyInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -22,7 +24,7 @@ import io.minio.PutObjectArgs;
 @ConditionalOnProperty(prefix = "minio", name = { "enable" }, havingValue = "true", matchIfMissing = false)
 @ConfigurationProperties("minio")
 public class MinioConfig implements InitializingBean {
-
+    private static final Logger logger = LoggerFactory.getLogger(MinioConfig.class);
     public static int maxSize;
     private String prefix = "/minio";
     private Map<String, MinioClientProperties> client;
@@ -39,6 +41,23 @@ public class MinioConfig implements InitializingBean {
         masterBucket = targetMinioBucket.get(primary);
     }
 
+    private static void validateMinioBucket(MinioBucket minioBucket) {
+        BucketExistsArgs bucketExistArgs = BucketExistsArgs.builder().bucket(minioBucket.getBuketName()).build();
+        boolean b = false;
+        try {
+            b = minioBucket.getClient().bucketExists(bucketExistArgs);
+            PutObjectArgs putObjectArgs = PutObjectArgs.builder()
+                    .object(FileUtils.getRelativePath(RuoYiConfig.getProfile()) + "/")
+                    .stream(EmptyInputStream.nullInputStream(), 0, -1).bucket(minioBucket.getBuketName()).build();
+            minioBucket.getClient().putObject(putObjectArgs);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        if (!b) {
+            throw new RuntimeException("Bucket " + minioBucket.getBuketName() + " does not exist");
+        }
+    }
+
     private MinioBucket createMinioClient(String name, MinioClientProperties props) {
         MinioClient client;
         if (StringUtils.isEmpty(props.getAccessKey())) {
@@ -51,21 +70,10 @@ public class MinioConfig implements InitializingBean {
                     .credentials(props.getAccessKey(), props.getSecretKey())
                     .build();
         }
-        BucketExistsArgs bucketExistArgs = BucketExistsArgs.builder().bucket(props.getBuketName()).build();
-        boolean b = false;
-        try {
-            b = client.bucketExists(bucketExistArgs);
-            PutObjectArgs putObjectArgs = PutObjectArgs.builder()
-                    .object(FileUtils.getRelativePath(RuoYiConfig.getProfile()) + "/")
-                    .stream(EmptyInputStream.nullInputStream(), 0, -1).bucket(props.getBuketName()).build();
-            client.putObject(putObjectArgs);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        if (!b) {
-            throw new RuntimeException("Bucket " + props.getBuketName() + " does not exist");
-        }
-        return new MinioBucket(client, props.getBuketName());
+        MinioBucket minioBucket = new MinioBucket(client, props.getBuketName());
+        validateMinioBucket(minioBucket);
+        logger.info("数据桶：{}  - 链接成功", name);
+        return minioBucket;
     }
 
     public int getMaxSize() {
