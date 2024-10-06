@@ -41,6 +41,12 @@
 
             <dependency>
                 <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-middleware-rabbitmq</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-middleware-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
@@ -52,8 +58,8 @@
     <modules>
         <module>ruoyi-middleware-minio</module>
         <module>ruoyi-middleware-redis</module>
+        <module>ruoyi-middleware-rabbitmq</module>
         <module>ruoyi-middleware-starter</module>
-
     </modules>
     <packaging>pom</packaging>
 </project>
