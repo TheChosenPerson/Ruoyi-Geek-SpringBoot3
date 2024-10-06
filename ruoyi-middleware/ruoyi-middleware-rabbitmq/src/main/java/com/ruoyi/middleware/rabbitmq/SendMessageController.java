@@ -1,10 +1,6 @@
 package com.ruoyi.middleware.rabbitmq;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ruoyi.common.annotation.Anonymous;
+import com.ruoyi.common.core.domain.Message;
 
 /**
  * @Author : JCccc
@@ -24,22 +21,21 @@ import com.ruoyi.common.annotation.Anonymous;
 public class SendMessageController {
 
     @Autowired
-    RabbitTemplate rabbitTemplate;  //使用RabbitTemplate,这提供了接收/发送等等方法
+    RabbitTemplate rabbitTemplate; // 使用RabbitTemplate,这提供了接收/发送等等方法
 
     @GetMapping("/sendDirectMessage")
     @Anonymous
     public String sendDirectMessage() {
-        String messageId = String.valueOf(UUID.randomUUID());
-        String messageData = "test message, hello!";
-        String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        Map<String,Object> map=new HashMap<>();
-        map.put("messageId",messageId);
-        map.put("messageData",messageData);
-        map.put("createTime",createTime);
-        //将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
-        rabbitTemplate.convertAndSend("TestDirectExchange", "TestDirectRouting", map);
+        // 将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
+        rabbitTemplate.convertAndSend(
+                "TestDirectExchange",
+                "TestDirectRouting",
+                Message.create()
+                        .setPayload(Map.of("message", "你好"))
+                        .setReceiver("接收者")
+                        .setSender("发送者")
+                );
         return "ok";
     }
-
 
 }
