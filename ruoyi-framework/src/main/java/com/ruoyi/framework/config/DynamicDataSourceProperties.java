@@ -4,56 +4,27 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.pool.xa.DruidXADataSource;
-import com.atomikos.jdbc.AtomikosDataSourceBean;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.framework.config.properties.DruidProperties;
 
 @Configuration
-@DependsOn({ "transactionManager" })
 @ConfigurationProperties(prefix = "spring.datasource.dynamic")
-public class DynamicDataSourceProperties implements InitializingBean {
-    private static final Logger logger = LoggerFactory.getLogger(DynamicDataSourceProperties.class);
+public class DynamicDataSourceProperties {
+
     private Map<String, DataSourceProperties> datasource;
     private String primary;
-    private Map<String, DataSource> targetDataSources = new HashMap<>();
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        datasource.forEach((name, props) -> targetDataSources.put(name, createDataSource(name, props)));
-    }
-
-    protected DataSource createDataSource(String name, DataSourceProperties dataSourceProperties) {
-        Properties prop = build(dataSourceProperties);
-        DruidXADataSource dataSource = new DruidXADataSource();
-        dataSource.setConnectProperties(prop);
-        setProperties(dataSource, prop);
-        validateDataSource(dataSource);
-        logger.info("数据源：{} 链接成功", name);
-        AtomikosDataSourceBean ds = new AtomikosDataSourceBean();
-        ds.setXaDataSourceClassName("com.alibaba.druid.pool.xa.DruidXADataSource");
-        ds.setUniqueResourceName(name);
-        ds.setXaProperties(prop);
-        ds.setXaDataSource(dataSource);
-        return ds;
-    }
-
-    private void validateDataSource(DataSource dataSource) {
+    public void validateDataSource(DataSource dataSource) {
         try (Connection conn = dataSource.getConnection()) {
             String validationQuery = "SELECT 1";
             try (Statement stmt = conn.createStatement();
@@ -141,14 +112,6 @@ public class DynamicDataSourceProperties implements InitializingBean {
 
     public void setPrimary(String primary) {
         this.primary = primary;
-    }
-
-    public Map<String, DataSource> getTargetDataSources() {
-        return targetDataSources;
-    }
-
-    public void setTargetDataSources(Map<String, DataSource> targetDataSources) {
-        this.targetDataSources = targetDataSources;
     }
 
 }

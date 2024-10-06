@@ -1,10 +1,8 @@
 package com.ruoyi.framework.config;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +11,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot3.autoconfigure.properties.DruidStatProperties;
 import com.alibaba.druid.util.Utils;
-import com.ruoyi.framework.datasource.DynamicDataSource;
 
+import jakarta.annotation.PreDestroy;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -36,18 +34,9 @@ public class DruidConfig {
     @Autowired
     DynamicDataSourceProperties dataSourceProperties;
 
-    Logger logger = LoggerFactory.getLogger(DruidConfig.class);
+    private List<DruidDataSource> druidDataSources = new ArrayList<>();
 
-    @Bean(name = "dynamicDataSource")
-    @Primary
-    public DynamicDataSource dataSource() {
-        Map<Object, Object> objectMap = new HashMap<>();
-        Map<String, DataSource> targetDataSources = dataSourceProperties.getTargetDataSources();
-        for (Map.Entry<String, DataSource> entry : targetDataSources.entrySet()) {
-            objectMap.put(entry.getKey(), entry.getValue());
-        }
-        return new DynamicDataSource(targetDataSources.get(dataSourceProperties.getPrimary()), objectMap);
-    }
+    Logger logger = LoggerFactory.getLogger(DruidConfig.class);
 
     /**
      * 去除监控页面底部的广告
@@ -90,5 +79,16 @@ public class DruidConfig {
         registrationBean.setFilter(filter);
         registrationBean.addUrlPatterns(commonJsPattern);
         return registrationBean;
+    }
+
+    public List<DruidDataSource> getDruidDataSources() {
+        return druidDataSources;
+    }
+
+    @PreDestroy
+    public void destroy() {
+        for (DruidDataSource druidDataSource : druidDataSources) {
+            druidDataSource.close();
+        }
     }
 }
