@@ -4,12 +4,17 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
 /**
  * @Author : JCccc
@@ -17,8 +22,7 @@ import org.springframework.context.annotation.Configuration;
  * @Description :
  **/
 @Configuration
-@ConditionalOnProperty(prefix = "spring.rabbitmq", name = { "enable" }, havingValue = "true", matchIfMissing = false)
-public class DirectRabbitConfig {
+public class DirectRabbitConfig implements RabbitListenerConfigurer{
 
     // 队列 起名：TestDirectQueue
     @Bean
@@ -53,5 +57,24 @@ public class DirectRabbitConfig {
         Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
         jackson2JsonMessageConverter.setClassMapper(defaultClassMapper);
         return jackson2JsonMessageConverter;
+    }
+
+
+
+        //以下配置RabbitMQ消息服务
+    @Autowired
+    public ConnectionFactory connectionFactory;
+
+    @Bean
+    public DefaultMessageHandlerMethodFactory myHandlerMethodFactory() {
+        DefaultMessageHandlerMethodFactory factory = new DefaultMessageHandlerMethodFactory();
+        // 设置转换器
+        factory.setMessageConverter(new MappingJackson2MessageConverter());
+        return factory;
+    }
+
+    @Override
+    public void configureRabbitListeners(RabbitListenerEndpointRegistrar rabbitListenerEndpointRegistrar) {
+        rabbitListenerEndpointRegistrar.setMessageHandlerMethodFactory(myHandlerMethodFactory());
     }
 }
