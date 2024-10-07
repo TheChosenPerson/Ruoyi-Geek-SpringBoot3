@@ -22,12 +22,11 @@
             <artifactId>ruoyi-common</artifactId>
         </dependency>
 
-        <!-- mybatis-plus 增强CRUD -->
+        <!-- mybatis plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>
