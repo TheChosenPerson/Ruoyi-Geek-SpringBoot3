@@ -6,11 +6,6 @@
             "description": "是否开启minio"
         },
         {
-            "name": "minio.downLoadLimit",
-            "type": "java.lang.Integer",
-            "description": "下载最大限制"
-        },
-        {
             "name": "minio.primary",
             "type": "java.lang.String",
             "description": "默认存储名称"
