@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson2.JSON;
-import com.ruoyi.common.utils.spring.SpringUtils;
 
 public class HttpClientUtil {
 
@@ -46,7 +45,7 @@ public class HttpClientUtil {
             .setConnectTimeout(600000)
             .setConnectionRequestTimeout(600000).build();
 
-    private static CloseableHttpClient client = SpringUtils.getBean("closeableHttpClient");
+    private static CloseableHttpClient client = HttpUtils.initClient();
 
     /**
      * 发送 post请求
