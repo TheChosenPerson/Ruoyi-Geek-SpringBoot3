@@ -14,9 +14,6 @@ public class WxPubConstant {
     @Value("${oauth.wx.pub.url}")
     private String url;
 
-    @Value("${oauth.wx.pub.open}")
-    private Boolean open;
-
     public String getUrl() {
         return url;
     }
@@ -39,14 +36,6 @@ public class WxPubConstant {
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
-    }
-
-    public Boolean getOpen() {
-        return open;
-    }
-
-    public void setOpen(Boolean open) {
-        this.open = open;
     }
 
 }

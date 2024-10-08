@@ -14,16 +14,6 @@ public class WxMiniAppConstant {
     @Value("${oauth.wx.miniapp.url}")
     private String url;
 
-    @Value("${oauth.wx.miniapp.open}")
-    private Boolean open;
-
-    public Boolean getOpen() {
-        return open;
-    }
-
-    public void setOpen(Boolean open) {
-        this.open = open;
-    }
 
     public String getUrl() {
         return url;

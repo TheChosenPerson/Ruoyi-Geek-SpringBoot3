@@ -1,0 +1,14 @@
+{
+    "properties": [
+        {
+            "name": "tfa.phone.dysms.app-id",
+            "type": "java.lang.String",
+            "description": "阿里云短信 AccessKey ID"
+        },
+        {
+            "name": "tfa.phone.dysms.app-secret",
+            "type": "java.lang.String",
+            "description": "阿里云短信 AccessKey Secret"
+        }
+    ]
+}
