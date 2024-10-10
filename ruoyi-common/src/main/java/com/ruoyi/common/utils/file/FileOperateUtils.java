@@ -118,6 +118,7 @@ public class FileOperateUtils {
      * @throws IOException
      */
     public static final boolean deleteFile(String fileUrl) throws Exception {
+        deleteFileAndMd5ByFilePath(fileUrl);
         return fileService.deleteFile(fileUrl);
     }
 
