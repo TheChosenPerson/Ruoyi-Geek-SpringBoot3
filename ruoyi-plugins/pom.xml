@@ -13,6 +13,7 @@
     <properties>
         <ehcache.version>3.10.8</ehcache.version>
         <mybatis-plus.version>3.5.8</mybatis-plus.version>
+        <netty.version>4.1.112.Final</netty.version>
     </properties>
 
     <description>
@@ -71,6 +72,11 @@
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-mybatis-interceptor</artifactId>
                 <version>${ruoyi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
             </dependency>
 
         </dependencies>
