@@ -1,4 +1,4 @@
-package com.ruoyi.websocket.utils;
+package com.ruoyi.netty.websocket.utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -75,5 +75,4 @@ public class CommonUtil {
       }
       return maxNumber.get();
    }
-
 }

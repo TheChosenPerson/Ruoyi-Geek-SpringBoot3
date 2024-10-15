@@ -1,4 +1,4 @@
-package com.ruoyi.mybatisinterceptor.sql;
+package com.ruoyi.mybatisinterceptor.handler;
 
 public interface MybatisAfterHandler {
 

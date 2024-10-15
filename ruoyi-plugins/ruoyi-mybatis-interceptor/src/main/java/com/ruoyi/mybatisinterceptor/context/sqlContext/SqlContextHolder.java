@@ -1,4 +1,4 @@
-package com.ruoyi.mybatisinterceptor.context.dataSecurity;
+package com.ruoyi.mybatisinterceptor.context.sqlContext;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
@@ -10,11 +10,11 @@ public class SqlContextHolder {
    private static final ThreadLocal<JSONObject> SQL_CONTEXT_HOLDER = new ThreadLocal<>();
 
    public static void startDataSecurity() {
-      JSONObject jsonObject = new JSONObject();
-      jsonObject.put("isSecurity", Boolean.TRUE);
-      jsonObject.put(SqlType.WHERE.getSqlType(), new JSONArray());
-      jsonObject.put(SqlType.JOIN.getSqlType(), new JSONArray());
-      SQL_CONTEXT_HOLDER.set(jsonObject);
+      SQL_CONTEXT_HOLDER.get().put("isSecurity", Boolean.TRUE);
+   }
+
+   public static void startLogicSelect() {
+      SQL_CONTEXT_HOLDER.get().put("isLogic", Boolean.TRUE);
    }
 
    public static void addWhereParam(WhereModel whereModel) {
@@ -26,7 +26,6 @@ public class SqlContextHolder {
    }
 
    public static boolean isSecurity() {
-
       return SQL_CONTEXT_HOLDER.get() != null
             && SQL_CONTEXT_HOLDER.get().getBooleanValue("isSecurity");
    }
@@ -41,5 +40,16 @@ public class SqlContextHolder {
 
    public static JSONArray getJoinTables() {
       return SQL_CONTEXT_HOLDER.get().getJSONArray(SqlType.JOIN.getSqlType());
+   }
+
+   public static void startInterceptor() {
+      JSONObject jsonObject = SQL_CONTEXT_HOLDER.get();
+      if (jsonObject != null) {
+         return;
+      }
+      JSONObject object = new JSONObject();
+      object.put(SqlType.JOIN.getSqlType(), new JSONArray());
+      object.put(SqlType.WHERE.getSqlType(), new JSONArray());
+      SQL_CONTEXT_HOLDER.set(object);
    }
 }

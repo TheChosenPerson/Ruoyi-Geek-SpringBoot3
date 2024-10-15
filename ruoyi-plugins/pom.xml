@@ -68,11 +68,19 @@
                 <artifactId>ruoyi-plugins-starter</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-mybatis-interceptor</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+
+              <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-netty</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
@@ -90,6 +98,7 @@
         <module>ruoyi-websocket</module>
         <module>ruoyi-plugins-starter</module>
         <module>ruoyi-mybatis-interceptor</module>
+        <module>ruoyi-netty</module>
     </modules>
     <packaging>pom</packaging>
 </project>
