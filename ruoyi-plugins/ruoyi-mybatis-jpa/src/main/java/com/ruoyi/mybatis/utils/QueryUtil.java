@@ -1,5 +1,6 @@
 package com.ruoyi.mybatis.utils;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,4 +90,14 @@ public class QueryUtil {
         };
     }
 
+    public static String listToInSQL(Collection<Serializable> oList) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        for (Serializable o : oList) {
+            sb.append(o).append(",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append(")");
+        return sb.toString();
+    }
 }

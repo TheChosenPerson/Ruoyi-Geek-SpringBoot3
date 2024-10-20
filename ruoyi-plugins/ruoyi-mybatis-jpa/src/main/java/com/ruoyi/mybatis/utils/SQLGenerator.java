@@ -1,6 +1,8 @@
 package com.ruoyi.mybatis.utils;
 
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.ibatis.jdbc.SQL;
 
@@ -18,6 +20,10 @@ public class SQLGenerator {
 		public final static String UPDATE = "update";
 		public final static String SELECT_BY_ID = "selectById";
 		public final static String DELETE_BY_ID = "deleteById";
+		public final static String SELECT_BY_IDS = "selectByIds";
+		public final static String DELETE_BY_IDS = "deleteByIds";
+		public final static String SELECT_BY_ID_WITH_ENTITY = "selectByIdWithEntity";
+		public final static String DELETE_BY_ID_WITH_ENTITY = "deleteByIdWithEntity";
 	}
 
 	public static <T extends BaseEntity> String list(T entity) {
@@ -73,6 +79,9 @@ public class SQLGenerator {
 		tableInfo.getPrimaryKeys().stream()
 				.map(column -> column.getColumnName() + " = " + column.getTemplate())
 				.forEach(sql::WHERE);
+		if (tableInfo.hasDataScope()) {
+			sql.WHERE("1=1 ${params.dataScope}");
+		}
 		tableInfo.getNotNullColumns(entity).stream()
 				.filter(column -> !column.isPrimaryKey())
 				.map(column -> column.getColumnName() + " = " + column.getTemplate())
@@ -80,17 +89,21 @@ public class SQLGenerator {
 		return sql.toString();
 	}
 
-	public static <T extends BaseEntity> String deleteById(T entity) {
+	public static <T extends BaseEntity> String deleteByIdWithEntity(T entity) {
 		SQL sql = new SQL();
 		TableInfo tableInfo = TableContainer.getTableInfo(entity);
 		sql.DELETE_FROM(tableInfo.getTableName());
 		tableInfo.getPrimaryKeys().stream()
 				.map(column -> column.getColumnName() + " = " + column.getTemplate())
 				.forEach(sql::WHERE);
+
+		if (tableInfo.hasDataScope()) {
+			sql.WHERE("1=1 ${params.dataScope}");
+		}
 		return sql.toString();
 	}
 
-	public static <T extends BaseEntity> String selectById(T entity) {
+	public static <T extends BaseEntity> String selectByIdWithEntity(T entity) {
 		SQL sql = new SQL();
 		TableInfo tableInfo = TableContainer.getTableInfo(entity);
 		sql.SELECT(String.join(",", tableInfo.getColumnNames()))
@@ -107,6 +120,75 @@ public class SQLGenerator {
 			tableInfo.getPrimaryKeys().stream()
 					.map(column -> column.getColumnName() + " = " + column.getTemplate())
 					.forEach(sql::WHERE);
+		}
+		if (tableInfo.hasDataScope()) {
+			sql.WHERE("1=1 ${params.dataScope}");
+		}
+		return sql.toString();
+	}
+
+	public static <T extends BaseEntity> String selectById(Serializable id, Class<T> clz) {
+		SQL sql = new SQL();
+		TableInfo tableInfo = TableContainer.getTableInfo(clz);
+		sql.SELECT(String.join(",", tableInfo.getColumnNames()))
+				.FROM(tableInfo.getTableNameFrom());
+		if (tableInfo.isEnbleMap()) {
+			tableInfo.getJoinSql().stream().forEach(sql::LEFT_OUTER_JOIN);
+			ColumnInfo columnInfo = tableInfo.getPrimaryKeys().get(0);
+			String columnName = tableInfo.getTableNameT() + "." + columnInfo.getColumnName();
+			sql.WHERE(columnName + " = " + id);
+		} else {
+			ColumnInfo columnInfo = tableInfo.getPrimaryKeys().get(0);
+			sql.WHERE(columnInfo.getColumnName() + " = " + id);
+		}
+		if (tableInfo.hasDataScope()) {
+			sql.WHERE("1=1 ${params.dataScope}");
+		}
+		return sql.toString();
+	}
+
+	public static <T extends BaseEntity> String selectByIds(Collection<Serializable> ids, Class<T> clz) {
+		SQL sql = new SQL();
+		TableInfo tableInfo = TableContainer.getTableInfo(clz);
+		sql.SELECT(String.join(",", tableInfo.getColumnNames()))
+				.FROM(tableInfo.getTableNameFrom());
+		if (tableInfo.isEnbleMap()) {
+			tableInfo.getJoinSql().stream()
+					.forEach(sql::LEFT_OUTER_JOIN);
+
+			ColumnInfo columnInfo = tableInfo.getPrimaryKeys().get(0);
+			String columnName = tableInfo.getTableNameT() + "." + columnInfo.getColumnName();
+			sql.WHERE(columnName + " in " + QueryUtil.listToInSQL(ids));
+		} else {
+			ColumnInfo columnInfo = tableInfo.getPrimaryKeys().get(0);
+			sql.WHERE(columnInfo.getColumnName() + " in " + QueryUtil.listToInSQL(ids));
+		}
+		if (tableInfo.hasDataScope()) {
+			sql.WHERE("1=1 ${params.dataScope}");
+		}
+		return sql.toString();
+	}
+
+	public static <T extends BaseEntity> String deleteById(Serializable id, Class<T> clz) {
+		SQL sql = new SQL();
+		TableInfo tableInfo = TableContainer.getTableInfo(clz);
+		sql.DELETE_FROM(tableInfo.getTableName());
+		ColumnInfo columnInfo = tableInfo.getPrimaryKeys().get(0);
+		sql.WHERE(columnInfo.getColumnName() + " = " + id);
+		if (tableInfo.hasDataScope()) {
+			sql.WHERE("1=1 ${params.dataScope}");
+		}
+		return sql.toString();
+	}
+
+	public static <T extends BaseEntity> String deleteByIds(Collection<Serializable> ids, Class<T> clz) {
+		SQL sql = new SQL();
+		TableInfo tableInfo = TableContainer.getTableInfo(clz);
+		sql.DELETE_FROM(tableInfo.getTableName());
+		ColumnInfo columnInfo = tableInfo.getPrimaryKeys().get(0);
+		sql.WHERE(columnInfo.getColumnName() + " in " + QueryUtil.listToInSQL(ids));
+		if (tableInfo.hasDataScope()) {
+			sql.WHERE("1=1 ${params.dataScope}");
 		}
 		return sql.toString();
 	}
