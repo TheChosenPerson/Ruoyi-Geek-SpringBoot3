@@ -5,8 +5,7 @@ package com.ruoyi.common.constant;
  * 
  * @author ruoyi
  */
-public class UserConstants
-{
+public class UserConstants {
     /**
      * 平台内系统用户的唯一标志
      */
@@ -20,6 +19,9 @@ public class UserConstants
 
     /** 用户封禁状态 */
     public static final String USER_DISABLE = "1";
+
+    /** 角色正常状态 */
+    public static final String ROLE_NORMAL = "0";
 
     /** 角色封禁状态 */
     public static final String ROLE_DISABLE = "1";
@@ -53,7 +55,7 @@ public class UserConstants
 
     /** Layout组件标识 */
     public final static String LAYOUT = "Layout";
-    
+
     /** ParentView组件标识 */
     public final static String PARENT_VIEW = "ParentView";
 
