@@ -50,6 +50,11 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-mybatis-interceptor</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-netty</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

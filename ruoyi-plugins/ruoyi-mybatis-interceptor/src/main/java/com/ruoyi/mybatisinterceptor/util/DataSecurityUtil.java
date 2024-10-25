@@ -1,7 +1,6 @@
 package com.ruoyi.mybatisinterceptor.util;
 
-
-import com.ruoyi.mybatisinterceptor.context.dataSecurity.SqlContextHolder;
+import com.ruoyi.mybatisinterceptor.context.sqlContext.SqlContextHolder;
 
 public class DataSecurityUtil {
 

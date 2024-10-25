@@ -1,20 +1,18 @@
 package com.ruoyi.mybatisinterceptor.aspectj;
 
 import com.ruoyi.mybatisinterceptor.annotation.DataSecurity;
+import com.ruoyi.mybatisinterceptor.context.sqlContext.SqlContextHolder;
 import com.ruoyi.mybatisinterceptor.model.JoinTableModel;
 import com.ruoyi.mybatisinterceptor.model.WhereModel;
-import com.ruoyi.mybatisinterceptor.context.dataSecurity.SqlContextHolder;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
-
-
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
-
 
 @Aspect
 @Component
@@ -50,7 +48,6 @@ public class DataSecurityAspect {
             if (!StringUtils.isEmpty(dataSecurity.joinTableAlise())) {
                createByTableModel.setJoinTableAlise(dataSecurity.joinTableAlise());
             }
-
             createByTableModel.setFromTableColumn("create_by");
             createByTableModel.setJoinTableColumn("user_name");
             SqlContextHolder.addJoinTable(createByTableModel);
@@ -63,12 +60,10 @@ public class DataSecurityAspect {
             if (!StringUtils.isEmpty(dataSecurity.joinTableAlise())) {
                userIdTableModel.setJoinTableAlise(dataSecurity.joinTableAlise());
             }
-
             userIdTableModel.setFromTableColumn("user_id");
             userIdTableModel.setJoinTableColumn("user_id");
             SqlContextHolder.addJoinTable(userIdTableModel);
             break;
-
          default:
             break;
       }

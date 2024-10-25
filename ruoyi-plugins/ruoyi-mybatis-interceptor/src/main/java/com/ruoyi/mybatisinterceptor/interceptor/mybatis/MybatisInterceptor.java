@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ruoyi.mybatisinterceptor.annotation.MybatisHandlerOrder;
-import com.ruoyi.mybatisinterceptor.sql.MybatisAfterHandler;
-import com.ruoyi.mybatisinterceptor.sql.MybatisPreHandler;
+import com.ruoyi.mybatisinterceptor.handler.MybatisAfterHandler;
+import com.ruoyi.mybatisinterceptor.handler.MybatisPreHandler;
 
 import jakarta.annotation.PostConstruct;
 

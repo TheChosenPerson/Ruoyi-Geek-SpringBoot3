@@ -1,4 +1,4 @@
-package com.ruoyi.mybatisinterceptor.sql.page;
+package com.ruoyi.mybatisinterceptor.handler.page;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
@@ -21,7 +21,7 @@ import com.ruoyi.common.utils.sql.SqlUtil;
 import com.ruoyi.mybatisinterceptor.annotation.MybatisHandlerOrder;
 import com.ruoyi.mybatisinterceptor.context.page.PageContextHolder;
 import com.ruoyi.mybatisinterceptor.context.page.model.PageInfo;
-import com.ruoyi.mybatisinterceptor.sql.MybatisPreHandler;
+import com.ruoyi.mybatisinterceptor.handler.MybatisPreHandler;
 
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
