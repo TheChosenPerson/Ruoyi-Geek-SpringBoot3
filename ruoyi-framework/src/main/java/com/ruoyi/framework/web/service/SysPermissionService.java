@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysRole;
@@ -57,7 +58,7 @@ public class SysPermissionService {
             perms.add("*:*:*");
         } else {
             List<SysRole> roles = user.getRoles();
-            if (!roles.isEmpty() && roles.size() > 1) {
+            if (!CollectionUtils.isEmpty(roles)) {
                 // 多角色设置permissions属性，以便数据权限匹配权限
                 for (SysRole role : roles) {
                     if (StringUtils.equals(role.getStatus(), UserConstants.ROLE_NORMAL)) {
