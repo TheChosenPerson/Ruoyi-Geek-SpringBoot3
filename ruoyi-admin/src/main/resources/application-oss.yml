@@ -6,5 +6,5 @@ oss:
       MASTER:
         accessKeyId: 
         accessKeySecret: 
-        bucketName: szb-resource
-        endpoint: oss-cn-shenzhen.aliyuncs.com
+        bucketName: 
+        endpoint: 
