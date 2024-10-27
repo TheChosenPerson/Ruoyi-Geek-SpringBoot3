@@ -1,4 +1,4 @@
-package com.ruoyi.framework.config;
+package com.ruoyi.framework.datasource;
 
 import java.util.Properties;
 
@@ -12,8 +12,11 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.pool.xa.DruidXADataSource;
-import com.atomikos.jdbc.AtomikosDataSourceBean;
+import com.atomikos.spring.AtomikosDataSourceBean;
 import com.ruoyi.common.service.datasource.CreateDataSource;
+import com.ruoyi.framework.config.AtomikosConfig;
+import com.ruoyi.framework.config.DruidConfig;
+import com.ruoyi.framework.config.DynamicDataSourceProperties;
 
 @Component
 @DependsOn({ "transactionManager" })
@@ -36,13 +39,16 @@ public class AtomikosDataSourceCreate implements CreateDataSource {
         dataSource.setConnectProperties(prop);
         properties.setProperties(dataSource, prop);
         AtomikosDataSourceBean ds = new AtomikosDataSourceBean();
+
         atomikosConfig.getAtomikosDataSourceBeans().add(ds);
         ds.setXaDataSourceClassName("com.alibaba.druid.pool.xa.DruidXADataSource");
         ds.setUniqueResourceName(name);
-        ds.setXaProperties(prop);
         ds.setXaDataSource(dataSource);
+        ds.setXaProperties(prop);
+        ds.setMaxPoolSize(dataSource.getMaxActive());
+        ds.setMinPoolSize(dataSource.getMinIdle());
         properties.validateDataSource(ds);
         logger.info("数据源：{} 链接成功", name);
-        return ds;
+        return dataSource;
     }
 }

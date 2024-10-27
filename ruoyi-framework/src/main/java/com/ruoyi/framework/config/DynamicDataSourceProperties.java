@@ -38,27 +38,27 @@ public class DynamicDataSourceProperties {
         }
     }
 
-    protected Properties build(DataSourceProperties dataSourceProperties) {
+    public Properties build(DataSourceProperties dataSourceProperties) {
         Properties prop = new Properties();
         DruidProperties druidProperties = SpringUtils.getBean(DruidProperties.class);
-        prop.put("url", dataSourceProperties.getUrl());
-        prop.put("username", dataSourceProperties.getUsername());
-        prop.put("password", dataSourceProperties.getPassword());
-        prop.put("initialSize", druidProperties.getInitialSize());
-        prop.put("minIdle", druidProperties.getMinIdle());
-        prop.put("maxActive", druidProperties.getMaxActive());
-        prop.put("maxWait", druidProperties.getMaxWait());
-        prop.put("timeBetweenEvictionRunsMillis", druidProperties.getTimeBetweenEvictionRunsMillis());
-        prop.put("minEvictableIdleTimeMillis", druidProperties.getMinEvictableIdleTimeMillis());
-        prop.put("maxEvictableIdleTimeMillis", druidProperties.getMaxEvictableIdleTimeMillis());
-        prop.put("validationQuery", druidProperties.getValidationQuery());
-        prop.put("testWhileIdle", druidProperties.isTestWhileIdle());
-        prop.put("testOnBorrow", druidProperties.isTestOnBorrow());
-        prop.put("testOnReturn", druidProperties.isTestOnReturn());
+        prop.setProperty("url", dataSourceProperties.getUrl());
+        prop.setProperty("username", dataSourceProperties.getUsername());
+        prop.setProperty("password", dataSourceProperties.getPassword());
+        prop.setProperty("initialSize", String.valueOf(druidProperties.getInitialSize()));
+        prop.setProperty("minIdle", String.valueOf(druidProperties.getMinIdle()));
+        prop.setProperty("maxActive", String.valueOf(druidProperties.getMaxActive()));
+        prop.setProperty("maxWait", String.valueOf(druidProperties.getMaxWait()));
+        prop.setProperty("timeBetweenEvictionRunsMillis", String.valueOf(druidProperties.getTimeBetweenEvictionRunsMillis()));
+        prop.setProperty("minEvictableIdleTimeMillis", String.valueOf(druidProperties.getMinEvictableIdleTimeMillis()));
+        prop.setProperty("maxEvictableIdleTimeMillis", String.valueOf(druidProperties.getMaxEvictableIdleTimeMillis()));
+        prop.setProperty("validationQuery", druidProperties.getValidationQuery());
+        prop.setProperty("testWhileIdle", String.valueOf(druidProperties.isTestWhileIdle()));
+        prop.setProperty("testOnBorrow", String.valueOf(druidProperties.isTestOnBorrow()));
+        prop.setProperty("testOnReturn", String.valueOf(druidProperties.isTestOnReturn()));
         return prop;
     }
 
-    protected void setProperties(DruidDataSource dataSource, Properties prop) {
+    public void setProperties(DruidDataSource dataSource, Properties prop) {
         dataSource.setUrl(prop.getProperty("url"));
         dataSource.setUsername(prop.getProperty("username"));
         dataSource.setPassword(prop.getProperty("password"));

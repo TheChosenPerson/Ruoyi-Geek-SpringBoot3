@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ruoyi.netty.websocket.nettyServer.handler.WebSocketHandler;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -59,6 +60,6 @@ public class NettyWebSocketServer {
       System.out.println(
             "----------------------------------------------------------------------------------- \n Arknights!");
       NettyWebSocketServer.serverBootstrap = serverBootstrap;
-      return serverBootstrap;
+      return NettyWebSocketServer.serverBootstrap;
    }
 }
