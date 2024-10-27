@@ -14,6 +14,7 @@
         <ehcache.version>3.10.8</ehcache.version>
         <mybatis-plus.version>3.5.8</mybatis-plus.version>
         <netty.version>4.1.112.Final</netty.version>
+        <oss.version>3.18.1</oss.version>
     </properties>
 
     <description>
@@ -87,6 +88,20 @@
                 <version>${netty.version}</version>
             </dependency>
 
+            <!-- alibaba-oss -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-alibaba-oss</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <!-- oss-->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${oss.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -99,6 +114,7 @@
         <module>ruoyi-plugins-starter</module>
         <module>ruoyi-mybatis-interceptor</module>
         <module>ruoyi-netty</module>
+        <module>ruoyi-alibaba-oss</module>
     </modules>
     <packaging>pom</packaging>
 </project>

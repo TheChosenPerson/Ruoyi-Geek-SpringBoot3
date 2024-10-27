@@ -55,6 +55,12 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-netty</artifactId>
         </dependency>
+        
+        <!--oss配置-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-alibaba-oss</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
