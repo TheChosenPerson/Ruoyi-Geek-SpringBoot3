@@ -1,6 +1,3 @@
-
-
-
 <p align="center">
     <span>
         <img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
@@ -16,9 +13,6 @@
 	<img src="https://img.shields.io/github/license/mashape/apistatus.svg">
 </p>
 
-
-
-
 # 当前版本是3.8.8.3.1
 
 本人的其他两个推荐搭配的项目
@@ -26,7 +20,7 @@
 1. [RuoYi-App-Geek: 这是若依极客生态的小程序版本 (gitee.com)](https://gitee.com/geek-xd/geek-uniapp-vue3-uview-plus-uchart)
 2. [RuoYi-Vue3-Geek: 这是若依极客生态的Vue3版本 (gitee.com)](https://gitee.com/geek-xd/ruo-yi-vue3-geek)
 
-与本项目同为一个作者开发，兼容性最好，学习成本最低
+与本项目同为一个作者开发，兼容性最好，学习成本最低。
 
 # 引言
 
@@ -76,9 +70,10 @@ RuoYi-Geek不仅仅是一个简单的升级版本，更是对于RuoYi生态的�
 
 * 最简单的开发就是删除所有的可移除模块，按需添加模块。
 * 测试中的模块请自己使用的时候一定要测试一下。
-* 开发中的模块请直接删除。
+* 对于小白，开发中的模块请直接删除。
 
 ```
+
 com.ruoyi   
 ├── common            // 工具类
 │       └── annotation                    // 自定义注解
@@ -113,7 +108,8 @@ com.ruoyi
 │       └── starter                        // 第三方认证启动器
 ├── ruoyi-middleware   // 中间件场景（可移除）
 │       └── minio			   // minio文件服务模块 
-│       └── redis			   // redis缓存服务模块（与ehcache插件同类） 
+│       └── rabbitmq			   // rabbitmq队列服务模块 
+│       └── redis			   // redis缓存服务模块（与ehcache插件同类，两者二选一） 
 │       └── starter  		 	   // 中间件整合模块
 ├── ruoyi-models   	// 业务场景
 │       └── online			   // 在线开发模块（可移除）
@@ -121,8 +117,11 @@ com.ruoyi
 │       └── generator			   // 代码生成（可移除）
 │       └── starter  		 	   // 业务场景启动器
 ├── ruoyi-plugins   	// 插件
-│       └── ehcache			   // ehcache缓存插件（与redis模块同类） 
-│       └── mybatis-jpa			   // mybatis-jpa插件（可移除） 
+│       └── ehcache			   // ehcache缓存插件（与redis模块同类，两者二选一） 
+│       └── mybatis-jpa			   // mybatis-jpa插件（可移除）（简化CRUD，以数据模型为基础开发）
+│       └── mybatis-plus		   // mybatis-plus插件（可移除）（简化CRUD）
+│       └── mybatis-interceptor		   // mybatis-interceptor插件（可移除）（简化数据鉴权和分页，扩展性强）
+│       └── netty			   // netty插件（可移除）
 │       └── websocket			   // websocket插件（可移除）
 │       └── starter  		 	   // 插件整合模块
 ├── ruoyi-system        // 系统代码
