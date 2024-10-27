@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.ruoyi.netty.websocket.nettyServer.NettyWebSocketServer;
 
+import jakarta.annotation.PreDestroy;
+
 @Component
 public class NettyServerRunner implements ApplicationRunner {
 
@@ -16,6 +18,11 @@ public class NettyServerRunner implements ApplicationRunner {
    @Override
    public void run(ApplicationArguments args) throws Exception {
       server.start();
+   }
+
+   @PreDestroy
+   public void destroy() {
+      server.shutdown();
    }
 
 }

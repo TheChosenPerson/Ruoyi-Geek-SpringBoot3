@@ -1,14 +1,19 @@
 package com.ruoyi.netty.websocket.nettyServer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ruoyi.netty.websocket.nettyServer.handler.WebSocketHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -19,7 +24,9 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 @Component
 public class NettyWebSocketServer {
 
-   private static ServerBootstrap serverBootstrap;
+   private static final Logger log = LoggerFactory.getLogger(NettyWebSocketServer.class);
+   private ServerBootstrap serverBootstrap;
+   private Channel serverChannel;
 
    @Value("${netty.websocket.maxMessageSize}")
    private Long messageSize;
@@ -56,10 +63,27 @@ public class NettyWebSocketServer {
             pipeline.addLast(new WebSocketServerProtocolHandler("/", true));
          }
       });
-      serverBootstrap.bind(port.intValue()).sync();
-      System.out.println(
-            "----------------------------------------------------------------------------------- \n Arknights!");
-      NettyWebSocketServer.serverBootstrap = serverBootstrap;
-      return NettyWebSocketServer.serverBootstrap;
+      ChannelFuture future = serverBootstrap.bind(port.intValue()).sync();
+      serverChannel = future.channel();
+      log.info("netty for websocket start success, running in port: {}", this.port);
+      this.serverBootstrap = serverBootstrap;
+      return this.serverBootstrap;
+   }
+
+   public void shutdown() {
+      if (serverChannel != null) {
+         serverChannel.close().syncUninterruptibly();
+      }
+      if (serverBootstrap != null) {
+         EventLoopGroup bossGroup = serverBootstrap.config().group();
+         EventLoopGroup workerGroup = serverBootstrap.config().childGroup();
+         if (bossGroup != null) {
+            bossGroup.shutdownGracefully().syncUninterruptibly();
+         }
+         if (workerGroup != null) {
+            workerGroup.shutdownGracefully().syncUninterruptibly();
+         }
+      }
+      log.info("netty for websocket shudown success");
    }
 }
