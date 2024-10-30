@@ -84,7 +84,8 @@ public class TableInfo {
             if (StringUtils.isNotEmpty(this.enableTableMap.dept())) {
                 String lf = this.enableTableMap.deptOnLeft();
                 String rf = this.enableTableMap.deptOnRight();
-                String lt = this.getTableNameT();
+                String lt = StringUtils.isNotEmpty(this.enableTableMap.deptFrom()) ? this.enableTableMap.deptFrom()
+                        : this.getTableNameT();
                 String rt = this.enableTableMap.dept();
                 if (StringUtils.isEmpty(lf) || StringUtils.isEmpty(rf)) {
                     lf = this.enableTableMap.deptOn();

@@ -30,4 +30,6 @@ public @interface EnableTableMap {
     String deptOnLeft() default "";
 
     String deptOnRight() default "";
+
+    String deptFrom() default "";
 }
