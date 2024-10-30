@@ -2,7 +2,7 @@ package com.ruoyi.framework.datasource;
 
 import java.util.Map;
 
-import javax.sql.DataSource;
+import javax.sql.CommonDataSource;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
@@ -13,7 +13,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  */
 public class DynamicDataSource extends AbstractRoutingDataSource
 {
-    public DynamicDataSource(DataSource defaultTargetDataSource, Map<Object, Object> targetDataSources)
+    public DynamicDataSource(CommonDataSource defaultTargetDataSource, Map<Object, Object> targetDataSources)
     {
         super.setDefaultTargetDataSource(defaultTargetDataSource);
         super.setTargetDataSources(targetDataSources);

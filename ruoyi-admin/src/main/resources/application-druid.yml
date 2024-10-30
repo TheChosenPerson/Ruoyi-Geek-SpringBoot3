@@ -60,3 +60,8 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
+
+
+# 是否开启分布式事务，如不开启，请删除atomikos插件，否则atomikos相关驱动虽不生效但仍会启动
+atomikos:
+  enabled: true

@@ -1,9 +1,9 @@
 package com.ruoyi.common.service.datasource;
 
-import javax.sql.DataSource;
+import java.util.Properties;
 
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import javax.sql.CommonDataSource;
 
 public interface CreateDataSource {
-    DataSource createDataSource(String name, DataSourceProperties dataSourceProperties);
+    CommonDataSource createDataSource(String name, Properties prop);
 }

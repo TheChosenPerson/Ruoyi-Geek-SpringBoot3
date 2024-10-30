@@ -1,13 +1,7 @@
 package com.ruoyi.framework.config;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.sql.DataSource;
 
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -23,20 +17,6 @@ public class DynamicDataSourceProperties {
 
     private Map<String, DataSourceProperties> datasource;
     private String primary;
-
-    public void validateDataSource(DataSource dataSource) {
-        try (Connection conn = dataSource.getConnection()) {
-            String validationQuery = "SELECT 1";
-            try (Statement stmt = conn.createStatement();
-                    ResultSet rs = stmt.executeQuery(validationQuery)) {
-                if (!(rs.next() && rs.getInt(1) == 1)) {
-                    throw new RuntimeException("数据源连接验证失败：查询结果不正确");
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("数据源连接验证失败", e);
-        }
-    }
 
     public Properties build(DataSourceProperties dataSourceProperties) {
         Properties prop = new Properties();

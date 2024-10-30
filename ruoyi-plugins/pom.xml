@@ -15,6 +15,7 @@
         <mybatis-plus.version>3.5.8</mybatis-plus.version>
         <netty.version>4.1.112.Final</netty.version>
         <oss.version>3.18.1</oss.version>
+        <transactions.version>6.0.0</transactions.version>
     </properties>
 
     <description>
@@ -76,7 +77,7 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
-              <dependency>
+            <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-netty</artifactId>
                 <version>${ruoyi.version}</version>
@@ -95,11 +96,25 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- atomikos-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-atomikos</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
             <!-- oss-->
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
                 <version>${oss.version}</version>
+            </dependency>
+
+            <!-- atomikos分布式事务 -->
+            <dependency>
+                <groupId>com.atomikos</groupId>
+                <artifactId>transactions-spring-boot3-starter</artifactId>
+                <version>${transactions.version}</version>
             </dependency>
 
         </dependencies>
@@ -115,6 +130,7 @@
         <module>ruoyi-mybatis-interceptor</module>
         <module>ruoyi-netty</module>
         <module>ruoyi-alibaba-oss</module>
+        <module>ruoyi-atomikos</module>
     </modules>
     <packaging>pom</packaging>
 </project>

@@ -1,8 +1,9 @@
-package com.ruoyi.framework.config;
+package com.ruoyi.atomikos.config;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -23,6 +24,7 @@ import jakarta.transaction.UserTransaction;
  * @author ruoyi
  */
 @Configuration
+@ConditionalOnProperty(name = "atomikos.enabled", havingValue = "true")
 public class AtomikosConfig {
     @Bean(name = "userTransaction")
     public UserTransaction userTransaction() throws Throwable {
