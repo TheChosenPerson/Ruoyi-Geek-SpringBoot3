@@ -74,8 +74,10 @@ public class DataSourceManagement implements InitializingBean {
                     }
                     DataSource dataSource = (DataSource) commonDataSource;
                     logger.info("数据源：{} 校验中.......", name);
+                    // 计时
+                    long start = System.currentTimeMillis();
                     validateDataSource(dataSource);
-                    logger.info("数据源：{} 链接成功", name);
+                    logger.info("数据源：{} 链接成功，耗时：{}ms", name, System.currentTimeMillis() - start);
                     this.putDataSource(name, dataSource);
                 });
     }

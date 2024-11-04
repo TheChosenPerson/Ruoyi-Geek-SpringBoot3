@@ -36,8 +36,8 @@
         <jwt.version>0.12.5</jwt.version>
         <knife4j.version>4.5.0</knife4j.version>
         <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
-        <!-- druid 的 xa暂时不支持 mysql 9.0.0+ -->
-        <mysql.version>8.4.0</mysql.version>
+        <!-- druid 的 xa暂时不支持 mysql 9.0.0+ 连接速度:8.3.0>8.2.0>8.4.0 -->
+        <mysql.version>8.3.0</mysql.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jaxb.version>4.0.5</jaxb.version>
         <springdoc.version>2.1.0</springdoc.version>
