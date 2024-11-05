@@ -43,6 +43,7 @@ public class DySmsServiceImpl implements DySmsService {
     private TokenService tokenService;
 
     private static final Logger log = LoggerFactory.getLogger(DySmsServiceImpl.class);
+
     @Override
     public boolean sendCode(String phone, String code, OauthVerificationUse use) {
         if (CacheUtils.hasKey(CacheConstants.PHONE_CODES, use.getValue() + phone)) {
@@ -66,8 +67,10 @@ public class DySmsServiceImpl implements DySmsService {
         if (StringUtils.isEmpty(code))
             return false;
         String cachedCode = CacheUtils.get(CacheConstants.PHONE_CODES, use.getValue() + phone, String.class); // 从缓存中获取验证码
-        CacheUtils.remove(CacheConstants.PHONE_CODES, use.getValue() + phone);
-        return code.equals(cachedCode);
+        boolean isValid = code.equals(cachedCode);
+        if (isValid)
+            CacheUtils.remove(CacheConstants.PHONE_CODES, use.getValue() + phone);
+        return isValid;
     }
 
     public void doLogin(LoginBody loginBody, boolean isRegister) {
@@ -113,6 +116,7 @@ public class DySmsServiceImpl implements DySmsService {
         if (checkCode(registerBody.getPhonenumber(), registerBody.getCode(), OauthVerificationUse.REGISTER)) {
             SysUser sysUser = new SysUser();
             sysUser.setUserName(registerBody.getPhonenumber());
+            sysUser.setNickName(registerBody.getUsername());
             sysUser.setPassword(SecurityUtils.encryptPassword(registerBody.getPassword()));
             sysUser.setPhonenumber(registerBody.getPhonenumber());
             return userService.registerUser(sysUser);

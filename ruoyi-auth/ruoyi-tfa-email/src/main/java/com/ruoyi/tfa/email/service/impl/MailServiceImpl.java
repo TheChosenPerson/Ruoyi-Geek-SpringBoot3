@@ -57,8 +57,10 @@ public class MailServiceImpl implements IMailService {
         if (StringUtils.isEmpty(code))
             return false;
         String cachedCode = CacheUtils.get(CacheConstants.EMAIL_CODES, use.getValue() + email, String.class); // 从缓存中获取验证码
-        CacheUtils.remove(CacheConstants.EMAIL_CODES, use.getValue() + email);
-        return code.equals(cachedCode);
+        boolean isValid = code.equals(cachedCode);
+        if (isValid)
+            CacheUtils.remove(CacheConstants.EMAIL_CODES, use.getValue() + email);
+        return isValid;
     }
 
     public void doLogin(LoginBody loginBody, boolean isRegister) {
@@ -104,6 +106,7 @@ public class MailServiceImpl implements IMailService {
         if (checkCode(registerBody.getEmail(), registerBody.getCode(), OauthVerificationUse.REGISTER)) {
             SysUser sysUser = new SysUser();
             sysUser.setUserName(registerBody.getEmail());
+            sysUser.setNickName(registerBody.getEmail());
             sysUser.setPassword(SecurityUtils.encryptPassword(registerBody.getPassword()));
             sysUser.setEmail(registerBody.getEmail());
             userService.registerUser(sysUser);

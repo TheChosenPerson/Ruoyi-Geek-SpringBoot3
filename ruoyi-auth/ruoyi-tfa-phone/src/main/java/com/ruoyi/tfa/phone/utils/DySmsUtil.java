@@ -11,6 +11,7 @@ import com.aliyun.tea.TeaException;
 import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.Common;
 import com.aliyun.teautil.models.RuntimeOptions;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.tfa.phone.config.DySmsConfig;
 import com.ruoyi.tfa.phone.enums.DySmsTemplate;
@@ -67,18 +68,12 @@ public class DySmsUtil {
             // 复制代码运行请自行打印 API 的返回值
             SendSmsResponse sendSmsResponse = client.sendSmsWithOptions(sendSmsRequest, new RuntimeOptions());
             if (sendSmsResponse.getBody().getCode().equals("OK")) {
-                logger.info("短信接口返回的数据---", sendSmsResponse.getBody().getMessage());
+                logger.info("短信接口返回的数据--- {}", sendSmsResponse.getBody().getMessage());
             } else {
-                logger.error("短信接口返回的数据---", sendSmsResponse.getBody().getMessage());
+                logger.error("短信接口返回的数据--- {}", sendSmsResponse.getBody().getMessage());
+                throw new ServiceException(sendSmsResponse.getBody().getMessage());
             }
         } catch (TeaException error) {
-            // 错误 message
-            System.out.println(error.getMessage());
-            // 诊断地址
-            System.out.println(error.getData().get("Recommend"));
-            Common.assertAsString(error.message);
-        } catch (Exception _error) {
-            TeaException error = new TeaException(_error.getMessage(), _error);
             // 错误 message
             System.out.println(error.getMessage());
             // 诊断地址

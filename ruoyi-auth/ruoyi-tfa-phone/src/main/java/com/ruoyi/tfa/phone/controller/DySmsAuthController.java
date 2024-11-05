@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.model.LoginBody;
+import com.ruoyi.common.core.domain.model.RegisterBody;
 import com.ruoyi.tfa.phone.service.Impl.DySmsServiceImpl;
 
 /**
@@ -18,7 +20,7 @@ import com.ruoyi.tfa.phone.service.Impl.DySmsServiceImpl;
  * @date 2024-04-16
  */
 @RestController
-@RequestMapping("/tfa/phone")
+@RequestMapping("/auth/phone")
 public class DySmsAuthController extends BaseController {
     @Autowired
     public DySmsServiceImpl dySmsService;
@@ -32,6 +34,20 @@ public class DySmsAuthController extends BaseController {
     @PostMapping("/verify/bind") // 发送验证码
     public AjaxResult verify(@RequestBody LoginBody loginBody) {
         dySmsService.doBindVerify(loginBody);
+        return success();
+    }
+
+    @PostMapping("/send/register")
+    @Anonymous
+    public AjaxResult sendRegister(@RequestBody RegisterBody registerBody) {
+        dySmsService.doRegister(registerBody);
+        return success();
+    }
+
+    @PostMapping("/verify/register")
+    @Anonymous
+    public AjaxResult verifyRegister(@RequestBody RegisterBody registerBody) {
+        dySmsService.doRegisterVerify(registerBody);
         return success();
     }
 }
