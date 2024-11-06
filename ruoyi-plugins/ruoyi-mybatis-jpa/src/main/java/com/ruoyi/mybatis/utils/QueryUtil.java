@@ -9,44 +9,46 @@ import java.util.Map;
 
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.mybatis.annotation.Query;
-import com.ruoyi.mybatis.enums.QueryEnum;
 
 public class QueryUtil {
 
+    /**
+     * 判断该字段是否可以被列为查询条件
+     * @param entity 参与判断的对象
+     * @param field 参与判断的字段
+     * @param query 参与判断的查询注解
+     * @return
+     */
     public static boolean fieldQueryIsNotNull(Object entity, Field field, Query query) {
         try {
-            if (query != null) {
-                BaseEntity baseEntity = (BaseEntity) entity;
-                Map<String, Object> map = baseEntity.getParams();
-                if (query.operation().equals(QueryEnum.between)) {
-                    return map.get(query.sections()[0]) != null && map.get(query.sections()[1]) != null;
-                } else if (query.operation().equals(QueryEnum.in)) {
-                    Object obj = map.get(query.section());
-                    if (obj == null) {
-                        return false;
-                    } else {
-                        if (obj instanceof String) {
-                            List<String> list = new ArrayList<>();
-                            for (String split : ((String) obj).split(",")) {
-                                list.add("\"" + split + "\"");
-                            }
-                            map.put(query.section() + "_operation", String.join(",", list));
-                            return true;
-                        } else if (obj instanceof Collection) {
-                            List<String> list = new ArrayList<>();
-                            for (Object split : ((Collection<?>) obj)) {
-                                list.add("\"" + split.toString() + "\"");
-                            }
-                            map.put(query.section() + "_operation", String.join(",", list));
-                            return true;
-                        } else {
-                            return false;
+            if (query == null)return false;
+            BaseEntity baseEntity = (BaseEntity) entity;
+            Map<String, Object> map = baseEntity.getParams();
+            return switch(query.operation()){
+                case between ->  map.get(query.sections()[0]) != null && map.get(query.sections()[1]) != null;
+                case in -> {
+                    Object section = map.get(query.section());
+                    if (section == null) yield  false;
+                    if (section instanceof String) {
+                        List<String> list = new ArrayList<>();
+                        for (String split : ((String) section).split(",")) {
+                            list.add("\"" + split + "\"");
                         }
+                        map.put(query.section() + "_operation", String.join(",", list));
+                        yield true;
+                    } else if (section instanceof Collection) {
+                        List<String> list = new ArrayList<>();
+                        for (Object split : ((Collection<?>) section)) {
+                            list.add("\"" + split.toString() + "\"");
+                        }
+                        map.put(query.section() + "_operation", String.join(",", list));
+                        yield true;
+                    } else {
+                        yield false;
                     }
-
                 }
-            }
-            return field.get(entity) != null;
+                default ->field.get(entity) != null;
+            };
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Failed to access field for building query conditions.", e);
         }
