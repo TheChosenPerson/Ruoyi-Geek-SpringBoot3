@@ -5,15 +5,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.CacheConstants;
+import com.ruoyi.common.core.domain.entity.FileEntity;
 import com.ruoyi.common.service.file.FileService;
 import com.ruoyi.common.utils.CacheUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.sign.Md5Utils;
 import com.ruoyi.common.utils.spring.SpringUtils;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 文件上传工具类
@@ -87,7 +91,7 @@ public class FileOperateUtils {
      * @throws IOException
      */
     public static final String upload(String baseDir, String fileName, MultipartFile file,
-                                      String[] allowedExtension)
+            String[] allowedExtension)
             throws IOException {
         try {
             String filePath = baseDir + File.separator + fileName;
@@ -107,6 +111,24 @@ public class FileOperateUtils {
      */
     public static final void downLoad(String fileUrl, OutputStream outputStream) throws Exception {
         InputStream inputStream = fileService.downLoad(fileUrl);
+        FileUtils.writeBytes(inputStream, outputStream);
+    }
+
+    /**
+     * 根据文件路径下载
+     *
+     * @param filepath 下载文件路径
+     * @param response 相应
+     * @return 文件名称
+     * @throws IOException
+     */
+    public static final void downLoad(String filepath, HttpServletResponse response) throws Exception {
+        FileEntity fileEntity = fileService.getFile(filepath);
+        InputStream inputStream = fileEntity.getFileInputSteam();
+        OutputStream outputStream = response.getOutputStream();
+        FileUtils.setAttachmentResponseHeader(response, FileUtils.getName(fileEntity.getFilePath()));
+        response.setContentLengthLong(fileEntity.getByteCount());
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         FileUtils.writeBytes(inputStream, outputStream);
     }
 
