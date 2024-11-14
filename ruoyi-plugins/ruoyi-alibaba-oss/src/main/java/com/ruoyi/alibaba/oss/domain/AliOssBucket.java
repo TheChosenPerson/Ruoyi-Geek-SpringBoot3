@@ -114,6 +114,7 @@ public class AliOssBucket {
         fileVO.setKey(ossObject.getKey());
         fileVO.setBucketName(ossObject.getBucketName());
         fileVO.setByteCount(ossObject.getObjectMetadata().getContentLength());
+        fileVO.setFilePath(filePath);
         return fileVO;
     }
 }
