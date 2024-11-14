@@ -1,17 +1,10 @@
 package com.ruoyi.alibaba.oss.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.aliyun.oss.OSS;
-import com.aliyun.oss.model.GetObjectRequest;
-import com.aliyun.oss.model.OSSObject;
 import com.ruoyi.alibaba.oss.config.AliOssConfig;
 import com.ruoyi.alibaba.oss.domain.AliOssBucket;
 import com.ruoyi.alibaba.oss.domain.AliOssFileVO;
@@ -43,13 +36,14 @@ public class AliOssUtil {
     /**
      * 文件上传
      *
-     * @param client   连接名
-     * @param file     上传的文件
+     * @param client 连接名
+     * @param file   上传的文件
      * @return 返回上传成功的文件名
      * @throws IOException 比如读写文件出错时
      */
     public static String uploadFile(String client, MultipartFile file) throws Exception {
-        String fileName = DateUtils.dateTimeNow() + UUID.fastUUID().toString().substring(0, 5) + "." + FileUtils.getExtension(file);
+        String fileName = DateUtils.dateTimeNow() + UUID.fastUUID().toString().substring(0, 5) + "."
+                + FileUtils.getExtension(file);
         return uploadFile(client, fileName, file);
     }
 
@@ -126,57 +120,14 @@ public class AliOssUtil {
      * @throws IOException 比如读写文件出错时
      */
     public static AliOssFileVO getFile(String client, String filePath) throws Exception {
-        AliOssBucket ossBucket = client == null ? getAliOssConfig().getMasterBucket() : getAliOssConfig().getBucket(client);
-        String bucketName = client == null ? getAliOssConfig().getMasterBucketName() : getAliOssConfig().getBucketName(client);
-    
+        AliOssBucket ossBucket = client == null ? getAliOssConfig().getMasterBucket()
+                : getAliOssConfig().getBucket(client);
+        String bucketName = client == null ? getAliOssConfig().getMasterBucketName()
+                : getAliOssConfig().getBucketName(client);
+
         if (bucketName == null) {
             throw new AliOssClientErrorException("参数 \"bucketName\" 为空指针");
         }
-    
-        GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, filePath);
-    
-        return get(getObjectRequest, ossBucket.getOssClient());
-    }
-    /**
-     * 从OSS中获取文件并封装成AliOssFileVO对象
-     *
-     * @param getObjectRequest 获取对象请求
-     * @param ossClient        OSS客户端
-     * @return 返回封装的Oss下载文件对象
-     * @throws Exception 如果获取文件失败
-     */
-    private static AliOssFileVO get(GetObjectRequest getObjectRequest, OSS ossClient) throws Exception {
-        OSSObject ossObject = ossClient.getObject(getObjectRequest);
-        if (ossObject == null) {
-            throw new Exception("Failed to retrieve object from OSS.");
-        }
-
-        // 读取OSSObject的内容到ByteArrayOutputStream中
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byte[] bytes = new byte[1024]; // 根据需要调整缓冲区大小
-        int length;
-        while ((length = ossObject.getObjectContent().read(bytes)) != -1) {
-            byteArrayOutputStream.write(bytes, 0, length);
-        }
-
-        // 获取 headers
-        Map<String, String> headers = new HashMap<>();
-        for (Map.Entry<String, String> entry : ossObject.getObjectMetadata().getUserMetadata().entrySet()) {
-            headers.put(entry.getKey(), entry.getValue());
-        }
-        headers.put("Content-Type", ossObject.getObjectMetadata().getContentType());
-        headers.put("Content-Length", String.valueOf(ossObject.getObjectMetadata().getContentLength()));
-
-        // 设置 AliOssFileVO 对象的属性
-        AliOssFileVO fileVO = new AliOssFileVO();
-        fileVO.setFileInputSteam(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-        fileVO.setHeaders(headers);
-        fileVO.setKey(ossObject.getKey());
-        fileVO.setBucketName(ossObject.getBucketName());
-
-        // 关闭OSSObject
-        ossObject.close();
-
-        return fileVO;
+        return ossBucket.get(filePath);
     }
 }

@@ -1,25 +1,17 @@
 package com.ruoyi.middleware.minio.domain;
 
+import com.ruoyi.common.core.domain.entity.FileEntity;
+
 import okhttp3.Headers;
 
-import java.io.InputStream;
-
-public class MinioFileVO {
-    private InputStream fileInputSteam;
+public class MinioFileVO extends FileEntity {
     private String object;
     private Headers headers;
     private String buket;
     private String region;
 
     public MinioFileVO() {
-    }
-
-    public InputStream getFileInputSteam() {
-        return fileInputSteam;
-    }
-
-    public void setFileInputSteam(InputStream fileInputSteam) {
-        this.fileInputSteam = fileInputSteam;
+        super();
     }
 
     public String getObject() {
@@ -51,14 +43,6 @@ public class MinioFileVO {
     }
 
     public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public MinioFileVO(InputStream fileInputSteam, String object, Headers headers, String buket, String region) {
-        this.fileInputSteam = fileInputSteam;
-        this.object = object;
-        this.headers = headers;
-        this.buket = buket;
         this.region = region;
     }
 

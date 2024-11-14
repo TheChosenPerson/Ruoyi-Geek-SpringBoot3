@@ -14,9 +14,7 @@ import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.middleware.minio.domain.MinioFileVO;
 import com.ruoyi.middleware.minio.utils.MinioUtil;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import okhttp3.Headers;
 
 @RestController
 @RequestMapping("/minio")
@@ -24,20 +22,20 @@ public class MinioController {
 
     @GetMapping("/{client}")
     @Anonymous
-    public void downLoadFile(HttpServletRequest request, HttpServletResponse response,
+    public void downLoadFile(HttpServletResponse response,
             @PathVariable("client") String client,
             @RequestParam("fileName") String fileName) throws Exception {
         MinioFileVO file = MinioUtil.getFile(client, fileName);
-        Headers headers = file.getHeaders();
-        String contentType = headers.get("content-Type");
-        response.setContentType(contentType);
+        FileUtils.setAttachmentResponseHeader(response, FileUtils.getName(fileName));
+        response.setContentLengthLong(file.getByteCount());
         FileUtils.writeBytes(file.getFileInputSteam(), response.getOutputStream());
     }
 
     @PutMapping("/{client}")
     @Anonymous
-    public String uploadFile(HttpServletRequest request, HttpServletResponse response,
-            @PathVariable("client") String client, @RequestBody MultipartFile file) throws Exception {
+    public String uploadFile(
+            @PathVariable("client") String client,
+            @RequestBody MultipartFile file) throws Exception {
         return MinioUtil.uploadFile(client, file);
     }
 }

@@ -1,11 +1,7 @@
 package com.ruoyi.alibaba.oss.domain;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +57,7 @@ public class AliOssBucket {
             // 创建 ObjectMetadata 对象，并设置内容类型
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(contentType);
-            metadata.setContentLength(inputStream.available());  // 使用 InputStream 的 available 方法
+            metadata.setContentLength(inputStream.available()); // 使用 InputStream 的 available 方法
 
             // 创建 PutObjectRequest 对象
             PutObjectRequest putRequest = new PutObjectRequest(bucketName, filePath, inputStream, metadata);
@@ -99,43 +95,6 @@ public class AliOssBucket {
         }
     }
 
-    public AliOssFileVO get(GetObjectRequest getObjectRequest) throws Exception {
-        try (OSSObject ossObject = this.ossClient.getObject(getObjectRequest)) {
-            if (ossObject == null) {
-                throw new Exception("Failed to retrieve object from OSS.");
-            }
-
-            // 读取OSSObject的内容到ByteArrayOutputStream中
-            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-                byte[] bytes = new byte[1024]; // 根据需要调整缓冲区大小
-                int length;
-                while ((length = ossObject.getObjectContent().read(bytes)) != -1) {
-                    byteArrayOutputStream.write(bytes, 0, length);
-                }
-
-                // 获取 headers
-                Map<String, String> headers = new HashMap<>();
-                for (Map.Entry<String, String> entry : ossObject.getObjectMetadata().getUserMetadata().entrySet()) {
-                    headers.put(entry.getKey(), entry.getValue());
-                }
-                headers.put("Content-Type", ossObject.getObjectMetadata().getContentType());
-                headers.put("Content-Length", String.valueOf(ossObject.getObjectMetadata().getContentLength()));
-
-                // 设置 AliOssFileVO 对象的属性
-                AliOssFileVO fileVO = new AliOssFileVO();
-                fileVO.setFileInputSteam(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-                fileVO.setHeaders(headers);
-                fileVO.setKey(ossObject.getKey());
-                fileVO.setBucketName(ossObject.getBucketName());
-
-                return fileVO;
-            }
-        } catch (Exception e) {
-            logger.error("Error retrieving file: {}", e.getMessage(), e);
-            throw new AliOssClientErrorException("Error retrieving file: " + e.getMessage(), e);
-        }
-    }
-
     /**
      * 文件下载
      *
@@ -145,6 +104,16 @@ public class AliOssBucket {
      */
     public AliOssFileVO get(String filePath) throws Exception {
         GetObjectRequest request = new GetObjectRequest(this.bucketName, filePath);
-        return get(request);
+        OSSObject ossObject = this.ossClient.getObject(request);
+        if (ossObject == null) {
+            throw new Exception("Failed to retrieve object from OSS.");
+        }
+        // 设置 AliOssFileVO 对象的属性
+        AliOssFileVO fileVO = new AliOssFileVO();
+        fileVO.setFileInputSteam(ossObject.getObjectContent());
+        fileVO.setKey(ossObject.getKey());
+        fileVO.setBucketName(ossObject.getBucketName());
+        fileVO.setByteCount(ossObject.getObjectMetadata().getContentLength());
+        return fileVO;
     }
 }

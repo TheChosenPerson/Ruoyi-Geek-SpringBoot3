@@ -51,6 +51,7 @@ public class MinioConfig implements InitializingBean {
                     .stream(EmptyInputStream.nullInputStream(), 0, -1).bucket(minioBucket.getBuketName()).build();
             minioBucket.getClient().putObject(putObjectArgs);
         } catch (Exception e) {
+            logger.error("数据桶：{}  - 链接失败", minioBucket.getName());
             throw new RuntimeException(e.getMessage());
         }
         if (!b) {

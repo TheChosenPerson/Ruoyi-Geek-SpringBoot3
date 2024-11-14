@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ruoyi.common.config.RuoYiConfig;
+import com.ruoyi.common.core.domain.entity.FileEntity;
 import com.ruoyi.common.service.file.FileService;
 import com.ruoyi.common.utils.file.FileOperateUtils;
 import com.ruoyi.common.utils.file.FileUtils;
@@ -65,4 +66,16 @@ public class MinioFileService implements FileService {
         FileOperateUtils.deleteFileAndMd5ByFilePath(filePath);
         return true;
     }
+
+    /**
+     * 获取文件
+     * 
+     * @param filePath
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public FileEntity getFile(String filePath) throws Exception {
+        return MinioUtil.getFile(minioConfig.getPrimary(), filePath);
+    };
 }

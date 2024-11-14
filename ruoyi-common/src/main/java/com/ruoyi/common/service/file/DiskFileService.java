@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.core.domain.entity.FileEntity;
 import com.ruoyi.common.exception.file.FileNameLengthLimitExceededException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -105,11 +106,32 @@ public class DiskFileService implements FileService {
         if (file.isFile() && file.exists()) {
             String md5 = Md5Utils.getMd5(file);
             flag = file.delete();
-            if(flag) {
+            if (flag) {
                 FileOperateUtils.deleteFileAndMd5ByMd5(md5);
             }
         }
         return flag;
     }
 
+    /**
+     * 获取文件
+     * 
+     * @param filePath
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public FileEntity getFile(String filePath) throws Exception {
+        String localPath = RuoYiConfig.getProfile();
+        String downloadPath = localPath + StringUtils.substringAfter(filePath, Constants.RESOURCE_PREFIX);
+        File file = new File(downloadPath);
+        if (!file.exists()) {
+            throw new FileNotFoundException("未找到文件");
+        }
+        FileInputStream fileInputStream = new FileInputStream(file);
+        FileEntity fileEntity = new FileEntity();
+        fileEntity.setFileInputSteam(fileInputStream);
+        fileEntity.setByteCount(file.length());
+        return fileEntity;
+    };
 }
