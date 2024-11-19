@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.middleware.minio.exception.MinioClientErrorException;
 
 import io.minio.GetObjectArgs;
@@ -88,7 +89,7 @@ public class MinioBucket {
         MinioFileVO minioFileVO = new MinioFileVO();
 
         minioFileVO.setFileInputSteam(inputStream);
-        minioFileVO.setByteCount(inputStream.headers().byteCount());
+        minioFileVO.setByteCount(Convert.toLong(inputStream.headers().get("Content-Length"),null));
         minioFileVO.setFilePath(filePath);
         minioFileVO.setObject(inputStream.object());
         minioFileVO.setRegion(inputStream.region());
