@@ -44,6 +44,8 @@ INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, query,ro
 -- 按钮父菜单ID
 SELECT @parentId := LAST_INSERT_ID();
 
+select @payParentId := @parentId;
+
 -- 菜单 SQL
 insert into sys_menu (menu_name, parent_id, order_num, path, component, route_name,is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
 values('订单', @parentId, '1', 'order', 'pay/order/index', '',1, 0, 'C', '0', '0', 'pay:order:list', '#', 'admin', sysdate(), '', null, '订单菜单');
@@ -70,7 +72,7 @@ values('订单导出', @parentId, '5',  '#', '', '',1, 0, 'F', '0', '0', 'pay:or
 
 -- 菜单 SQL
 insert into sys_menu (menu_name, parent_id, order_num, path, component, route_name,is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-values('发票', '2024', '1', 'invoice', 'pay/invoice/index', '',1, 0, 'C', '0', '0', 'pay:invoice:list', '#', 'admin', sysdate(), '', null, '发票菜单');
+values('发票', @payParentId, '1', 'invoice', 'pay/invoice/index', '',1, 0, 'C', '0', '0', 'pay:invoice:list', '#', 'admin', sysdate(), '', null, '发票菜单');
 
 -- 按钮父菜单ID
 SELECT @parentId := LAST_INSERT_ID();
