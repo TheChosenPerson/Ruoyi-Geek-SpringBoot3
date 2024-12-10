@@ -5,7 +5,6 @@ import static com.ruoyi.common.utils.file.FileUtils.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -17,12 +16,10 @@ import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.entity.FileEntity;
 import com.ruoyi.common.exception.file.FileNameLengthLimitExceededException;
-import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileOperateUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.sign.Md5Utils;
-import com.ruoyi.common.utils.uuid.UUID;
 
 /**
  * 磁盘文件操作实现类
@@ -30,55 +27,21 @@ import com.ruoyi.common.utils.uuid.UUID;
 @Component("file:strategy:disk")
 public class DiskFileService implements FileService {
 
-    private static String defaultBaseDir = RuoYiConfig.getProfile();
-
-    public static void setDefaultBaseDir(String defaultBaseDir) {
-        DiskFileService.defaultBaseDir = defaultBaseDir;
-    }
-
-    public static String getDefaultBaseDir() {
-        return defaultBaseDir;
+    @Override
+    public String upload(String filePath, MultipartFile file) throws Exception {
+        return upload(RuoYiConfig.getProfile(), filePath, file);
     }
 
     @Override
-    public String upload(String filePath, MultipartFile file) throws Exception {
+    public String upload(String baseDir, String filePath, MultipartFile file) throws Exception {
         int fileNamelength = Objects.requireNonNull(file.getOriginalFilename()).length();
         if (fileNamelength > FileUtils.DEFAULT_FILE_NAME_LENGTH) {
             throw new FileNameLengthLimitExceededException(FileUtils.DEFAULT_FILE_NAME_LENGTH);
         }
-
-        // String fileName = extractFilename(file);
-
-        String absPath = getAbsoluteFile(filePath).getAbsolutePath();
+        String absPath = getAbsoluteFile(baseDir + File.separator + filePath).getAbsolutePath();
         file.transferTo(Paths.get(absPath));
         return getPathFileName(filePath);
-    }
 
-    @Override
-    public String upload(MultipartFile file, String name) throws Exception {
-        try {
-            return upload(getDefaultBaseDir(), file);
-        } catch (Exception e) {
-            throw new IOException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public String upload(MultipartFile file) throws Exception {
-        try {
-            String filePath = getDefaultBaseDir() + File.separator + DateUtils.dateTime() + File.separator
-                    + DateUtils.dateTimeNow() + UUID.fastUUID().toString().substring(0, 6)
-                    + "." + FileUtils.getExtension(file);
-            return upload(filePath, file);
-        } catch (Exception e) {
-            throw new IOException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public String upload(String baseDir, String fileName, MultipartFile file) throws Exception {
-        String filePath = RuoYiConfig.getProfile() + File.separator + baseDir + File.separator + fileName;
-        return upload(filePath, file);
     }
 
     @Override
@@ -88,7 +51,6 @@ public class DiskFileService implements FileService {
         // 数据库资源地址
         String downloadPath = localPath + StringUtils.substringAfter(filePath, Constants.RESOURCE_PREFIX);
         // 下载名称
-
         File file = new File(downloadPath);
         if (!file.exists()) {
             throw new FileNotFoundException("未找到文件");
@@ -113,13 +75,6 @@ public class DiskFileService implements FileService {
         return flag;
     }
 
-    /**
-     * 获取文件
-     * 
-     * @param filePath
-     * @return
-     * @throws Exception
-     */
     @Override
     public FileEntity getFile(String filePath) throws Exception {
         String localPath = RuoYiConfig.getProfile();

@@ -108,7 +108,7 @@ public class AliOssUtil {
      * @throws IOException 比如读写文件出错时
      */
     public static AliOssFileVO getFile(String filePath) throws Exception {
-        return getFile(null, filePath);
+        return getAliOssConfig().getMasterBucket().get(filePath);
     }
 
     /**
@@ -120,10 +120,8 @@ public class AliOssUtil {
      * @throws IOException 比如读写文件出错时
      */
     public static AliOssFileVO getFile(String client, String filePath) throws Exception {
-        AliOssBucket ossBucket = client == null ? getAliOssConfig().getMasterBucket()
-                : getAliOssConfig().getBucket(client);
-        String bucketName = client == null ? getAliOssConfig().getMasterBucketName()
-                : getAliOssConfig().getBucketName(client);
+        AliOssBucket ossBucket = getAliOssConfig().getBucket(client);
+        String bucketName = getAliOssConfig().getBucketName(client);
 
         if (bucketName == null) {
             throw new AliOssClientErrorException("参数 \"bucketName\" 为空指针");

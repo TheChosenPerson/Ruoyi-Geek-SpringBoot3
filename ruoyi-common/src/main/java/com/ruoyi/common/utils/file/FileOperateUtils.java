@@ -1,6 +1,5 @@
 package com.ruoyi.common.utils.file;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -33,8 +32,15 @@ public class FileOperateUtils {
     public static final long DEFAULT_MAX_SIZE = 50 * 1024 * 1024;
 
     /**
-     * 默认上传的地址
+     * 以默认配置进行文件上传
+     *
+     * @param file 上传的文件
+     * @return 文件路径
+     * @throws Exception
      */
+    public static final String upload(MultipartFile file) throws IOException {
+        return upload(file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
+    }
 
     /**
      * 以默认配置进行文件上传
@@ -43,14 +49,14 @@ public class FileOperateUtils {
      * @return 文件路径
      * @throws Exception
      */
-    public static final String upload(MultipartFile file) throws IOException {
+    public static final String upload(MultipartFile file, String[] allowedExtension) throws IOException {
         try {
             String md5 = Md5Utils.getMd5(file);
             String pathForMd5 = FileOperateUtils.getFilePathForMd5(md5);
             if (StringUtils.isNotEmpty(pathForMd5)) {
                 return pathForMd5;
             }
-            FileUtils.assertAllowed(file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
+            FileUtils.assertAllowed(file, allowedExtension);
             String pathFileName = fileService.upload(file);
             FileOperateUtils.saveFileAndMd5(pathFileName, md5);
             return pathFileName;
@@ -68,34 +74,74 @@ public class FileOperateUtils {
      * @return 文件名称
      * @throws IOException
      */
-    public static final String upload(String filePath, MultipartFile file, String[] allowedExtension) throws Exception {
-        String md5 = Md5Utils.getMd5(file);
-        String pathForMd5 = FileOperateUtils.getFilePathForMd5(md5);
-        if (StringUtils.isNotEmpty(pathForMd5)) {
-            return pathForMd5;
-        }
-        FileUtils.assertAllowed(file, allowedExtension);
-        fileService.upload(filePath, file);
-        FileOperateUtils.saveFileAndMd5(filePath, md5);
-        return filePath;
+    public static final String upload(String filePath, MultipartFile file) throws Exception {
+        return upload(filePath, file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
     }
 
     /**
      * 根据文件路径上传
      *
-     * @param baseDir          相对应用的基目录
+     * @param filePath         上传文件的路径
+     * @param file             上传的文件
+     * @param allowedExtension 允许的扩展名
+     * @return 文件名称
+     * @throws IOException
+     */
+    public static final String upload(String filePath, MultipartFile file, String[] allowedExtension)
+            throws IOException {
+        try {
+            String md5 = Md5Utils.getMd5(file);
+            String pathForMd5 = FileOperateUtils.getFilePathForMd5(md5);
+            if (StringUtils.isNotEmpty(pathForMd5)) {
+                return pathForMd5;
+            }
+            FileUtils.assertAllowed(file, allowedExtension);
+            fileService.upload(filePath, file);
+            FileOperateUtils.saveFileAndMd5(filePath, md5);
+            return filePath;
+        } catch (Exception e) {
+            throw new IOException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据文件路径上传
+     *
+     * @param baseDir          上传文件的根坐标
+     * @param file             上传的文件
+     * @param filePath         上传文件路径
+     * @param allowedExtension 允许的扩展名
+     * @return 文件名称
+     * @throws IOException
+     */
+    public static final String upload(String baseDir, String filePath, MultipartFile file)
+            throws IOException {
+        return upload(baseDir, filePath, file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
+    }
+
+    /**
+     * 根据文件路径上传
+     *
+     * @param baseDir          上传文件的根坐标
      * @param file             上传的文件
      * @param fileName         上传文件名
      * @param allowedExtension 允许的扩展名
      * @return 文件名称
      * @throws IOException
      */
-    public static final String upload(String baseDir, String fileName, MultipartFile file,
+    public static final String upload(String baseDir, String filePath, MultipartFile file,
             String[] allowedExtension)
             throws IOException {
         try {
-            String filePath = baseDir + File.separator + fileName;
-            return upload(filePath, file, allowedExtension);
+            String md5 = Md5Utils.getMd5(file);
+            String pathForMd5 = FileOperateUtils.getFilePathForMd5(md5);
+            if (StringUtils.isNotEmpty(pathForMd5)) {
+                return pathForMd5;
+            }
+            FileUtils.assertAllowed(file, allowedExtension);
+            fileService.upload(baseDir, filePath, file);
+            FileOperateUtils.saveFileAndMd5(filePath, md5);
+            return filePath;
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);
         }
@@ -148,7 +194,7 @@ public class FileOperateUtils {
      * 根据md5获取文件的路径
      *
      * @param md5 文件的md5
-     * @return
+     * @return 文件路径
      */
     public static String getFilePathForMd5(String md5) {
         return CacheUtils.get(CacheConstants.FILE_MD5_PATH_KEY, md5, String.class);
@@ -166,7 +212,7 @@ public class FileOperateUtils {
     }
 
     /**
-     * 删除文件的md5
+     * 根据md5删除文件的缓存信息
      *
      * @param md5 文件的md5
      */
@@ -178,6 +224,11 @@ public class FileOperateUtils {
         }
     }
 
+    /**
+     * 根据文件路径删除文件的缓存信息
+     *
+     * @param filePath 文件的路径
+     */
     public static void deleteFileAndMd5ByFilePath(String filePath) {
         String md5ByFilePath = CacheUtils.get(CacheConstants.FILE_PATH_MD5_KEY, filePath, String.class);
         if (StringUtils.isNotEmpty(md5ByFilePath)) {

@@ -1,5 +1,24 @@
 package com.ruoyi.common.utils.file;
 
+import static com.ruoyi.common.utils.file.FileOperateUtils.*;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.exception.file.FileSizeLimitExceededException;
@@ -9,21 +28,9 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.common.utils.uuid.Seq;
 import com.ruoyi.common.utils.uuid.UUID;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.*;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
-
-import static com.ruoyi.common.utils.file.FileOperateUtils.DEFAULT_MAX_SIZE;
 
 /**
  * 文件处理工具类
@@ -277,7 +284,6 @@ public class FileUtils {
 
     public static final File getAbsoluteFile(String filePath) throws IOException {
         File desc = new File(filePath);
-
         if (!desc.exists()) {
             if (!desc.getParentFile().exists()) {
                 desc.getParentFile().mkdirs();
