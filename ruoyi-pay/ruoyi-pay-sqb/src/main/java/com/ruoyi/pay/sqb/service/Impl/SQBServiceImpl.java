@@ -84,7 +84,7 @@ public class SQBServiceImpl {
             String result = httpPost(url, params.toString(), sign, sqbConfig.getVendorSn());
             JSONObject retObj = JSON.parseObject(result);
             String resCode = retObj.get("result_code").toString();
-            if (!resCode.equals("200"))
+            if (!"200".equals(resCode))
                 return null;
             String responseStr = retObj.get("biz_response").toString();
             JSONObject terminal = JSON.parseObject(responseStr);
@@ -113,7 +113,7 @@ public class SQBServiceImpl {
             String result = httpPost(url, params.toString(), sign, sqbConfig.getTerminalSn());
             JSONObject retObj = JSON.parseObject(result);
             String resCode = retObj.get("result_code").toString();
-            if (!resCode.equals("200"))
+            if (!"200".equals(resCode))
                 return null;
             String responseStr = retObj.get("biz_response").toString();
             JSONObject terminal = JSON.parseObject(responseStr);
@@ -166,7 +166,7 @@ public class SQBServiceImpl {
             String result = httpPost(url, params, sign, sqbConfig.getTerminalSn());
             JSONObject retObj = JSON.parseObject(result);
             String resCode = retObj.get("result_code").toString();
-            if (!resCode.equals("200"))
+            if (!"200".equals(resCode))
                 return null;
             String responseStr = retObj.get("biz_response").toString();
             return JSONObject.parseObject(responseStr);

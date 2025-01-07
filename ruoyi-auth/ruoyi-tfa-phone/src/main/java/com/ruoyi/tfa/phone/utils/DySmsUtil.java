@@ -67,7 +67,7 @@ public class DySmsUtil {
         try {
             // 复制代码运行请自行打印 API 的返回值
             SendSmsResponse sendSmsResponse = client.sendSmsWithOptions(sendSmsRequest, new RuntimeOptions());
-            if (sendSmsResponse.getBody().getCode().equals("OK")) {
+            if ("OK".equals(sendSmsResponse.getBody().getCode())) {
                 logger.info("短信接口返回的数据--- {}", sendSmsResponse.getBody().getMessage());
             } else {
                 logger.error("短信接口返回的数据--- {}", sendSmsResponse.getBody().getMessage());
