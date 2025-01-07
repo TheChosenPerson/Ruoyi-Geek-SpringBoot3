@@ -26,7 +26,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 public class SwaggerConfig {
 
 	@Bean
-	public OpenAPI springShopOpenAPI() {
+	public OpenAPI springShopOpenApi() {
 		Schema<?> codeSchema = new IntegerSchema().example(HttpStatus.SUCCESS); // 示例状态码
 		Schema<?> msgSchema = new StringSchema().example("操作成功"); // 示例消息
 		ObjectSchema dataSchema = new ObjectSchema(); // 数据可以是任意类型，这里简单定义为ObjectSchema

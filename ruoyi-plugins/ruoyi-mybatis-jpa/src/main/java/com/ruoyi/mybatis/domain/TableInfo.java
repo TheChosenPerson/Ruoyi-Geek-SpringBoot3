@@ -33,8 +33,9 @@ public class TableInfo {
 
     public TableInfo(Class<?> cls) {
         this.table = AnnotationUtils.findAnnotation(cls, Table.class);
-        if (this.table == null)
+        if (this.table == null) {
             throw new RuntimeException("error , not find tableName");
+        }
         this.tableName = this.table.name();
         this.enableTableMap = AnnotationUtils.findAnnotation(cls, EnableTableMap.class);
 
@@ -118,10 +119,11 @@ public class TableInfo {
     }
 
     public String getTableNameFrom() {
-        if (this.isEnbleMap())
+        if (this.isEnbleMap()){
             return this.tableName + " " + this.enableTableMap.name();
-        else
+        }else{
             return this.tableName;
+        }
     }
 
     public List<String> getQueryColumnNames() {

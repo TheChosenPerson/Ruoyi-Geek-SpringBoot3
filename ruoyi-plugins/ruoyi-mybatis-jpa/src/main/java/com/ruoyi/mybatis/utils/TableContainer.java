@@ -22,8 +22,9 @@ public class TableContainer {
 
     public static <T extends BaseEntity> TableInfo getTableInfo(Class<?> clazz) {
         TableInfo tableInfo = tableInfoMap.get(clazz);
-        if (tableInfo == null)
+        if (tableInfo == null) {
             tableInfo = new TableInfo(clazz);
+        }
         return tableInfo;
     }
 
