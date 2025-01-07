@@ -1,12 +1,12 @@
 package com.ruoyi.auth.common.utils;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class RandomCodeUtil {
 
     public static String randomString(String characters, int length) {
         StringBuilder result = new StringBuilder();
-        Random random = new Random();
+        SecureRandom  random = new SecureRandom();
 
         for (int i = 0; i < length; i++) {
             int index = random.nextInt(characters.length());

@@ -1,6 +1,7 @@
 package com.ruoyi.framework.config;
 
-import java.util.Random;
+import java.security.SecureRandom;
+
 import com.google.code.kaptcha.text.impl.DefaultTextCreator;
 
 /**
@@ -16,7 +17,7 @@ public class KaptchaTextCreator extends DefaultTextCreator
     public String getText()
     {
         Integer result = 0;
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         int x = random.nextInt(10);
         int y = random.nextInt(10);
         StringBuilder suChinese = new StringBuilder();
