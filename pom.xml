@@ -38,6 +38,7 @@
         <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
         <!-- druid 的 xa暂时不支持 mysql 9.0.0+ 连接速度:8.3.0>8.2.0>8.4.0 -->
         <mysql.version>8.3.0</mysql.version>
+        <postgresql.version>42.7.4</postgresql.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jaxb.version>4.0.5</jaxb.version>
         <springdoc.version>2.1.0</springdoc.version>
@@ -89,6 +90,14 @@
                 <groupId>com.mysql</groupId>
                 <artifactId>mysql-connector-j</artifactId>
                 <version>${mysql.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- postgresql驱动包 -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
                 <scope>runtime</scope>
             </dependency>
 

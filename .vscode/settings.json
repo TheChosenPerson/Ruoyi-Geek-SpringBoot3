@@ -35,6 +35,16 @@
             "database": "ry",
             "username": "root",
             "password": "123456"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "postgres",
+            "database": "ry",
+            "username": "postgres",
+            "password": "123456"
         }
     ],
 }
