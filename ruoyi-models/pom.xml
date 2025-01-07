@@ -10,10 +10,6 @@
 
     <artifactId>ruoyi-models</artifactId>
 
-    <properties>
-        <ruoyi.version>3.8.8.3.1</ruoyi.version>
-    </properties>
-
     <description>
         中间件
     </description>

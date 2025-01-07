@@ -4,8 +4,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +15,6 @@ import com.ruoyi.framework.config.DynamicDataSourceProperties;
 @Component
 public class DataSourceCreate implements CreateDataSource {
 
-    private static final Logger logger = LoggerFactory.getLogger(DataSourceCreate.class);
     @Autowired
     private DynamicDataSourceProperties properties;
 
