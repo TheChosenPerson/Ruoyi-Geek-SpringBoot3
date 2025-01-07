@@ -2,6 +2,7 @@ package com.ruoyi.common.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.springframework.lang.Nullable;
 
 /**
@@ -11,7 +12,22 @@ import org.springframework.lang.Nullable;
  */
 public enum HttpMethod
 {
-    GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE;
+    /** GET 请求 */
+    GET, 
+    /** POST 请求 */
+    HEAD, 
+    /** HEAD 请求 */
+    POST, 
+    /** PUT 请求 */
+    PUT, 
+    /** PATCH 请求 */
+    PATCH, 
+    /** DELETE 请求 */
+    DELETE, 
+    /** OPTIONS 请求 */
+    OPTIONS, 
+    /** TRACE 请求 */
+    TRACE;
 
     private static final Map<String, HttpMethod> mappings = new HashMap<>(16);
 

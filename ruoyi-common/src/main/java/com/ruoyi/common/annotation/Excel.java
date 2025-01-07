@@ -18,8 +18,7 @@ import com.ruoyi.common.utils.poi.ExcelHandlerAdapter;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Excel
-{
+public @interface Excel {
     /**
      * 导出时在excel中排序
      */
@@ -86,7 +85,7 @@ public @interface Excel
     public String prompt() default "";
 
     /**
-     * 是否允许内容换行 
+     * 是否允许内容换行
      */
     public boolean wrapText() default false;
 
@@ -165,34 +164,42 @@ public @interface Excel
      */
     Type type() default Type.ALL;
 
-    public enum Type
-    {
-        ALL(0), EXPORT(1), IMPORT(2);
+    public enum Type {
+        /** 导出或导入 */
+        ALL(0),
+        /** 仅导出 */
+        EXPORT(1),
+        /** 仅导入 */
+        IMPORT(2);
+
         private final int value;
 
-        Type(int value)
-        {
+        Type(int value) {
             this.value = value;
         }
 
-        public int value()
-        {
+        public int value() {
             return this.value;
         }
     }
 
-    public enum ColumnType
-    {
-        NUMERIC(0), STRING(1), IMAGE(2), TEXT(3);
+    public enum ColumnType {
+        /** 数字 */
+        NUMERIC(0), 
+        /** 字符串 */
+        STRING(1), 
+        /** 图片 */
+        IMAGE(2), 
+        /** 文本 */
+        TEXT(3);
+
         private final int value;
 
-        ColumnType(int value)
-        {
+        ColumnType(int value) {
             this.value = value;
         }
 
-        public int value()
-        {
+        public int value() {
             return this.value;
         }
     }

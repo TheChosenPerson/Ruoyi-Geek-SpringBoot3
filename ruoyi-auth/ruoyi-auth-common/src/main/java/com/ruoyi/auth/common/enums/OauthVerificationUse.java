@@ -2,11 +2,17 @@ package com.ruoyi.auth.common.enums;
 
 public enum OauthVerificationUse {
 
+    /** 用于登录 */
     LOGIN("登录", "login"),
+    /** 用于注册 */
     REGISTER("注册", "register"),
+    /** 用于禁用 */
     DISABLE("禁用", "disable"),
+    /** 用于重置信息 */
     RESET("重置", "reset"),
+    /** 用于绑定信息 */
     BIND("绑定", "bind"),
+    /** 其他用途 */
     OTHER("其他", "other");
 
     private String name;
