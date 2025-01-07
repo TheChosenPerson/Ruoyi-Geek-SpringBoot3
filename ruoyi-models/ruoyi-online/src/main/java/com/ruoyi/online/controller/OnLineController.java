@@ -73,8 +73,9 @@ public class OnLineController extends BaseController {
     }
 
     public Boolean checkPermission(String permissionType, String permissionValue) {
-        if (permissionType == null)
+        if (permissionType == null) {
             return true;
+        }
         return switch (permissionType) {
             case "hasPermi" -> permissionService.hasPermi(permissionValue);
             case "lacksPermi" -> permissionService.lacksPermi(permissionValue);
@@ -124,16 +125,15 @@ public class OnLineController extends BaseController {
             return AjaxResult.error(500, "系统错误，在线接口重复");
         } else {
             OnlineMb onlineMb = selectOnlineMbList.get(0);
-            if (!checkPermission(onlineMb.getPermissionType(), onlineMb.getPermissionValue()))
+            if (!checkPermission(onlineMb.getPermissionType(), onlineMb.getPermissionValue())) {
                 return AjaxResult.error(403, "没有权限，请联系管理员授权");
-
+            }
             if (onlineMb.getDeptId() != null && onlineMb.getDeptId().equals("1")) {
                 object.put("deptId", SecurityUtils.getDeptId());
             }
             if (onlineMb.getUserId() != null && onlineMb.getUserId().equals("1")) {
                 object.put("userId", SecurityUtils.getUserId());
             }
-
             return processingMapper(onlineMb.getSql(), onlineMb.getActuator(), object);
         }
     }

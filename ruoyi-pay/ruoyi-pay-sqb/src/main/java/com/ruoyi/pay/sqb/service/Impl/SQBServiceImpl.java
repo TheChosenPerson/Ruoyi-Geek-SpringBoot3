@@ -84,12 +84,14 @@ public class SQBServiceImpl {
             String result = httpPost(url, params.toString(), sign, sqbConfig.getVendorSn());
             JSONObject retObj = JSON.parseObject(result);
             String resCode = retObj.get("result_code").toString();
-            if (!"200".equals(resCode))
+            if (!"200".equals(resCode)) {
                 return null;
+            }
             String responseStr = retObj.get("biz_response").toString();
             JSONObject terminal = JSON.parseObject(responseStr);
-            if (terminal.get("terminal_sn") == null || terminal.get("terminal_key") == null)
+            if (terminal.get("terminal_sn") == null || terminal.get("terminal_key") == null) {
                 return null;
+            }
             return terminal;
         } catch (Exception e) {
             return null;
@@ -113,12 +115,14 @@ public class SQBServiceImpl {
             String result = httpPost(url, params.toString(), sign, sqbConfig.getTerminalSn());
             JSONObject retObj = JSON.parseObject(result);
             String resCode = retObj.get("result_code").toString();
-            if (!"200".equals(resCode))
+            if (!"200".equals(resCode)){
                 return null;
+            }
             String responseStr = retObj.get("biz_response").toString();
             JSONObject terminal = JSON.parseObject(responseStr);
-            if (terminal.get("terminal_sn") == null || terminal.get("terminal_key") == null)
+            if (terminal.get("terminal_sn") == null || terminal.get("terminal_key") == null){
                 return null;
+            }
             return terminal;
         } catch (Exception e) {
             return null;
@@ -166,8 +170,9 @@ public class SQBServiceImpl {
             String result = httpPost(url, params, sign, sqbConfig.getTerminalSn());
             JSONObject retObj = JSON.parseObject(result);
             String resCode = retObj.get("result_code").toString();
-            if (!"200".equals(resCode))
+            if (!"200".equals(resCode)){
                 return null;
+            }
             String responseStr = retObj.get("biz_response").toString();
             return JSONObject.parseObject(responseStr);
         } catch (Exception e) {

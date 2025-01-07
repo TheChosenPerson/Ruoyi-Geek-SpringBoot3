@@ -33,7 +33,7 @@ public class MailServiceImpl implements IMailService {
     private TokenService tokenService;
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
-    
+
     private static final Logger log = LoggerFactory.getLogger(MailServiceImpl.class);
 
     @Override
@@ -54,12 +54,14 @@ public class MailServiceImpl implements IMailService {
 
     @Override
     public boolean checkCode(String email, String code, OauthVerificationUse use) {
-        if (StringUtils.isEmpty(code))
+        if (StringUtils.isEmpty(code)) {
             return false;
+        }
         String cachedCode = CacheUtils.get(CacheConstants.EMAIL_CODES, use.getValue() + email, String.class); // 从缓存中获取验证码
         boolean isValid = code.equals(cachedCode);
-        if (isValid)
+        if (isValid) {
             CacheUtils.remove(CacheConstants.EMAIL_CODES, use.getValue() + email);
+        }
         return isValid;
     }
 

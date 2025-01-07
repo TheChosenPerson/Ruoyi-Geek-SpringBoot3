@@ -64,12 +64,14 @@ public class DySmsServiceImpl implements DySmsService {
 
     @Override
     public boolean checkCode(String phone, String code, OauthVerificationUse use) {
-        if (StringUtils.isEmpty(code))
+        if (StringUtils.isEmpty(code)) {
             return false;
+        }
         String cachedCode = CacheUtils.get(CacheConstants.PHONE_CODES, use.getValue() + phone, String.class); // 从缓存中获取验证码
         boolean isValid = code.equals(cachedCode);
-        if (isValid)
+        if (isValid) {
             CacheUtils.remove(CacheConstants.PHONE_CODES, use.getValue() + phone);
+        }
         return isValid;
     }
 
