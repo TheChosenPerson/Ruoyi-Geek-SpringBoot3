@@ -13,7 +13,7 @@
     <properties>
         <justauth.version>1.16.6</justauth.version>
         <alipay.version>3.7.4.ALL</alipay.version>
-        <dysmsapi.version>2.0.24</dysmsapi.version>
+        <dysmsapi.version>3.1.1</dysmsapi.version>
     </properties>
 
     <description>
