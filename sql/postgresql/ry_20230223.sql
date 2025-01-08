@@ -224,8 +224,8 @@ create table sys_menu (
   component         varchar(255)    default null,
   query             varchar(255)    default null,
   route_name        varchar(50)     default '',
-  is_frame          smallint        default 1,
-  is_cache          smallint        default 0,
+  is_frame          char(1)        default '1',
+  is_cache          char(1)        default '0',
   menu_type         char(1)         default '',
   visible           char(1)         default '0',
   status            char(1)         default '0',
@@ -622,22 +622,22 @@ drop table if exists sys_oper_log cascade;
 
 create table sys_oper_log (
   oper_id           bigserial       not null                   primary key,
-  title             varchar(50)     default ''                 not null,
-  business_type     smallint        default 0                  not null,
-  method            varchar(100)    default ''                 not null,
-  request_method    varchar(10)     default ''                 not null,
-  operator_type     smallint        default 0                  not null,
-  oper_name         varchar(50)     default ''                 not null,
-  dept_name         varchar(50)     default ''                 not null,
-  oper_url          varchar(255)    default ''                 not null,
-  oper_ip           varchar(128)    default ''                 not null,
-  oper_location     varchar(255)    default ''                 not null,
-  oper_param        varchar(2000)   default ''                 not null,
-  json_result       varchar(2000)   default ''                 not null,
-  status            smallint        default 0                  not null,
-  error_msg         varchar(2000)   default ''                 not null,
-  oper_time         timestamp       default current_timestamp  not null,
-  cost_time         bigint          default 0                  not null
+  title             varchar(50)     default ''                 ,
+  business_type     smallint        default 0                  ,
+  method            varchar(100)    default ''                 ,
+  request_method    varchar(10)     default ''                 ,
+  operator_type     smallint        default 0                  ,
+  oper_name         varchar(50)     default ''                 ,
+  dept_name         varchar(50)     default ''                 ,
+  oper_url          varchar(255)    default ''                 ,
+  oper_ip           varchar(128)    default ''                 ,
+  oper_location     varchar(255)    default ''                 ,
+  oper_param        varchar(2000)   default ''                 ,
+  json_result       varchar(2000)   default ''                 ,
+  status            smallint        default 0                  ,
+  error_msg         varchar(2000)   default ''                 ,
+  oper_time         timestamp       default current_timestamp  ,
+  cost_time         bigint          default 0                  
 );
 
 create index idx_sys_oper_log_bt on sys_oper_log (business_type);
@@ -1007,3 +1007,6 @@ insert into sys_notice (notice_title, notice_type, notice_content, status, creat
 values('温馨提醒：2018-07-01 若依新版本发布啦', '2', decode('新版本内容', 'escape'), '0', 'admin', current_timestamp, '', null, '管理员');
 insert into sys_notice (notice_title, notice_type, notice_content, status, create_by, create_time, update_by, update_time, remark)
 values('维护通知：2018-07-01 若依系统凌晨维护', '1', decode('维护内容', 'escape'), '0', 'admin', current_timestamp, '', null, '管理员');
+
+
+SELECT setval('sys_menu_menu_id_seq', max(menu_id)) FROM sys_menu WHERE menu_id < 100;
