@@ -6,7 +6,7 @@ CREATE TABLE online_mb (
     tag_id varchar(255) NULL COMMENT '标签id',
     parameter_type varchar(255) NULL COMMENT '参数类型',
     result_map varchar(255) NULL COMMENT '结果类型',
-    `sql` varchar(255) NULL COMMENT 'sql语句',
+    sql_text varchar(255) NULL COMMENT 'sql语句',
     path varchar(255) NULL COMMENT '请求路径',
     method varchar(255) NULL COMMENT '请求方式',
     result_type varchar(255) NULL COMMENT '响应类型',

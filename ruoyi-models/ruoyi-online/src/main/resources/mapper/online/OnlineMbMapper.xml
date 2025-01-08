@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="tagId"    column="tag_id"    />
         <result property="parameterType"    column="parameter_type"    />
         <result property="resultMap"    column="result_map"    />
-        <result property="sql"    column="sql"    />
+        <result property="sqlText"    column="sql_text"    />
         <result property="path"    column="path"    />
         <result property="method"    column="method"    />
         <result property="resultType"    column="result_type"    />
@@ -22,19 +22,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectOnlineMbVo">
-        select mb_id, tag, tag_id, parameter_type, result_map, `sql`, `path`, method, result_type, actuator,user_id,dept_id,permission_type,permission_value from online_mb
+        select mb_id, tag, tag_id, parameter_type, result_map, sql_text, online_mb.path, method, result_type, actuator,user_id,dept_id,permission_type,permission_value from online_mb
     </sql>
 
     <select id="selectOnlineMbList" parameterType="OnlineMb" resultMap="OnlineMbResult">
         <include refid="selectOnlineMbVo"/>
         <where>  
-            online_mb.del_flag != 1
+            online_mb.del_flag != '1'
             <if test="tag != null  and tag != ''"> and tag = #{tag}</if>
             <if test="tagId != null  and tagId != ''"> and tag_id = #{tagId}</if>
             <if test="parameterType != null  and parameterType != ''"> and parameter_type = #{parameterType}</if>
             <if test="resultMap != null  and resultMap != ''"> and result_map = #{resultMap}</if>
-            <if test="sql != null  and sql != ''"> and `sql` = #{sql}</if>
-            <if test="path != null  and path != ''"> and `path` = #{path}</if>
+            <if test="sqlText != null  and sqlText != ''"> and sql_text = #{sqlText}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
             <if test="method != null  and method != ''"> and method = #{method}</if>
             <if test="resultType != null  and resultType != ''"> and result_type = #{resultType}</if>
             <if test="actuator != null  and actuator != ''"> and actuator = #{actuator}</if>
@@ -47,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectOnlineMbByMbId" parameterType="Long" resultMap="OnlineMbResult">
         <include refid="selectOnlineMbVo"/>
-        where online_mb.mb_id = #{mbId}  and online_mb.del_flag != 1
+        where online_mb.mb_id = #{mbId}  and online_mb.del_flag != '1'
     </select>
         
     <insert id="insertOnlineMb" parameterType="OnlineMb">
@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="tagId != null">tag_id,</if>
             <if test="parameterType != null">parameter_type,</if>
             <if test="resultMap != null">result_map,</if>
-            <if test="sql != null">`sql`,</if>
+            <if test="sqlText != null">sql_text,</if>
             <if test="path != null and path != ''">path,</if>
             <if test="method != null and method != ''">method,</if>
             <if test="resultType != null">result_type,</if>
@@ -74,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="tagId != null">#{tagId},</if>
             <if test="parameterType != null">#{parameterType},</if>
             <if test="resultMap != null">#{resultMap},</if>
-            <if test="sql != null">#{sql},</if>
+            <if test="sqlText != null">#{sqlText},</if>
             <if test="path != null and path != ''">#{path},</if>
             <if test="method != null and method != ''">#{method},</if>
             <if test="resultType != null">#{resultType},</if>
@@ -93,8 +93,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="tagId != null">tag_id = #{tagId},</if>
             <if test="parameterType != null">parameter_type = #{parameterType},</if>
             <if test="resultMap != null">result_map = #{result_map},</if>
-            <if test="sql != null">`sql` = #{sql},</if>
-            <if test="path != null and path != ''">`path` = #{path},</if>
+            <if test="sqlText != null">sql_text = #{sqlText},</if>
+            <if test="path != null and path != ''">path = #{path},</if>
             <if test="method != null and method != ''">method = #{method},</if>
             <if test="resultType != null">result_type = #{resultType},</if>
             <if test="actuator != null and actuator != ''">actuator = #{actuator},</if>
@@ -103,15 +103,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="permissionType != null and permissionType != ''">permission_type = #{permissionType},</if>
             <if test="permissionValue != null and permissionValue != ''">permission_value = #{permissionValue},</if>
         </trim>
-        where online_mb.mb_id = #{mbId} and online_mb.del_flag != 1
+        where online_mb.mb_id = #{mbId} and online_mb.del_flag != '1'
     </update>
 
     <delete id="deleteOnlineMbByMbId" parameterType="Long">
-        update online_mb set del_flag = 1 where mb_id = #{mbId}
+        update online_mb set del_flag = '1' where mb_id = #{mbId}
     </delete>
 
     <delete id="deleteOnlineMbByMbIds" parameterType="String">
-        update online_mb set del_flag = 1 where mb_id in 
+        update online_mb set del_flag = '1' where mb_id in 
         <foreach item="mbId" collection="array" open="(" separator="," close=")">
             #{mbId}
         </foreach>

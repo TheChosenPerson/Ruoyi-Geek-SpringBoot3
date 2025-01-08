@@ -134,7 +134,7 @@ public class OnLineController extends BaseController {
             if (onlineMb.getUserId() != null && onlineMb.getUserId().equals("1")) {
                 object.put("userId", SecurityUtils.getUserId());
             }
-            return processingMapper(onlineMb.getSql(), onlineMb.getActuator(), object);
+            return processingMapper(onlineMb.getSqlText(), onlineMb.getActuator(), object);
         }
     }
 

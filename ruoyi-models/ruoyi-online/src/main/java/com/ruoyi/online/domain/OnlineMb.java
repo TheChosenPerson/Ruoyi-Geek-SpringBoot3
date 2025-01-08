@@ -45,7 +45,7 @@ public class OnlineMb extends BaseEntity {
     /** sql语句 */
     @Schema(title = "sql语句")
     @Excel(name = "sql语句")
-    private String sql;
+    private String sqlText;
 
     /** 请求路径 */
     @Schema(title = "请求路径")
@@ -159,12 +159,12 @@ public class OnlineMb extends BaseEntity {
         return resultMap;
     }
 
-    public void setSql(String sql) {
-        this.sql = sql;
+    public void setSqlText(String sqlText) {
+        this.sqlText = sqlText;
     }
 
-    public String getSql() {
-        return sql;
+    public String getSqlText() {
+        return sqlText;
     }
 
     public void setPath(String path) {
@@ -207,7 +207,7 @@ public class OnlineMb extends BaseEntity {
                 .append("tagId", getTagId())
                 .append("parameterType", getParameterType())
                 .append("resultMap", getResultMap())
-                .append("sql", getSql())
+                .append("sqlText", getSqlText())
                 .append("path", getPath())
                 .append("method", getMethod())
                 .append("resultType", getResultType())
