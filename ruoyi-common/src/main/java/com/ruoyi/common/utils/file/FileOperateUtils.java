@@ -29,7 +29,7 @@ public class FileOperateUtils {
     /**
      * 默认大小 50M
      */
-    public static final long DEFAULT_MAX_SIZE = 50 * 1024 * 1024;
+    public static final long DEFAULT_MAX_SIZE = Long.valueOf(SpringUtils.getRequiredProperty("ruoyi.fileMaxSize")) * 1024 * 1024;
 
     /**
      * 以默认配置进行文件上传
