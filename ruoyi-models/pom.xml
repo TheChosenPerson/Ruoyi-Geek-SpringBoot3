@@ -16,28 +16,28 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- 定时任务-->
+            <!-- 定时任务模块 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-quartz</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- 代码生成-->
+            <!-- 代码生成模块 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-generator</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- 代码生成-->
+            <!-- 在线开发模块 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-online</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- 代码生成-->
+            <!-- 模块启动器 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-models-starter</artifactId>
@@ -64,7 +64,6 @@
                 <artifactId>ruoyi-tfa-email</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-
 
         </dependencies>
     </dependencyManagement>

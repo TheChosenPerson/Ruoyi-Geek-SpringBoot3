@@ -66,17 +66,19 @@ COMMENT ON COLUMN pay_invoice.remark IS '备注';
 
 SELECT setval('sys_menu_menu_id_seq', max(menu_id)) FROM sys_menu WHERE menu_id < 100;
 -- 插入支付管理菜单
-  INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, query, route_name, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-  VALUES ('支付管理', 0, 4, 'pay', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'money', 'admin', CURRENT_TIMESTAMP, '', NULL, '');
+INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, query, route_name, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES ('支付管理', 0, 4, 'pay', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'money', 'admin', CURRENT_TIMESTAMP, '', NULL, '');
 DO $$
 DECLARE
     parentId INTEGER;
+    payParentId INTEGER;
 BEGIN
     SELECT LASTVAL() INTO parentId;
+    SELECT LASTVAL() INTO payParentId;
     
     -- 插入订单菜单
     INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, route_name, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-    VALUES ('订单', parentId, '1', 'order', 'pay/order/index', '', 1, 0, 'C', '0', '0', 'pay:order:list', '#', 'admin', CURRENT_TIMESTAMP, '', NULL, '订单菜单')
+    VALUES ('订单', payParentId, '1', 'order', 'pay/order/index', '', 1, 0, 'C', '0', '0', 'pay:order:list', '#', 'admin', CURRENT_TIMESTAMP, '', NULL, '订单菜单')
     RETURNING menu_id INTO parentId;
 
     -- 插入订单按钮
@@ -102,7 +104,7 @@ BEGIN
 
     -- 插入发票按钮
     INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, route_name, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-    VALUES ('发票查询', parentId, '1', '#', '', '', 1, 0, 'F', '0', '0', 'pay:invoice:query', '#', 'admin', CURRENT_TIMESTAMP, '', NULL, '');
+    VALUES ('发票查询', payParentId, '1', '#', '', '', 1, 0, 'F', '0', '0', 'pay:invoice:query', '#', 'admin', CURRENT_TIMESTAMP, '', NULL, '');
 
     INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, route_name, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
     VALUES ('发票新增', parentId, '2', '#', '', '', 1, 0, 'F', '0', '0', 'pay:invoice:add', '#', 'admin', CURRENT_TIMESTAMP, '', NULL, '');

@@ -16,28 +16,28 @@
 
     <dependencies>
 
-        <!-- 通用工具-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common</artifactId>
-        </dependency>
-
-        <!-- 定时任务-->
+        <!-- 定时任务模块 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-quartz</artifactId>
         </dependency>
 
-        <!-- 代码生成-->
+        <!-- 代码生成模块 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
-        <!-- 代码生成-->
+        <!-- 在线开发模块 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-online</artifactId>
+        </dependency>
+
+        <!-- 消息模块 -->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-message</artifactId>
         </dependency>
 
     </dependencies>
