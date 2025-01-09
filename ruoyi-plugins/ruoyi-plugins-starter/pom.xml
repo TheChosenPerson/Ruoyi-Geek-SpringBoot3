@@ -63,10 +63,10 @@
         </dependency>
 
         <!-- atomikos-->
-        <dependency>
+        <!-- <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-atomikos</artifactId>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
 </project>

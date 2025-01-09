@@ -1,5 +1,6 @@
 package com.ruoyi.framework.config;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 
@@ -18,6 +19,8 @@ public class DynamicDataSourceProperties {
     private Map<String, DataSourceProperties> datasource;
     private String primary;
 
+
+
     public Properties build(DataSourceProperties dataSourceProperties) {
         Properties prop = new Properties();
         DruidProperties druidProperties = SpringUtils.getBean(DruidProperties.class);
@@ -28,13 +31,18 @@ public class DynamicDataSourceProperties {
         prop.setProperty("minIdle", String.valueOf(druidProperties.getMinIdle()));
         prop.setProperty("maxActive", String.valueOf(druidProperties.getMaxActive()));
         prop.setProperty("maxWait", String.valueOf(druidProperties.getMaxWait()));
-        prop.setProperty("timeBetweenEvictionRunsMillis", String.valueOf(druidProperties.getTimeBetweenEvictionRunsMillis()));
+        prop.setProperty("timeBetweenEvictionRunsMillis",
+                String.valueOf(druidProperties.getTimeBetweenEvictionRunsMillis()));
         prop.setProperty("minEvictableIdleTimeMillis", String.valueOf(druidProperties.getMinEvictableIdleTimeMillis()));
         prop.setProperty("maxEvictableIdleTimeMillis", String.valueOf(druidProperties.getMaxEvictableIdleTimeMillis()));
         prop.setProperty("validationQuery", druidProperties.getValidationQuery());
         prop.setProperty("testWhileIdle", String.valueOf(druidProperties.isTestWhileIdle()));
         prop.setProperty("testOnBorrow", String.valueOf(druidProperties.isTestOnBorrow()));
         prop.setProperty("testOnReturn", String.valueOf(druidProperties.isTestOnReturn()));
+        // 添加过滤器配置
+        prop.setProperty("filters", "stat,wall");
+        prop.setProperty("connectionProperties", "druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000");
+        prop.setProperty("proxyFilters", ""); // 确保不会覆盖默认的过滤器
         return prop;
     }
 
@@ -75,6 +83,30 @@ public class DynamicDataSourceProperties {
         }
         if (prop.getProperty("testOnReturn") != null) {
             dataSource.setTestOnReturn(Boolean.parseBoolean(prop.getProperty("testOnReturn")));
+        }
+        // 添加监控配置
+        if (prop.getProperty("filters") != null) {
+            try {
+                dataSource.setFilters(prop.getProperty("filters"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (prop.getProperty("connectionProperties") != null) {
+            dataSource.setConnectionProperties(prop.getProperty("connectionProperties"));
+        }
+        // 确保过滤器配置生效
+        try {
+            if (prop.getProperty("filters") != null) {
+                dataSource.setFilters(prop.getProperty("filters"));
+            }
+            if (prop.getProperty("connectionProperties") != null) {
+                dataSource.setConnectionProperties(prop.getProperty("connectionProperties"));
+            }
+            // 启用防火墙功能
+            dataSource.setProxyFilters(new ArrayList<>());
+        } catch (Exception e) {
+            throw new RuntimeException("配置Druid过滤器失败", e);
         }
     }
 

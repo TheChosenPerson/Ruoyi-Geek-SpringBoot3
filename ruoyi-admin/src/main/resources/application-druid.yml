@@ -15,6 +15,8 @@ spring:
                 #     url: jdbc:postgresql://127.0.0.1/ry
                 #     username: postgres
                 #     password: 123456
+                #     filters: stat,wall
+                #     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
                 # 从库数据源
                 # SLAVE:
                 #     url: jdbc:mysql://127.0.0.1/ruoyi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
@@ -44,16 +46,26 @@ spring:
             testWhileIdle: true
             testOnBorrow: false
             testOnReturn: false
+            # 配置监控统计拦截的filters
+            filters: stat,wall
+            # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+            connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+            
             webStatFilter:
                 enabled: true
+                url-pattern: /*
+                exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+                sessionStatEnable: true
+                
             statViewServlet:
                 enabled: true
-                # 设置白名单，不填则允许所有访问
-                allow:
                 url-pattern: /druid/*
-                # 控制台管理用户名和密码
+                allow: 127.0.0.1
+                deny: ""
+                reset-enable: false
                 login-username: ruoyi
                 login-password: 123456
+            
             filter:
                 stat:
                     enabled: true
@@ -62,10 +74,14 @@ spring:
                     slow-sql-millis: 1000
                     merge-sql: true
                 wall:
+                    enabled: true
                     config:
                         multi-statement-allow: true
+                        select-allow: true
+                stat-view-servlet:
+                    enabled: true
 
 
 # 是否开启分布式事务，如不开启，请删除atomikos插件，否则atomikos相关驱动虽不生效但仍会启动
 atomikos:
-  enabled: true
+  enabled: false

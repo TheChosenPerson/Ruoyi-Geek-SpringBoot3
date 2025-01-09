@@ -9,11 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot3.autoconfigure.properties.DruidStatProperties;
+import com.alibaba.druid.support.jakarta.StatViewServlet;
+import com.alibaba.druid.support.jakarta.WebStatFilter;
 import com.alibaba.druid.util.Utils;
 
 import jakarta.annotation.PreDestroy;
@@ -79,6 +82,29 @@ public class DruidConfig {
         registrationBean.setFilter(filter);
         registrationBean.addUrlPatterns(commonJsPattern);
         return registrationBean;
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "spring.datasource.druid.webStatFilter.enabled", havingValue = "true")
+    public FilterRegistrationBean webStatFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
+        filterRegistrationBean.addUrlPatterns("/*");
+        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        filterRegistrationBean.addInitParameter("sessionStatEnable", "true");
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "spring.datasource.druid.statViewServlet.enabled", havingValue = "true")
+    public ServletRegistrationBean statViewServlet(DruidStatProperties properties) {
+        DruidStatProperties.StatViewServlet config = properties.getStatViewServlet();
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
+        servletRegistrationBean.addInitParameter("loginUsername", config.getLoginUsername());
+        servletRegistrationBean.addInitParameter("loginPassword", config.getLoginPassword());
+        servletRegistrationBean.addInitParameter("allow", config.getAllow());
+        servletRegistrationBean.addInitParameter("deny", config.getDeny());
+        servletRegistrationBean.addInitParameter("resetEnable", String.valueOf(config.getResetEnable()));
+        return servletRegistrationBean;
     }
 
     public List<DruidDataSource> getDruidDataSources() {
