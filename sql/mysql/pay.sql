@@ -39,7 +39,7 @@ CREATE TABLE `pay_invoice`  (
   PRIMARY KEY (`invoice_id`)
 ) ENGINE = InnoDB  COMMENT = '发票';
 
-INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, query,route_name, is_frame, is_cache, menu_type, visible, `status`, perms, icon, create_by, create_time, update_by, update_time, remark) VALUES ('支付管理', 0, 4, '/pay', NULL, NULL, '',1, 0, 'M', '0', '0', NULL, 'money', 'admin', '2024-02-15 22:40:23', '', NULL, '');
+INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, query,route_name, is_frame, is_cache, menu_type, visible, `status`, perms, icon, create_by, create_time, update_by, update_time, remark) VALUES ('支付管理', 0, 4, 'pay', NULL, NULL, '',1, 0, 'M', '0', '0', NULL, 'money', 'admin', '2024-02-15 22:40:23', '', NULL, '');
 
 -- 按钮父菜单ID
 SELECT @parentId := LAST_INSERT_ID();

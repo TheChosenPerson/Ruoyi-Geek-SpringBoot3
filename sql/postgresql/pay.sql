@@ -67,7 +67,7 @@ COMMENT ON COLUMN pay_invoice.remark IS '备注';
 SELECT setval('sys_menu_menu_id_seq', max(menu_id)) FROM sys_menu WHERE menu_id < 100;
 -- 插入支付管理菜单
   INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, query, route_name, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
-  VALUES ('支付管理', 0, 4, '/pay', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'money', 'admin', CURRENT_TIMESTAMP, '', NULL, '');
+  VALUES ('支付管理', 0, 4, 'pay', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'money', 'admin', CURRENT_TIMESTAMP, '', NULL, '');
 DO $$
 DECLARE
     parentId INTEGER;
