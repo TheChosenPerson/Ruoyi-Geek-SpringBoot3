@@ -220,7 +220,7 @@ public class MessageSystemController extends BaseController
      */
     @Operation(summary = "查询模版签名")
     @GetMapping("/selecTemplates")
-    public R selecTemplates() {
+    public R<List<MessageTemplate>> selecTemplates() {
         List<MessageTemplate> templates= messageSystemService.selecTemplates();
         return R.ok(templates);
     }

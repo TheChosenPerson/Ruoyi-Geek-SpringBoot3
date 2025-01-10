@@ -30,9 +30,7 @@ public class DataSourceCreate implements CreateDataSource {
         dataSource.setConnectProperties(prop);
         properties.setProperties(dataSource, prop);
         
-        // 确保监控和防火墙功能开启
         try {
-            dataSource.setFilters("stat,wall");
             dataSource.init();
         } catch (Exception e) {
             throw new RuntimeException("初始化数据源失败", e);
