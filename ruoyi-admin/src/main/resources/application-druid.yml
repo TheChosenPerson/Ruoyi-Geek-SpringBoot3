@@ -63,7 +63,7 @@ spring:
             # 监控视图配置
             stat-view-servlet:
                 enabled: true
-                url-pattern: /druid/*+
+                url-pattern: /druid/*
                 reset-enable: true      # 是否可以重置日志
                 login-username: ruoyi   # 用户名
                 login-password: 123456  # 密码
