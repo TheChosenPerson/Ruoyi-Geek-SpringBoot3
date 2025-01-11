@@ -69,6 +69,16 @@ spring:
                 login-password: 123456  # 密码
                 allow: ""               # IP白名单 (没有配置或者为空，则允许所有访问)
                 deny: ""                # IP黑名单 (存在共同时，deny优先于allow)
+            filter:
+                stat:
+                    enabled: true
+                    # 慢SQL记录
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: true
+                wall:
+                    config:
+                        multi-statement-allow: true
 
 # 是否开启分布式事务，如不开启，请删除atomikos插件，否则atomikos相关驱动虽不生效但仍会启动
 atomikos:

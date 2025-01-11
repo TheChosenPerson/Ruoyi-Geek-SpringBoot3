@@ -14,7 +14,7 @@ ruoyi:
   captchaType: math
   # 指定默认文件服务类型(值为disk代表使用磁盘作为文件操作服务,minio代表使用minio作为文件操作服务,oss代表使用oss作为文件操作服务)
   fileServer: disk
-  # 指定默认文件上传方法最大文件大小
+  # 指定默认文件上传方法最大文件大小(MB)
   fileMaxSize: 50
 
 # 开发环境配置
@@ -38,8 +38,13 @@ server:
 # 日志配置
 logging:
   level:
-    com.ruoyi: debug
-    org.springframework: warn
+    "[com.ruoyi]": DEBUG
+    "[org]": WARN
+    "[org.springframework]": WARN
+    "[org.apache]": WARN
+    "[org.springframework.context.support.PostProcessorRegistrationDelegate]": ERROR
+    "[com.alibaba.druid.spring.boot3.autoconfigure.stat.DruidSpringAopConfiguration]": ERROR
+    "[com.alibaba.druid.spring.boot3.autoconfigure.properties.DruidStatProperties]": ERROR
 
 # 用户配置
 user:
@@ -51,6 +56,7 @@ user:
   ip:
     maxRetryCount: 15
     lockTime: 15
+
 # Spring配置
 spring:
   cache:

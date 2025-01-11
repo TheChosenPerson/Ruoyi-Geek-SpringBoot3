@@ -23,19 +23,11 @@ public class DataSourceCreate implements CreateDataSource {
     private DruidConfig druidConfig;
 
     public DataSource createDataSource(String name, Properties prop) {
+        // DruidXADataSource dataSource = new DruidXADataSource();
         DruidDataSource dataSource = new DruidDataSource();
         druidConfig.getDruidDataSources().add(dataSource);
-        
-        // 设置基础属性
         dataSource.setConnectProperties(prop);
         properties.setProperties(dataSource, prop);
-        
-        try {
-            dataSource.init();
-        } catch (Exception e) {
-            throw new RuntimeException("初始化数据源失败", e);
-        }
-        
         return dataSource;
     }
 }
