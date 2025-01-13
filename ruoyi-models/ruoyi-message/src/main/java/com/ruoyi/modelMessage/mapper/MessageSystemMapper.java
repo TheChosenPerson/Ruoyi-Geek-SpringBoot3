@@ -5,11 +5,11 @@ import java.util.List;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.ruoyi.common.core.domain.entity.SysDept;
+import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.modelMessage.domain.MessageSystem;
 import com.ruoyi.modelMessage.domain.MessageTemplate;
-import com.ruoyi.modelMessage.domain.vo.SysDeptVo;
-import com.ruoyi.modelMessage.domain.vo.SysRoleVo;
-import com.ruoyi.modelMessage.domain.vo.SysUserVo;
 
 /**
  * 消息管理Mapper接口
@@ -68,26 +68,26 @@ public interface MessageSystemMapper
     public int deleteMessageSystemByMessageIds(Long[] messageIds);
 
     //查询平台系统资源收件人用户信息
-    @Select("SELECT * FROM `sys_user`")
-    public List<SysUserVo> selectUser();
+    @Select("SELECT user_id, dept_id, user_name, phonenumber, email FROM `sys_user`")
+    public List<SysUser> selectUser();
 
     //查询角色信息 然后根据角色把消息发给某角色
-    @Select("SELECT * FROM `sys_role`")
-    public List<SysRoleVo> selectRole();
+    @Select("SELECT role_id, role_name FROM `sys_role`")
+    public List<SysRole> selectRole();
 
     //查询部门信息 然后根据部门把消息发给某部门
-    @Select("SELECT * FROM `sys_dept`")
-    public List<SysDeptVo> selectDept();
+    @Select("SELECT dept_id, parent_id, dept_name FROM `sys_dept`")
+    public List<SysDept> selectDept();
 
     // 根据发送方式过滤用户 (短信或邮箱)
     @Select("<script>" +
-        "SELECT * FROM `sys_user`" +
+        "SELECT user_id, dept_id, user_name, phonenumber, email FROM `sys_user`" +
         "<where>" +
             "<if test='filterType == \"phone\"'>AND phonenumber IS NOT NULL AND phonenumber != ''</if>" +
             "<if test='filterType == \"email\"'>AND email IS NOT NULL AND email != ''</if>" +
         "</where>" +
         "</script>")
-    List<SysUserVo> selectUserBySendMode(String filterType);
+    List<SysUser> selectUserBySendMode(String filterType);
 
     //将信息状态未读信息变为已读
     @Update("update message_system set message_status = 1 where message_id = #{messageId} and message_recipient = #{userName}")
@@ -100,8 +100,8 @@ public interface MessageSystemMapper
      * @param deptId 部门ID
      * @return 用户信息列表
      */
-    @Select("SELECT u.* FROM sys_user u JOIN sys_dept d ON u.dept_id = d.dept_id WHERE d.dept_id = #{deptId}")
-    public List<SysUserVo> getUserNameByDeptId(Long roleId);
+    @Select("SELECT u.user_name FROM sys_user u JOIN sys_dept d ON u.dept_id = d.dept_id WHERE d.dept_id = #{deptId}")
+    public List<SysUser> getUserNameByDeptId(Long deptId);
 
     /**
      * 根据角色ID查询用户列表。
@@ -109,11 +109,11 @@ public interface MessageSystemMapper
      * @param roleId 角色ID
      * @return 用户列表
      */
-    @Select("SELECT u.* FROM sys_user u JOIN sys_user_role ur ON u.user_id = ur.user_id WHERE ur.role_id = #{roleId}")
-    public List<SysUserVo> selectUsersByRoleId(Long roleId);
+    @Select("SELECT u.user_name FROM sys_user u JOIN sys_user_role ur ON u.user_id = ur.user_id WHERE ur.role_id = #{roleId}")
+    public List<SysUser> selectUsersByRoleId(Long roleId);
 
     //查询模版签名
-    @Select("SELECT template_id,template_code,template_variable FROM `message_template`")
+    @Select("SELECT template_id,template_code FROM `message_template`")
     public List<MessageTemplate> selecTemplates();
 
     //批量发送信息

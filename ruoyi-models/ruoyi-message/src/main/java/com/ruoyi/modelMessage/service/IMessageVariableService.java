@@ -60,12 +60,8 @@ public interface IMessageVariableService
      */
     public int deleteMessageVariableByVariableId(Long variableId);
 
-    // 查询全部变量
+    /**
+     *  查询全部变量
+     */
     public List<MessageVariable> selectMessageVariable();
-
-    // 删除变量之前检查一下有没有模版使用
-    public boolean selectTemplateByVariableId(String templateVariable);
-
-    // 根据类型生成不同的变量内容
-    public String generateVariableContent(String variableType);
 }

@@ -14,16 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.modelMessage.domain.MessageVariable;
 import com.ruoyi.modelMessage.service.IMessageVariableService;
+import com.ruoyi.modelMessage.utils.MessageSystemUtils;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,6 +41,9 @@ public class MessageVariableController extends BaseController
 {
     @Autowired
     private IMessageVariableService messageVariableService;
+
+    @Autowired 
+    private MessageSystemUtils messageVariableUtils;
 
     /**
      * 查询变量管理列表
@@ -114,26 +116,14 @@ public class MessageVariableController extends BaseController
 	@DeleteMapping("/{variableIds}")
     public AjaxResult remove(@PathVariable( name = "variableIds" ) Long[] variableIds) 
     {
-        for (Long variableId : variableIds) {
-            // 获取变量信息
-            MessageVariable variable = messageVariableService.selectMessageVariableByVariableId(variableId);
-            if (variable == null) {
-                throw new ServiceException("变量不存在！");
-            }
-            // 检查变量是否被模板使用
-            if (messageVariableService.selectTemplateByVariableId(variable.getVariableName())) {
-                throw new ServiceException("该变量已被模版使用，不能删除！");
-            }
-         }
         return toAjax(messageVariableService.deleteMessageVariableByVariableIds(variableIds));
     }
 
     /**
-     * 查询角色信息
+     * 查询变量
      */
     @Operation(summary = "查询变量")
     @GetMapping("/selectMessageVariable")
-    @Anonymous
     public AjaxResult selectMessageVariable() {
        return success(messageVariableService.selectMessageVariable());
     }
@@ -141,14 +131,9 @@ public class MessageVariableController extends BaseController
     /**
      * 根据变量类型生成不同的变量内容
      */
-    @Operation(summary = "根据变量类型生成不同变量内容")
+    @Operation(summary = "根据内置变量生成不同内容")
     @GetMapping("/generate")
-    public AjaxResult generateVariableContent(@RequestParam String variableType) {
-        try {
-            Object content = messageVariableService.generateVariableContent(variableType);
-            return AjaxResult.success(content);
-        } catch (Exception e) {
-            return AjaxResult.error("生成变量内容失败！");
-        }
+    public AjaxResult generateVariableContent(@RequestParam String variableContent) {
+       return success(messageVariableUtils.generateVariableContent(variableContent));
     }
 }

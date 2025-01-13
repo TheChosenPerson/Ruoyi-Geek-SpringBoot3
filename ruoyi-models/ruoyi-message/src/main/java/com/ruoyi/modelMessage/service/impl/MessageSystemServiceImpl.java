@@ -10,15 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.common.core.domain.entity.SysDept;
+import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.modelMessage.domain.MessageSystem;
 import com.ruoyi.modelMessage.domain.MessageTemplate;
-import com.ruoyi.modelMessage.domain.vo.SysDeptVo;
-import com.ruoyi.modelMessage.domain.vo.SysRoleVo;
-import com.ruoyi.modelMessage.domain.vo.SysUserVo;
 import com.ruoyi.modelMessage.enums.SendMode;
 import com.ruoyi.modelMessage.mapper.MessageSystemMapper;
 import com.ruoyi.modelMessage.service.IMessageSystemService;
@@ -116,31 +116,32 @@ public class MessageSystemServiceImpl implements IMessageSystemService {
 
     // 查询系统资源用户信息
     @Override
-    public List<SysUserVo> selectUser() {
+    public List<SysUser> selectUser() {
         return messageSystemMapper.selectUser();
     }
 
     // 收件人为本人的话点击信息详情的时候然后把状态未读信息修改为已读
     @Override
     public int updateState(Long messageId) {
-        return messageSystemMapper.updateState(messageId, SecurityUtils.getUsername());
+        int result = messageSystemMapper.updateState(messageId, SecurityUtils.getUsername());
+        return result;
     }
 
     // 根据发送方式过滤用户 (短信或邮箱)
     @Override
-    public List<SysUserVo> getUsersFilteredBySendMode(String filterType) {
+    public List<SysUser> getUsersFilteredBySendMode(String filterType) {
         return messageSystemMapper.selectUserBySendMode(filterType);
     }
 
     // 查询角色信息 然后根据角色把消息发给某角色
     @Override
-    public List<SysRoleVo> selectRole() {
+    public List<SysRole> selectRole() {
         return messageSystemMapper.selectRole();
     }
 
     // 查询部门信息 然后根据部门把消息发给某部门
     @Override
-    public List<SysDeptVo> selectDept() {
+    public List<SysDept> selectDept() {
         return messageSystemMapper.selectDept();
     }
 
@@ -151,8 +152,9 @@ public class MessageSystemServiceImpl implements IMessageSystemService {
      * @return 符合条件的用户列表
      */
     @Override
-    public List<SysUserVo> selectUsersByRoleId(Long roleId) {
-        return messageSystemMapper.selectUsersByRoleId(roleId);
+    public List<SysUser> selectUsersByRoleId(Long roleId) {
+        List<SysUser> roleList = messageSystemMapper.selectUsersByRoleId(roleId);
+        return roleList;
     }
 
     /**
@@ -162,14 +164,16 @@ public class MessageSystemServiceImpl implements IMessageSystemService {
      * @return 用户ID列表
      */
     @Override
-    public List<SysUserVo> getUserNameByDeptId(Long deptId) {
-        return messageSystemMapper.getUserNameByDeptId(deptId);
+    public List<SysUser> getUserNameByDeptId(Long deptId) {
+        List<SysUser> depts= messageSystemMapper.getUserNameByDeptId(deptId);
+        return depts;
     }
 
     // 查询模版签名
     @Override
     public List<MessageTemplate> selecTemplates() {
-        return messageSystemMapper.selecTemplates();
+        List<MessageTemplate> templates= messageSystemMapper.selecTemplates();
+        return templates;
     }
 
     /**
@@ -186,7 +190,11 @@ public class MessageSystemServiceImpl implements IMessageSystemService {
             messageSystem.setCreateTime(nowDate);
             messageSystem.setUpdateTime(nowDate);
         }
-        return messageSystemMapper.batchInsertMessageSystem(messageSystemList);
+        int result = messageSystemMapper.batchInsertMessageSystem(messageSystemList);
+        if ( result <= 0) {
+            throw new ServiceException("消息发送失败！");
+        }
+        return result;
     }
 
     /**
@@ -227,7 +235,7 @@ public class MessageSystemServiceImpl implements IMessageSystemService {
         try {
             String filledMessage = notificationContent.startsWith("SMS_") ?
             messageSystemUtils.processTemplateMessage(messageSystem, notificationContent) :
-            notificationContent; // 如果是自定义输入，使用用户输入的内容
+            notificationContent; // 是自定义输入，使用用户输入的内容
             log.info("平台内容: {}", filledMessage);
             messageSystem.setMessageContent(filledMessage);
         } catch (Exception e) {
@@ -247,7 +255,7 @@ public class MessageSystemServiceImpl implements IMessageSystemService {
         try {
             String filledMessage = messageSystem.getMessageContent().startsWith("SMS_") ?
             messageSystemUtils.processTemplateMessage(messageSystem, messageSystem.getMessageContent()) :
-            messageSystem.getMessageContent(); // 如果是自定义输入，则直接使用用户提供的内容
+            messageSystem.getMessageContent(); // 是自定义输入，则直接使用用户提供的内容
             log.info("邮件内容: {}", filledMessage);
             messageSystem.setMessageContent(filledMessage);
             EmailUtil.sendMessage(email, "通知", filledMessage);
@@ -260,6 +268,7 @@ public class MessageSystemServiceImpl implements IMessageSystemService {
     /**
      * 发送短信通知
      */
+    @SuppressWarnings("unchecked")
     public void sendNotificationMessage(MessageSystem messageSystem) {
         String phone = messageSystem.getCode();
         if (StringUtils.isEmpty(phone)) {
@@ -270,11 +279,12 @@ public class MessageSystemServiceImpl implements IMessageSystemService {
             Map<String, Object> parsedParams = messageSystemUtils.parseInput(messageSystem.getMessageContent());
             String templateCode = (String) parsedParams.get("templateCode");
             DySmsTemplate dySmsTemplate = null;
-    
             if (templateCode != null) {
                 dySmsTemplate = DySmsTemplate.toEnum(templateCode);
-                @SuppressWarnings("unchecked")
                 Map<String, String> params = (Map<String, String>) parsedParams.get("params");
+                // 提取模板中的变量名并填充内置变量
+                List<String> variableNames = (List<String>) parsedParams.get("variableNames");
+                messageSystemUtils.fillBuiltInVariables(params, messageSystem, variableNames);
                 String filledMessage = messageSystemUtils.fillTemplate((String) parsedParams.get("templateContent"), params);
                 messageSystem.setMessageContent(filledMessage);
                 JSONObject templateParamJson = new JSONObject(params);
@@ -287,5 +297,4 @@ public class MessageSystemServiceImpl implements IMessageSystemService {
             throw new ServiceException("发送短信异常：" + e.getMessage());
         }
     }
-
 }

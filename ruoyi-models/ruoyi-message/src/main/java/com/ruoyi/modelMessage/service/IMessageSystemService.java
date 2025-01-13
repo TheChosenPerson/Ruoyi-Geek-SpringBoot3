@@ -2,11 +2,11 @@ package com.ruoyi.modelMessage.service;
 
 import java.util.List;
 
+import com.ruoyi.common.core.domain.entity.SysDept;
+import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.modelMessage.domain.MessageSystem;
 import com.ruoyi.modelMessage.domain.MessageTemplate;
-import com.ruoyi.modelMessage.domain.vo.SysDeptVo;
-import com.ruoyi.modelMessage.domain.vo.SysRoleVo;
-import com.ruoyi.modelMessage.domain.vo.SysUserVo;
 
 /**
  * 消息管理Service接口
@@ -65,7 +65,7 @@ public interface IMessageSystemService
     public int deleteMessageSystemByMessageId(Long messageId);
 
     //查询系统资源用户信息
-     public List<SysUserVo> selectUser();
+     public List<SysUser> selectUser();
 
     //将信息状态未读信息变为已读
     public int updateState(Long messageId);
@@ -74,13 +74,13 @@ public interface IMessageSystemService
     public void processMessageSystem(MessageSystem messageSystem);
 
     // 根据发送方式过滤用户 (短信或邮箱)
-    public List<SysUserVo> getUsersFilteredBySendMode(String filterType);
+    public List<SysUser> getUsersFilteredBySendMode(String filterType);
 
     //查询角色信息 然后根据角色把消息发给某角色
-    public List<SysRoleVo> selectRole();
+    public List<SysRole> selectRole();
 
     //查询部门信息 然后根据部门把消息发给某部门
-    public List<SysDeptVo> selectDept();
+    public List<SysDept> selectDept();
 
     /**
      * 根据角色ID获取用户列表。
@@ -89,7 +89,7 @@ public interface IMessageSystemService
      * @return 
      * 
      * */
-    public List<SysUserVo> selectUsersByRoleId(Long roleId);
+    public List<SysUser> selectUsersByRoleId(Long roleId);
 
     /**
      * 根据部门ID获取用户列表。
@@ -98,7 +98,7 @@ public interface IMessageSystemService
      * @return 
      * 
      * */
-    public List<SysUserVo> getUserNameByDeptId(Long deptId);
+    public List<SysUser> getUserNameByDeptId(Long deptId);
 
     // 查询模版签名
     public List<MessageTemplate> selecTemplates();
