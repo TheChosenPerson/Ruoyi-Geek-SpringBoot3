@@ -68,6 +68,6 @@ public interface MessageTemplateMapper
      * @param templateCode 模版编码
      * @return 模版对象
      */
-    @Select("SELECT * FROM message_template WHERE template_code = #{templateCode}")
+    @Select("SELECT template_code,template_variable,template_content FROM `message_template` WHERE template_code = #{templateCode}")
     public MessageTemplate selectMessageTemplateByTemplateCode(String templateCode);
 }

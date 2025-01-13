@@ -10,7 +10,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +25,7 @@ import com.ruoyi.modelMessage.mapper.MessageVariableMapper;
 @Component
 public class MessageSystemUtils {
 
-    private static final String NUMERIC_CHARACTERS = "0123456789";
+    private static final String NUMERIC_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int CODE_LENGTH = 6;
 
     @Autowired
@@ -79,30 +78,13 @@ public class MessageSystemUtils {
         if (templateContent != null) {
             for (String varName : variableNames) {
                 if (!params.containsKey(varName)) {
-                    params.put(varName, generateRandomCode(CODE_LENGTH));
+                    params.put(varName, null); //默认先不传递 等自动填充值
                 }
             }
         }
         return Map.of("templateCode", templateCode, "params", params,
                     "templateContent", templateContent != null ? templateContent.getTemplateContent() : input,
                     "variableNames", variableNames);
-    }
-
-    /**
-     * 生成指定长度的随机数字字符串
-     * 
-     * @param length 长度
-     * @return 随机数字字符串
-     */
-    public String generateRandomCode(int length) {
-        Random random = new Random();
-        StringBuilder codeBuilder = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(NUMERIC_CHARACTERS.length());
-            char randomChar = NUMERIC_CHARACTERS.charAt(index);
-            codeBuilder.append(randomChar);
-        }
-        return codeBuilder.toString();
     }
 
     /**
@@ -206,24 +188,37 @@ public class MessageSystemUtils {
     public String generateVariableContent(String variableContent) {
         switch (variableContent) {
             case "time":
-                return DateUtils.dateTimeNow("HH:mm:ss");
+                return DateUtils.dateTimeNow("HH:mm:ss"); //发送时间
             case "date":
-                return DateUtils.dateTimeNow("yyyy-MM-dd");
+                return DateUtils.dateTimeNow("yyyy-MM-dd"); //发送日期
             case "datetime":
-                return DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
+                return DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"); //发送日期+时间
             case "addresser":
-            case "recipients":
-                return SecurityUtils.getUsername();
+                return SecurityUtils.getUsername(); //发件人
             case "code":
-                return generateRandomCode(CODE_LENGTH); // 确保这里生成随机验证码
             case "RandomnDigits":
-                return RandomStringUtils.randomNumeric(CODE_LENGTH);
             case "RandomnCharacters":
-                return RandomStringUtils.randomAlphabetic(CODE_LENGTH);
             case "RandomN-digitLetters":
-                return RandomStringUtils.randomAlphanumeric(CODE_LENGTH);
+                return generateRandomCode(CODE_LENGTH); //随机数字+英文
             default:
                 throw new ServiceException("不明确的类型 " + variableContent);
         }
+    }
+
+    /**
+     * 生成指定长度的随机数字字符串 数字+英文
+     * 
+     * @param length 长度
+     * @return 随机数字字符串
+     */
+    public String generateRandomCode(int length) {
+        Random random = new Random();
+        StringBuilder codeBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(NUMERIC_CHARACTERS.length());
+            char randomChar = NUMERIC_CHARACTERS.charAt(index);
+            codeBuilder.append(randomChar);
+        }
+        return codeBuilder.toString();
     }
 }

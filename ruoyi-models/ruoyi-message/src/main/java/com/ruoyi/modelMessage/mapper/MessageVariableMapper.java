@@ -62,14 +62,14 @@ public interface MessageVariableMapper
      */
     public int deleteMessageVariableByVariableIds(Long[] variableIds);
 
-    //删除变量之前检查一下有没有模版使用
-    @Select("SELECT COUNT(*) > 0 FROM message_template WHERE template_variable = #{templateVariable}")
-    public boolean selectTemplateByVariableId(String templateVariable);
-
     //查询变量
-    @Select("SELECT * FROM message_variable")
+    @Select("SELECT variable_id, variable_name, variable_type, variable_content FROM message_variable")
     public List<MessageVariable> selectMessageVariable();
 
     //查询在使用模版签名时用到了那些变量一一赋值
     public List<MessageVariable> selectMessageVariables(List<String> variableNames);
+
+    //查询模版使用的变量
+    @Select("SELECT template_variable FROM message_template")
+    public List<String> selectAllTemplateVariables();
 }

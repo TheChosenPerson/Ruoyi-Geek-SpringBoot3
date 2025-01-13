@@ -2,11 +2,10 @@ package com.ruoyi.modelMessage.service.impl;
 
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.aliyun.oss.ServiceException;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.modelMessage.domain.MessageVariable;
@@ -22,7 +21,6 @@ import com.ruoyi.modelMessage.service.IMessageVariableService;
 @Service
 public class MessageVariableServiceImpl implements IMessageVariableService 
 {
-    private static final int CODE_LENGTH = 6;
     
     @Autowired
     private MessageVariableMapper messageVariableMapper;
@@ -90,6 +88,24 @@ public class MessageVariableServiceImpl implements IMessageVariableService
     @Override
     public int deleteMessageVariableByVariableIds(Long[] variableIds)
     {
+        for (Long variableId : variableIds) {
+            // 获取变量信息
+            MessageVariable variable = messageVariableMapper.selectMessageVariableByVariableId(variableId);
+            if (variable == null) {
+                throw new ServiceException("未找到该变量信息！");
+            }
+            // 检查变量是否被模板使用
+            String variableName = variable.getVariableName();
+            List<String> variables = messageVariableMapper.selectAllTemplateVariables();
+            for (String templateVariable : variables) {
+                String[] templateParts = templateVariable.split("/");
+                for (String part : templateParts) {
+                    if (part.equals(variableName)) {
+                        throw new ServiceException("变量为 '" + variableName + "'' 已被模版使用，不能删除！");
+                    }
+                }
+            }
+        }
         return messageVariableMapper.deleteMessageVariableByVariableIds(variableIds);
     }
 
@@ -105,40 +121,9 @@ public class MessageVariableServiceImpl implements IMessageVariableService
         return messageVariableMapper.deleteMessageVariableByVariableId(variableId);
     }
 
-     //查询变量
+    //查询变量
     @Override
     public List<MessageVariable> selectMessageVariable() {
        return messageVariableMapper.selectMessageVariable();
-    }
-
-    //删除变量之前检查一下有没有模版使用
-    @Override
-    public boolean selectTemplateByVariableId(String templateVariable) {
-        return messageVariableMapper.selectTemplateByVariableId(templateVariable);
-    }
-
-    //根据类型生成不同的变量内容
-    @Override
-    public String generateVariableContent(String variableType) {
-        switch (variableType) {
-            case "time":
-                return DateUtils.dateTimeNow("HH:mm:ss");
-            case "date":
-                return DateUtils.dateTimeNow("yyyy-MM-dd");
-            case "datetime":
-                return DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
-            case "addresser":
-                return SecurityUtils.getUsername();
-            case "recipients":
-                return SecurityUtils.getUsername(); 
-            case "RandomnDigits":
-                return RandomStringUtils.randomNumeric(CODE_LENGTH);
-            case "RandomnCharacters":
-                return RandomStringUtils.randomAlphabetic(CODE_LENGTH);
-            case "RandomN-digitLetters":
-                return RandomStringUtils.randomAlphanumeric(CODE_LENGTH);
-            default:
-                throw new ServiceException("不明确的类型 " + variableType);
-        }
     }
 }
