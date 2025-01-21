@@ -1,5 +1,17 @@
 package com.ruoyi.web.controller.system;
 
+import java.io.File;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.core.controller.BaseController;
@@ -12,15 +24,12 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileOperateUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.file.MimeTypeUtils;
+import com.ruoyi.framework.config.ServerConfig;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysUserService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 /**
  * 个人信息 业务处理
@@ -36,6 +45,9 @@ public class SysProfileController extends BaseController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private ServerConfig serverConfig;
 
     /**
      * 个人信息
@@ -120,13 +132,15 @@ public class SysProfileController extends BaseController {
             LoginUser loginUser = getLoginUser();
             String extractPath = loginUser.getUsername() + File.separator + loginUser.getUserId();
             String fileName = "avatar." + FileUtils.getExtension(file);
-            String avatar = FileOperateUtils.upload(RuoYiConfig.getAvatarPath()+extractPath, fileName, file,
+            String avatar = FileOperateUtils.upload(RuoYiConfig.getAvatarPath() + File.separator +extractPath, fileName, file,
                     MimeTypeUtils.IMAGE_EXTENSION);
-            if (userService.updateUserAvatar(loginUser.getUsername(), avatar)) {
+            String url = serverConfig.getUrl()  + "/profile/avatar/" + extractPath + "/" + avatar;
+            url = url.replace("\\", "/");
+            if (userService.updateUserAvatar(loginUser.getUsername(), url)) {
                 AjaxResult ajax = AjaxResult.success();
-                ajax.put("imgUrl", avatar);
+                ajax.put("imgUrl", url);
                 // 更新缓存用户头像
-                loginUser.getUser().setAvatar(avatar);
+                loginUser.getUser().setAvatar(url);
                 tokenService.setLoginUser(loginUser);
                 return ajax;
             }
