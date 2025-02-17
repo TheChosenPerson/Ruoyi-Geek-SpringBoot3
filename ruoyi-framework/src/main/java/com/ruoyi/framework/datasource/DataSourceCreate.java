@@ -27,6 +27,7 @@ public class DataSourceCreate implements CreateDataSource {
         DruidDataSource dataSource = new DruidDataSource();
         druidConfig.getDruidDataSources().add(dataSource);
         dataSource.setConnectProperties(prop);
+        dataSource.setDefaultAutoCommit(false);
         properties.setProperties(dataSource, prop);
         return dataSource;
     }
