@@ -82,6 +82,10 @@ public class DataSourceManagement implements InitializingBean {
                 });
     }
 
+    public DataSource getPrimaryDataSource(){
+        return targetDataSources.get(dataSourceProperties.getPrimary());
+    }
+
     public DataSource getDataSource(String name) {
         return targetDataSources.get(name);
     }
