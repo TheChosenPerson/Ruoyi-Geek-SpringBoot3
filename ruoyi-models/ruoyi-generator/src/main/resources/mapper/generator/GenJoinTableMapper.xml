@@ -13,14 +13,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="leftTableFk" column="left_table_fk" />
         <result property="rightTableFk" column="right_table_fk" />
         <result property="joinType" column="join_type" />
-        <result property="createBy" column="create_by" />
-        <result property="createTime" column="create_time" />
-        <result property="updateBy" column="update_by" />
-        <result property="updateTime" column="update_time" />
+        <result property="orderNum" column="order_num"/>
+        <result property="newTableId" column="new_table_id"/>
+        <result property="joinColumns" column="join_columns" typeHandler="com.ruoyi.generator.handler.ListStringTypeHandler"/>
     </resultMap>
 
     <sql id="selectGenJoinTableVo">
-        select table_id, left_table_id, right_table_id, left_table_alias, right_table_alias, left_table_fk,right_table_fk, join_type, create_by, create_time, update_by, update_time from gen_join_table
+        select table_id, left_table_id, right_table_id, left_table_alias, right_table_alias, left_table_fk, right_table_fk, join_type, join_columns, order_num, new_table_id from gen_join_table
     </sql>
 
     <select id="selectGenJoinTableList" parameterType="GenJoinTable" resultMap="GenJoinTableResult">
@@ -34,7 +33,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="leftTableAlias != null  and leftTableAlias != ''"> and left_table_alias = #{leftTableAlias}</if>
             <if test="rightTableAlias != null  and rightTableAlias != ''"> and right_table_alias = #{rightTableAlias}</if>
             <if test="joinType != null  and joinType != ''"> and join_type = #{joinType}</if>
+            <if test="orderNum != null"> and order_num = #{orderNum}</if>
+            <if test="newTableId != null"> and new_table_id = #{newTableId}</if>
         </where>
+        order by order_num asc
     </select>
 
     <insert id="insertGenJoinTable" parameterType="GenJoinTable">
@@ -48,10 +50,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="leftTableFk != null"> left_table_fk,</if>
             <if test="rightTableFk != null"> right_table_fk,</if>
             <if test="joinType != null">join_type,</if>
-            <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+            <if test="joinColumns != null">join_columns,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="newTableId != null">new_table_id,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="tableId != null">#{tableId},</if>
@@ -62,10 +63,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="leftTableFk != null">#{leftTableFk},</if>
             <if test="rightTableFk != null">#{rightTableFk},</if>
             <if test="joinType != null">#{joinType},</if>
-            <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
+            <if test="joinColumns != null">#{joinColumns,typeHandler=com.ruoyi.generator.handler.ListStringTypeHandler},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="newTableId != null">#{newTableId},</if>
         </trim>
     </insert>
 
@@ -79,15 +79,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="leftTableFk != null"> left_table_fk = #{leftTableFk},</if>
             <if test="rightTableFk != null"> right_table_fk = #{rightTableFk},</if>
             <if test="joinType != null">join_type = #{joinType},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
-            <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="joinColumns != null">join_columns = #{joinColumns,typeHandler=com.ruoyi.generator.handler.ListStringTypeHandler},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="newTableId != null">new_table_id = #{newTableId},</if>
         </trim>
         where gen_join_table.table_id = #{tableId} and gen_join_table.right_table_id = #{rightTableId}
     </update>
-
-    <!-- deleteGenJoinTableByTableId -->
 
     <delete id="deleteGenJoinTableByTableId">
         delete from gen_join_table where table_id = #{tableId}

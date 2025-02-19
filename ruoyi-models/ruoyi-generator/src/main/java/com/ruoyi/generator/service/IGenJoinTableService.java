@@ -3,6 +3,8 @@ package com.ruoyi.generator.service;
 import java.util.List;
 
 import com.ruoyi.generator.domain.GenJoinTable;
+import com.ruoyi.generator.domain.GenTable;
+import com.ruoyi.generator.domain.vo.GenTableVo;
 
 /**
  * 代码生成关联字段Service接口
@@ -39,4 +41,6 @@ public interface IGenJoinTableService {
      * 根据tableId删除字段关联
      */
     public int deleteGenJoinTableByTableId(Long tableId);
+
+    public GenTableVo selectGenJoinTableVoListByGenTable(GenTable table);
 }

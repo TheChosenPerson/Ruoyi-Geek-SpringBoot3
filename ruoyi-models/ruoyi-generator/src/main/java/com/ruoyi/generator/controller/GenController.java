@@ -84,7 +84,7 @@ public class GenController extends BaseController {
         GenJoinTable genJoinTable = new GenJoinTable();
         genJoinTable.setTableId(tableId);
         List<GenJoinTable> selectGenJoinTableList = genJoinTableService.selectGenJoinTableList(genJoinTable);
-        genTableVo.setJoins(selectGenJoinTableList);
+        genTableVo.setJoinTablesMate(selectGenJoinTableList);
         Map<Long, GenTable> joinTableMap = new HashMap<Long, GenTable>();
         joinTableMap.put(tableId, table);
         selectGenJoinTableList.forEach(i -> {
@@ -179,7 +179,7 @@ public class GenController extends BaseController {
         genTableService.validateEdit(genTable);
         genTableService.updateGenTable(genTable);
         genJoinTableService.deleteGenJoinTableByTableId(genTable.getTableId());
-        genTableVo.getJoins().forEach(i -> {
+        genTableVo.getJoinTablesMate().forEach(i -> {
             genJoinTableService.insertGenJoinTable(i);
         });
         return success();

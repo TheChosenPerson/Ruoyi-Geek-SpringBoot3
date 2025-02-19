@@ -78,12 +78,11 @@ CREATE TABLE `gen_join_table` (
   `left_table_fk` varchar(200) NOT NULL COMMENT '主表别名',
   `right_table_fk` varchar(200) NOT NULL COMMENT '关联表别名',
   `join_type` varchar(200) NOT NULL COMMENT '关联类型',
-  `create_by`       varchar(64)     DEFAULT '' COMMENT '创建者',
-  `create_time`     datetime        DEFAULT NULL COMMENT '创建时间',
-  `update_by`       varchar(64)     DEFAULT '' COMMENT '更新者',
-  `update_time`     datetime        DEFAULT NULL COMMENT '更新时间',
+  `join_columns` varchar(500) NOT NULL COMMENT '关联字段',
+  `order_num` varchar(64) NOT NULL COMMENT '序号',
+  `new_table_id` bigint NOT NULL COMMENT '新表编号',
   PRIMARY KEY (`table_id`,`right_table_id`,`left_table_id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = '代码生成关联表字段';
+) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = '代码生成关联表';
 
 
 insert into sys_menu values('116',  '代码生成', '3',   '2', 'gen',        'tool/gen/index',           '', '', 1, 0, 'C', '0', '0', 'tool:gen:list',           'code',          'admin', sysdate(), '', null, '代码生成菜单');

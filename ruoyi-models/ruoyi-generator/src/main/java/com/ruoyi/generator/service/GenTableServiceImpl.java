@@ -32,6 +32,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.generator.constant.GenConstants;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
+import com.ruoyi.generator.domain.vo.GenTableVo;
 import com.ruoyi.generator.mapper.GenTableColumnMapper;
 import com.ruoyi.generator.mapper.GenTableMapper;
 import com.ruoyi.generator.util.GenUtils;
@@ -52,6 +53,9 @@ public class GenTableServiceImpl implements IGenTableService {
 
     @Autowired
     private GenTableColumnMapper genTableColumnMapper;
+
+    @Autowired
+    private IGenJoinTableService genJoinTableService;
 
     /**
      * 查询业务信息
@@ -195,8 +199,9 @@ public class GenTableServiceImpl implements IGenTableService {
         // 设置主键列信息
         setPkColumn(table);
         VelocityInitializer.initVelocity();
+        GenTableVo genTableVo = genJoinTableService.selectGenJoinTableVoListByGenTable(table);
 
-        VelocityContext context = VelocityUtils.prepareContext(table);
+        VelocityContext context = VelocityUtils.prepareContext(genTableVo);
 
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory(), table.getTplWebType());
@@ -240,8 +245,9 @@ public class GenTableServiceImpl implements IGenTableService {
         setPkColumn(table);
 
         VelocityInitializer.initVelocity();
+        GenTableVo genTableVo = genJoinTableService.selectGenJoinTableVoListByGenTable(table);
 
-        VelocityContext context = VelocityUtils.prepareContext(table);
+        VelocityContext context = VelocityUtils.prepareContext(genTableVo);
 
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory(), table.getTplWebType());
@@ -338,8 +344,8 @@ public class GenTableServiceImpl implements IGenTableService {
         setPkColumn(table);
 
         VelocityInitializer.initVelocity();
-
-        VelocityContext context = VelocityUtils.prepareContext(table);
+        GenTableVo genTableVo = genJoinTableService.selectGenJoinTableVoListByGenTable(table);
+        VelocityContext context = VelocityUtils.prepareContext(genTableVo);
 
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory(), table.getTplWebType());

@@ -28,7 +28,7 @@ public class GenTableVo extends BaseEntity {
 
     private List<GenTableColumn> columns;
 
-    private List<GenJoinTable> joins;
+    private List<GenJoinTable> joinTablesMate;
 
     @Valid
     private Collection<GenTable> joinTables;

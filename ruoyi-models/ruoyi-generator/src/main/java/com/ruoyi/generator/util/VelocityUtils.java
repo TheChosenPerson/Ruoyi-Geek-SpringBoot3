@@ -14,6 +14,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.generator.constant.GenConstants;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
+import com.ruoyi.generator.domain.vo.GenTableVo;
 
 /**
  * 模板处理工具类
@@ -36,8 +37,9 @@ public class VelocityUtils
      *
      * @return 模板列表
      */
-    public static VelocityContext prepareContext(GenTable genTable)
+    public static VelocityContext prepareContext(GenTableVo genTableVo)
     {
+        GenTable genTable = genTableVo.getTable();
         String moduleName = genTable.getModuleName();
         String businessName = genTable.getBusinessName();
         String packageName = genTable.getPackageName();
