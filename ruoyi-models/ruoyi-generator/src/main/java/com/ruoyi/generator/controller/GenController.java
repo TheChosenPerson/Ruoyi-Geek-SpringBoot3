@@ -2,7 +2,6 @@ package com.ruoyi.generator.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +31,11 @@ import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.sql.SqlUtil;
+import com.ruoyi.generator.domain.GenJoinTable;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
+import com.ruoyi.generator.domain.vo.GenTableVo;
+import com.ruoyi.generator.service.IGenJoinTableService;
 import com.ruoyi.generator.service.IGenTableColumnService;
 import com.ruoyi.generator.service.IGenTableService;
 
@@ -53,6 +55,9 @@ public class GenController extends BaseController {
     @Autowired
     private IGenTableColumnService genTableColumnService;
 
+    @Autowired
+    private IGenJoinTableService genJoinTableService;
+
     /**
      * 查询代码生成列表
      */
@@ -71,13 +76,27 @@ public class GenController extends BaseController {
     @GetMapping(value = "/{tableId}")
     public AjaxResult getInfo(@PathVariable(name = "tableId") Long tableId) {
         GenTable table = genTableService.selectGenTableById(tableId);
-        List<GenTable> tables = genTableService.selectGenTableAll();
-        List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(tableId);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("info", table);
-        map.put("rows", list);
-        map.put("tables", tables);
-        return success(map);
+        GenTableVo genTableVo = new GenTableVo();
+        genTableVo.setTable(table);
+        genTableVo.setColumns(table.getColumns());
+        GenJoinTable genJoinTable = new GenJoinTable();
+        genJoinTable.setTableId(tableId);
+        List<GenJoinTable> selectGenJoinTableList = genJoinTableService.selectGenJoinTableList(genJoinTable);
+        genTableVo.setJoins(selectGenJoinTableList);
+        List<GenTable> joinTables = new ArrayList<>();
+        selectGenJoinTableList.forEach(i -> {
+            GenTable joinTable = genTableService.selectGenTableById(i.getJoinTableId());
+            joinTables.add(joinTable);
+        });
+        genTableVo.setJoinTables(joinTables);
+        // List<GenTable> tables = genTableService.selectGenTableAll();
+        // List<GenTableColumn> list =
+        // genTableColumnService.selectGenTableColumnListByTableId(tableId);
+        // Map<String, Object> map = new HashMap<String, Object>();
+        // map.put("info", table);
+        // map.put("rows", list);
+        // map.put("tables", tables);
+        return success(genTableVo);
     }
 
     /**
@@ -118,54 +137,51 @@ public class GenController extends BaseController {
         return success();
     }
 
-     /**
+    /**
      * 创建表结构（保存）
      */
     @PreAuthorize("@ss.hasRole('admin')")
     @Log(title = "创建表", businessType = BusinessType.OTHER)
     @PostMapping("/createTable")
-    public AjaxResult createTableSave(String sql)
-    {
-        try
-        {
+    public AjaxResult createTableSave(String sql) {
+        try {
             SqlUtil.filterKeyword(sql);
             List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, DbType.mysql);
             List<String> tableNames = new ArrayList<>();
-            for (SQLStatement sqlStatement : sqlStatements)
-            {
-                if (sqlStatement instanceof MySqlCreateTableStatement)
-                {
+            for (SQLStatement sqlStatement : sqlStatements) {
+                if (sqlStatement instanceof MySqlCreateTableStatement) {
                     MySqlCreateTableStatement createTableStatement = (MySqlCreateTableStatement) sqlStatement;
-                    if (genTableService.createTable(createTableStatement.toString()))
-                    {
+                    if (genTableService.createTable(createTableStatement.toString())) {
                         String tableName = createTableStatement.getTableName().replaceAll("`", "");
                         tableNames.add(tableName);
                     }
                 }
             }
-            List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames.toArray(new String[tableNames.size()]));
+            List<GenTable> tableList = genTableService
+                    .selectDbTableListByNames(tableNames.toArray(new String[tableNames.size()]));
             String operName = SecurityUtils.getUsername();
             genTableService.importGenTable(tableList, operName);
             return AjaxResult.success();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return AjaxResult.error("创建表结构异常");
         }
     }
 
-
-    
     /**
      * 修改保存代码生成业务
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult editSave(@Validated @RequestBody GenTable genTable) {
+    public AjaxResult editSave(@Validated @RequestBody GenTableVo genTableVo) {
+        GenTable genTable = genTableVo.getTable();
         genTableService.validateEdit(genTable);
         genTableService.updateGenTable(genTable);
+        genJoinTableService.deleteGenJoinTableByTableId(genTable.getTableId());
+        genTableVo.getJoins().forEach(i -> {
+            genJoinTableService.insertGenJoinTable(i);
+        });
         return success();
     }
 

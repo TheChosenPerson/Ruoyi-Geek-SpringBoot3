@@ -19,7 +19,6 @@
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
         <spring-boot.version>3.4.2</spring-boot.version>
         <druid.version>1.2.24</druid.version>
-        <dynamic.version>4.3.1</dynamic.version>
         <jta.version>1.1</jta.version>
         <bitwalker.version>1.21</bitwalker.version>
         <swagger.version>3.0.0</swagger.version>
@@ -106,13 +105,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-3-starter</artifactId>
                 <version>${druid.version}</version>
-            </dependency>
-
-            <!-- 动态数据源 -->
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-                <version>${dynamic.version}</version>
             </dependency>
 
             <dependency>

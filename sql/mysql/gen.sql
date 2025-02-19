@@ -66,6 +66,24 @@ CREATE TABLE `gen_table_column`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = '代码生成业务表字段';
 
 
+
+DROP TABLE IF EXISTS `gen_join_table`;
+CREATE TABLE `gen_join_table` (
+  `table_id`         bigint NOT NULL COMMENT '表编号',
+  `main_table_id`  bigint  NOT NULL COMMENT '主表名称',
+  `join_table_id`    bigint NOT NULL COMMENT '关联表编号',
+  `main_table_alias` varchar(200) NOT NULL COMMENT '主表别名',
+  `join_table_alias` varchar(200) NOT NULL COMMENT '关联表别名',
+  `main_table_fk` varchar(200) NOT NULL COMMENT '主表别名',
+  `join_table_fk` varchar(200) NOT NULL COMMENT '关联表别名',
+  `create_by`       varchar(64)     DEFAULT '' COMMENT '创建者',
+  `create_time`     datetime        DEFAULT NULL COMMENT '创建时间',
+  `update_by`       varchar(64)     DEFAULT '' COMMENT '更新者',
+  `update_time`     datetime        DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`table_id`,`join_table_id`,`main_table_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = '代码生成关联表字段';
+
+
 insert into sys_menu values('116',  '代码生成', '3',   '2', 'gen',        'tool/gen/index',           '', '', 1, 0, 'C', '0', '0', 'tool:gen:list',           'code',          'admin', sysdate(), '', null, '代码生成菜单');
 -- 代码生成按钮
 insert into sys_menu values('1055', '生成查询', '116', '1', '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:query',             '#', 'admin', sysdate(), '', null, '');

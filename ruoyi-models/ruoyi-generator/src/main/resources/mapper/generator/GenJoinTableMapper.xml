@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.generator.mapper.GenJoinTableMapper">
+
+    <resultMap type="GenJoinTable" id="GenJoinTableResult">
+        <result property="tableId" column="table_id" />
+        <result property="mainTableId" column="main_table_id" />
+        <result property="joinTableId" column="join_table_id" />
+        <result property="mainTableAlias" column="main_table_alias" />
+        <result property="joinTableAlias" column="join_table_alias" />
+        <result property="mainTableFk" column="main_table_fk" />
+        <result property="joinTableFk" column="join_table_fk" />
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy" column="update_by" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="selectGenJoinTableVo">
+        select table_id, main_table_id, join_table_id, main_table_alias, join_table_alias, main_table_fk,join_table_fk,create_by, create_time, update_by, update_time from gen_join_table
+    </sql>
+
+    <select id="selectGenJoinTableList" parameterType="GenJoinTable" resultMap="GenJoinTableResult">
+        <include refid="selectGenJoinTableVo"/>
+        <where>
+            <if test="tableId != null"> and table_id = #{tableId}</if>
+            <if test="mainTableId != null"> and main_table_id = #{mainTableId}</if>
+            <if test="joinTableId != null"> and join_table_id = #{joinTableId}</if>
+            <if test="mainTableFk != null"> and main_table_fk = #{mainTableFk}</if>
+            <if test="joinTableFk != null"> and join_table_fk = #{joinTableFk}</if>
+            <if test="mainTableAlias != null  and mainTableAlias != ''"> and main_table_alias = #{mainTableAlias}</if>
+            <if test="joinTableAlias != null  and joinTableAlias != ''"> and join_table_alias = #{joinTableAlias}</if>
+        </where>
+    </select>
+
+    <insert id="insertGenJoinTable" parameterType="GenJoinTable">
+        insert into gen_join_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tableId != null">table_id,</if>
+            <if test="mainTableId != null">main_table_id,</if>
+            <if test="joinTableId != null">join_table_id,</if>
+            <if test="mainTableAlias != null and mainTableAlias != ''">main_table_alias,</if>
+            <if test="joinTableAlias != null and joinTableAlias != ''">join_table_alias,</if>
+            <if test="mainTableFk != null"> main_table_fk,</if>
+            <if test="joinTableFk != null"> join_table_fk,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tableId != null">#{tableId},</if>
+            <if test="mainTableId != null">#{mainTableId},</if>
+            <if test="joinTableId != null">#{joinTableId},</if>
+            <if test="mainTableAlias != null and mainTableAlias != ''">#{mainTableAlias},</if>
+            <if test="joinTableAlias != null and joinTableAlias != ''">#{joinTableAlias},</if>
+            <if test="mainTableFk != null">#{mainTableFk},</if>
+            <if test="joinTableFk != null">#{joinTableFk},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGenJoinTable" parameterType="GenJoinTable">
+        update gen_join_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mainTableId != null">main_table_id = #{mainTableId},</if>
+            <if test="joinTableId != null">join_table_id = #{joinTableId},</if>
+            <if test="mainTableAlias != null and mainTableAlias != ''">main_table_alias = #{mainTableAlias},</if>
+            <if test="joinTableAlias != null and joinTableAlias != ''">join_table_alias = #{joinTableAlias},</if>
+            <if test="mainTableFk != null"> main_table_fk = #{mainTableFk},</if>
+            <if test="joinTableFk != null"> join_table_fk = #{joinTableFk},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where gen_join_table.table_id = #{tableId} and gen_join_table.join_table_id = #{joinTableId}
+    </update>
+
+    <!-- deleteGenJoinTableByTableId -->
+
+    <delete id="deleteGenJoinTableByTableId">
+        delete from gen_join_table where table_id = #{tableId}
+    </delete>
+</mapper>

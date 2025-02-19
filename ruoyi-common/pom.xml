@@ -52,12 +52,6 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
-        <!-- 动态数据源 -->
-        <!-- <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-        </dependency> -->
-
         <!-- 阿里JSON解析器 -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
