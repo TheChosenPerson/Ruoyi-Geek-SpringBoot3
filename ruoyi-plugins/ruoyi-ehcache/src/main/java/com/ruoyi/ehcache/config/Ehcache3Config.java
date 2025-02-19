@@ -24,7 +24,7 @@ public class Ehcache3Config {
     public JCacheCacheManager ehcacheManager() {
         EhcacheCachingProvider cachingProvider = (EhcacheCachingProvider) Caching.getCachingProvider();
 
-        CacheManager cacheManager = (CacheManager) cachingProvider.getCacheManager();
+        CacheManager cacheManager = cachingProvider.getCacheManager();
         MutableConfiguration<String, Object> mutableConfiguration = new MutableConfiguration<>();
         mutableConfiguration.setTypes(String.class, Object.class);
         mutableConfiguration.setStoreByValue(false); // 默认值为 true，可根据需求调整

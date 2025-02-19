@@ -5,6 +5,7 @@ spring:
         driverClassName: com.mysql.cj.jdbc.Driver
         dynamic:
             primary: MASTER
+            xa: true
             datasource:
                 # 主库数据源
                 MASTER:

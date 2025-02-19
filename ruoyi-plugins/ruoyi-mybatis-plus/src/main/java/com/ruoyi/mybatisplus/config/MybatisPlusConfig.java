@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.SpringBootVFS;
@@ -30,7 +29,6 @@ import com.ruoyi.common.utils.StringUtils;
  *
  * @author ruoyi
  */
-@EnableTransactionManagement(proxyTargetClass = true)
 @Configuration
 public class MybatisPlusConfig {
     @Bean

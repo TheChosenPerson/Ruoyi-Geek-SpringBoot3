@@ -7,8 +7,10 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Component
+@EnableTransactionManagement(proxyTargetClass = true)
 public class DynamicTransactionManager extends JdbcTransactionManager {
 
     @Autowired
