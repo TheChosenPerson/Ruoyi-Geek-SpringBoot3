@@ -1,5 +1,6 @@
 package com.ruoyi.generator.domain.vo;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -30,7 +31,7 @@ public class GenTableVo extends BaseEntity {
     private List<GenJoinTable> joins;
 
     @Valid
-    private List<GenTable> joinTables;
+    private Collection<GenTable> joinTables;
 
     @Valid
     private List<GenTableColumn> joinColumns;

@@ -6,12 +6,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="GenJoinTable" id="GenJoinTableResult">
         <result property="tableId" column="table_id" />
-        <result property="mainTableId" column="main_table_id" />
-        <result property="joinTableId" column="join_table_id" />
-        <result property="mainTableAlias" column="main_table_alias" />
-        <result property="joinTableAlias" column="join_table_alias" />
-        <result property="mainTableFk" column="main_table_fk" />
-        <result property="joinTableFk" column="join_table_fk" />
+        <result property="leftTableId" column="left_table_id" />
+        <result property="rightTableId" column="right_table_id" />
+        <result property="leftTableAlias" column="left_table_alias" />
+        <result property="rightTableAlias" column="right_table_alias" />
+        <result property="leftTableFk" column="left_table_fk" />
+        <result property="rightTableFk" column="right_table_fk" />
+        <result property="joinType" column="join_type" />
         <result property="createBy" column="create_by" />
         <result property="createTime" column="create_time" />
         <result property="updateBy" column="update_by" />
@@ -19,19 +20,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectGenJoinTableVo">
-        select table_id, main_table_id, join_table_id, main_table_alias, join_table_alias, main_table_fk,join_table_fk,create_by, create_time, update_by, update_time from gen_join_table
+        select table_id, left_table_id, right_table_id, left_table_alias, right_table_alias, left_table_fk,right_table_fk, join_type, create_by, create_time, update_by, update_time from gen_join_table
     </sql>
 
     <select id="selectGenJoinTableList" parameterType="GenJoinTable" resultMap="GenJoinTableResult">
         <include refid="selectGenJoinTableVo"/>
         <where>
             <if test="tableId != null"> and table_id = #{tableId}</if>
-            <if test="mainTableId != null"> and main_table_id = #{mainTableId}</if>
-            <if test="joinTableId != null"> and join_table_id = #{joinTableId}</if>
-            <if test="mainTableFk != null"> and main_table_fk = #{mainTableFk}</if>
-            <if test="joinTableFk != null"> and join_table_fk = #{joinTableFk}</if>
-            <if test="mainTableAlias != null  and mainTableAlias != ''"> and main_table_alias = #{mainTableAlias}</if>
-            <if test="joinTableAlias != null  and joinTableAlias != ''"> and join_table_alias = #{joinTableAlias}</if>
+            <if test="leftTableId != null"> and left_table_id = #{leftTableId}</if>
+            <if test="rightTableId != null"> and right_table_id = #{rightTableId}</if>
+            <if test="leftTableFk != null"> and left_table_fk = #{leftTableFk}</if>
+            <if test="rightTableFk != null"> and right_table_fk = #{rightTableFk}</if>
+            <if test="leftTableAlias != null  and leftTableAlias != ''"> and left_table_alias = #{leftTableAlias}</if>
+            <if test="rightTableAlias != null  and rightTableAlias != ''"> and right_table_alias = #{rightTableAlias}</if>
+            <if test="joinType != null  and joinType != ''"> and join_type = #{joinType}</if>
         </where>
     </select>
 
@@ -39,12 +41,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into gen_join_table
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="tableId != null">table_id,</if>
-            <if test="mainTableId != null">main_table_id,</if>
-            <if test="joinTableId != null">join_table_id,</if>
-            <if test="mainTableAlias != null and mainTableAlias != ''">main_table_alias,</if>
-            <if test="joinTableAlias != null and joinTableAlias != ''">join_table_alias,</if>
-            <if test="mainTableFk != null"> main_table_fk,</if>
-            <if test="joinTableFk != null"> join_table_fk,</if>
+            <if test="leftTableId != null">left_table_id,</if>
+            <if test="rightTableId != null">right_table_id,</if>
+            <if test="leftTableAlias != null and leftTableAlias != ''">left_table_alias,</if>
+            <if test="rightTableAlias != null and rightTableAlias != ''">right_table_alias,</if>
+            <if test="leftTableFk != null"> left_table_fk,</if>
+            <if test="rightTableFk != null"> right_table_fk,</if>
+            <if test="joinType != null">join_type,</if>
             <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
@@ -52,12 +55,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="tableId != null">#{tableId},</if>
-            <if test="mainTableId != null">#{mainTableId},</if>
-            <if test="joinTableId != null">#{joinTableId},</if>
-            <if test="mainTableAlias != null and mainTableAlias != ''">#{mainTableAlias},</if>
-            <if test="joinTableAlias != null and joinTableAlias != ''">#{joinTableAlias},</if>
-            <if test="mainTableFk != null">#{mainTableFk},</if>
-            <if test="joinTableFk != null">#{joinTableFk},</if>
+            <if test="leftTableId != null">#{leftTableId},</if>
+            <if test="rightTableId != null">#{rightTableId},</if>
+            <if test="leftTableAlias != null and leftTableAlias != ''">#{leftTableAlias},</if>
+            <if test="rightTableAlias != null and rightTableAlias != ''">#{rightTableAlias},</if>
+            <if test="leftTableFk != null">#{leftTableFk},</if>
+            <if test="rightTableFk != null">#{rightTableFk},</if>
+            <if test="joinType != null">#{joinType},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
@@ -68,18 +72,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateGenJoinTable" parameterType="GenJoinTable">
         update gen_join_table
         <trim prefix="SET" suffixOverrides=",">
-            <if test="mainTableId != null">main_table_id = #{mainTableId},</if>
-            <if test="joinTableId != null">join_table_id = #{joinTableId},</if>
-            <if test="mainTableAlias != null and mainTableAlias != ''">main_table_alias = #{mainTableAlias},</if>
-            <if test="joinTableAlias != null and joinTableAlias != ''">join_table_alias = #{joinTableAlias},</if>
-            <if test="mainTableFk != null"> main_table_fk = #{mainTableFk},</if>
-            <if test="joinTableFk != null"> join_table_fk = #{joinTableFk},</if>
+            <if test="leftTableId != null">left_table_id = #{leftTableId},</if>
+            <if test="rightTableId != null">right_table_id = #{rightTableId},</if>
+            <if test="leftTableAlias != null and leftTableAlias != ''">left_table_alias = #{leftTableAlias},</if>
+            <if test="rightTableAlias != null and rightTableAlias != ''">right_table_alias = #{rightTableAlias},</if>
+            <if test="leftTableFk != null"> left_table_fk = #{leftTableFk},</if>
+            <if test="rightTableFk != null"> right_table_fk = #{rightTableFk},</if>
+            <if test="joinType != null">join_type = #{joinType},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
-        where gen_join_table.table_id = #{tableId} and gen_join_table.join_table_id = #{joinTableId}
+        where gen_join_table.table_id = #{tableId} and gen_join_table.right_table_id = #{rightTableId}
     </update>
 
     <!-- deleteGenJoinTableByTableId -->

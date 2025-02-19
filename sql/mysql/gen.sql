@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS `gen_table`;
 CREATE TABLE `gen_table`  (
   `table_id`            bigint(20)      NOT NULL AUTO_INCREMENT COMMENT '编号',
   `table_name`          varchar(200)    DEFAULT ''  COMMENT '表名称',
+  `table_alias`          varchar(200)    DEFAULT ''  COMMENT '表名称',
   `table_comment`       varchar(500)    DEFAULT ''  COMMENT '表描述',
   `have_sub_column`     char(1)         DEFAULT '0' COMMENT '是否含有关联字段',
   `sub_table_name`      varchar(64)     DEFAULT NULL COMMENT '关联子表的表名',
@@ -70,17 +71,18 @@ CREATE TABLE `gen_table_column`  (
 DROP TABLE IF EXISTS `gen_join_table`;
 CREATE TABLE `gen_join_table` (
   `table_id`         bigint NOT NULL COMMENT '表编号',
-  `main_table_id`  bigint  NOT NULL COMMENT '主表名称',
-  `join_table_id`    bigint NOT NULL COMMENT '关联表编号',
-  `main_table_alias` varchar(200) NOT NULL COMMENT '主表别名',
-  `join_table_alias` varchar(200) NOT NULL COMMENT '关联表别名',
-  `main_table_fk` varchar(200) NOT NULL COMMENT '主表别名',
-  `join_table_fk` varchar(200) NOT NULL COMMENT '关联表别名',
+  `left_table_id`  bigint  NOT NULL COMMENT '主表名称',
+  `right_table_id`    bigint NOT NULL COMMENT '关联表编号',
+  `left_table_alias` varchar(200) NOT NULL COMMENT '主表别名',
+  `right_table_alias` varchar(200) NOT NULL COMMENT '关联表别名',
+  `left_table_fk` varchar(200) NOT NULL COMMENT '主表别名',
+  `right_table_fk` varchar(200) NOT NULL COMMENT '关联表别名',
+  `join_type` varchar(200) NOT NULL COMMENT '关联类型',
   `create_by`       varchar(64)     DEFAULT '' COMMENT '创建者',
   `create_time`     datetime        DEFAULT NULL COMMENT '创建时间',
   `update_by`       varchar(64)     DEFAULT '' COMMENT '更新者',
   `update_time`     datetime        DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`table_id`,`join_table_id`,`main_table_id`)
+  PRIMARY KEY (`table_id`,`right_table_id`,`left_table_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = '代码生成关联表字段';
 
 

@@ -12,21 +12,24 @@ public class GenJoinTable extends BaseEntity {
     /** 表编号 */
     private Long tableId;
 
-    private Long mainTableId;
+    private Long leftTableId;
 
     /** 关联表编号 */
-    private Long joinTableId;
+    private Long rightTableId;
 
     /** 主表别名 */
-    private String mainTableAlias;
+    private String leftTableAlias;
 
     /** 关联表别名 */
-    private String joinTableAlias;
+    private String rightTableAlias;
 
     /** 主表外键 */
-    private String mainTableFk;
+    private Long leftTableFk;
 
     /** 关联表外键 */
-    private String joinTableFk;
+    private Long rightTableFk;
+
+    /** 连接类型 */
+    private String joinType;
 
 }

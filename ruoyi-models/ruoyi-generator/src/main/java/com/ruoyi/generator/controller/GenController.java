@@ -2,8 +2,10 @@ package com.ruoyi.generator.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,19 +85,17 @@ public class GenController extends BaseController {
         genJoinTable.setTableId(tableId);
         List<GenJoinTable> selectGenJoinTableList = genJoinTableService.selectGenJoinTableList(genJoinTable);
         genTableVo.setJoins(selectGenJoinTableList);
-        List<GenTable> joinTables = new ArrayList<>();
+        Map<Long, GenTable> joinTableMap = new HashMap<Long, GenTable>();
+        joinTableMap.put(tableId, table);
         selectGenJoinTableList.forEach(i -> {
-            GenTable joinTable = genTableService.selectGenTableById(i.getJoinTableId());
-            joinTables.add(joinTable);
+            if(Objects.isNull(joinTableMap.get(i.getLeftTableId()))) {
+                joinTableMap.put(i.getLeftTableId(), genTableService.selectGenTableById(i.getLeftTableId()));
+            }
+            if(Objects.isNull(joinTableMap.get(i.getRightTableId()))) {
+                joinTableMap.put(i.getRightTableId(), genTableService.selectGenTableById(i.getRightTableId()));
+            }
         });
-        genTableVo.setJoinTables(joinTables);
-        // List<GenTable> tables = genTableService.selectGenTableAll();
-        // List<GenTableColumn> list =
-        // genTableColumnService.selectGenTableColumnListByTableId(tableId);
-        // Map<String, Object> map = new HashMap<String, Object>();
-        // map.put("info", table);
-        // map.put("rows", list);
-        // map.put("tables", tables);
+        genTableVo.setJoinTables(joinTableMap.values());
         return success(genTableVo);
     }
 

@@ -13,12 +13,12 @@ public class GenJoinTableColumn extends BaseEntity {
     private Long tableId;
 
     /** 关联表编号 */
-    private Long joinTableId;
+    private Long rightTableId;
 
     /** 编号 */
     private Long columnId;
 
     /** 关联表别名 */
-    private String joinTableAlias;
+    private String rightTableAlias;
 
 }
