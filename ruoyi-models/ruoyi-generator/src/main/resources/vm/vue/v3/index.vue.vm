@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-#foreach($column in $columns)
+#foreach($column in $allColumns)
 #if($column.query)
 #set($dictType=$column.dictType)
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
@@ -110,7 +110,7 @@
 
     <el-table v-loading="loading" :data="${businessName}List" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-#foreach($column in $columns)
+#foreach($column in $allColumns)
 #if($column.subColumnTableName && $table.haveSubColumn  == '1')
 #set($javaField=$column.subColumnJavaField)
 #else
@@ -395,7 +395,7 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
 const daterange${AttrName} = ref([]);
@@ -407,14 +407,14 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    #foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if($column.query)
-    $column.javaField: null#if($foreach.count != $columns.size()),#end
+    $column.javaField: null#if($foreach.count != $allColumns.size()),#end
 #end
 #end
   },
   rules: {
-    #foreach ($column in $columns)
+#foreach ($column in $columns)
 #if($column.required)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
@@ -435,13 +435,13 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询${functionName}列表 */
 function getList() {
   loading.value = true;
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
   queryParams.value.params = {};
 #break
 #end
 #end
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
   if (null != daterange${AttrName} && '' != daterange${AttrName}) {
@@ -488,7 +488,7 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
   daterange${AttrName}.value = [];

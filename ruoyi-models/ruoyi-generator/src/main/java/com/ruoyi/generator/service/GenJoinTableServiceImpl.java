@@ -1,5 +1,6 @@
 package com.ruoyi.generator.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.generator.constant.GenConstants;
 import com.ruoyi.generator.domain.GenJoinTable;
 import com.ruoyi.generator.domain.GenTable;
+import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.generator.domain.vo.GenTableVo;
 import com.ruoyi.generator.mapper.GenJoinTableMapper;
 import com.ruoyi.generator.mapper.GenTableMapper;
@@ -77,10 +80,13 @@ public class GenJoinTableServiceImpl implements IGenJoinTableService {
         GenTableVo genTableVo = new GenTableVo();
         genTableVo.setTable(table);
         genTableVo.setColumns(table.getColumns());
+
         GenJoinTable genJoinTable = new GenJoinTable();
         genJoinTable.setTableId(table.getTableId());
         List<GenJoinTable> selectGenJoinTableList = this.selectGenJoinTableList(genJoinTable);
         genTableVo.setJoinTablesMate(selectGenJoinTableList);
+
+        List<GenTableColumn> joinColumns = new ArrayList<GenTableColumn>();
         Map<Long, GenTable> joinTableMap = new HashMap<Long, GenTable>();
         joinTableMap.put(table.getTableId(), table);
         selectGenJoinTableList.forEach(i -> {
@@ -90,7 +96,17 @@ public class GenJoinTableServiceImpl implements IGenJoinTableService {
             if (Objects.isNull(joinTableMap.get(i.getRightTableId()))) {
                 joinTableMap.put(i.getRightTableId(), this.selectGenTableById(i.getRightTableId()));
             }
+            GenTable newTable = joinTableMap.get(i.getNewTableId());
+            if(Objects.isNull(newTable)) throw new ServiceException("关联表不存在");
+            List<String> joinColumnNames = i.getJoinColumns();
+            if(Objects.isNull(joinColumnNames)) return;
+            newTable.getColumns().forEach(j -> {
+                if (joinColumnNames.contains(j.getColumnName())) {
+                    joinColumns.add(j);
+                }
+            });
         });
+        genTableVo.setJoinColumns(joinColumns);
         genTableVo.setJoinTables(joinTableMap.values());
         return genTableVo;
     }

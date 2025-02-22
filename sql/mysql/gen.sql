@@ -78,7 +78,7 @@ CREATE TABLE `gen_join_table` (
   `left_table_fk` varchar(200) NOT NULL COMMENT '主表别名',
   `right_table_fk` varchar(200) NOT NULL COMMENT '关联表别名',
   `join_type` varchar(200) NOT NULL COMMENT '关联类型',
-  `join_columns` varchar(500) NOT NULL COMMENT '关联字段',
+  `join_columns` varchar(500) DEFAULT '' COMMENT '关联字段',
   `order_num` varchar(64) NOT NULL COMMENT '序号',
   `new_table_id` bigint NOT NULL COMMENT '新表编号',
   PRIMARY KEY (`table_id`,`right_table_id`,`left_table_id`)

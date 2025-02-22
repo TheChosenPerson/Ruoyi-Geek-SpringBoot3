@@ -108,6 +108,7 @@ public class GenTable extends BaseEntity {
     private String parentMenuName;
 
     /** 是否含有关联字段 */
+    @Deprecated
     private String haveSubColumn;
 
     public boolean isSub() {

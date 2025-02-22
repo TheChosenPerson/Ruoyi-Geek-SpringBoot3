@@ -6,7 +6,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="${ClassName}" id="${ClassName}Result">
 #foreach ($column in $columns)
-        <result property="${column.javaField}"    column="${column.columnName}"    />
+        <result property="${column.javaField}" column="${column.columnName}" />
+#end
+#if($joinColunms)
+#foreach ($column in $joinColunms)
+        <result property="${column.javaField}" column="${column.columnName}" />
+#end
 #end
     </resultMap>
 #if($table.sub)
@@ -23,50 +28,72 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
 
     <sql id="select${ClassName}Vo">
-#if($table.haveSubColumn=="1")
-        select#foreach($column in $columns) #if($column.subColumnTableName)${column.subColumnTableName}.${column.subColumnName},#end${businessName}.${column.columnName}#if($foreach.count != $columns.size()),#end#end from ${tableName} as ${businessName}
-#foreach($column in $columns)
-#if($column.subColumnTableName)
-            left join ${column.subColumnTableName} on ${column.subColumnTableName}.${column.subColumnFkName}=${businessName}.${column.columnName}
+        select 
+#foreach ($column in $allColumns)
+            $tableAliasMap[$column.tableId].$columnNameMap[$column.columnId]#if($foreach.hasNext),#end
 #end
+        from $tableNameMap[$table.tableId] $tableAliasMap[$table.tableId]
+#if($joinTablesMate)
+#foreach($joinTable in $joinTablesMate)
+        ${joinTable.joinType} join $tableNameMap[$joinTable.rightTableId] ${joinTable.rightTableAlias} on ${joinTable.rightTableAlias}.$columnNameMap[$joinTable.rightTableFk] = ${joinTable.leftTableAlias}.$columnNameMap[$joinTable.leftTableFk]
 #end
-#else
-        select#foreach($column in $columns) $column.columnName#if($foreach.count != $columns.size()),#end#end from ${tableName}
 #end
     </sql>
 
     <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
         <include refid="select${ClassName}Vo"/>
-        <where>  
+        <where>
 #foreach($column in $columns)
 #set($queryType=$column.queryType)
-#if($column.subColumnTableName)
-    #set($javaField=$column.subColumnJavaField)
-    #set($javaType=$column.subColumnJavaType)
-    #set($columnName=$column.subColumnName)
-#else
-    #set($javaField=$column.javaField)
-    #set($javaType=$column.javaType)
-    #set($columnName=$column.columnName)
-#end
+#set($javaField=$column.javaField)
+#set($javaType=$column.javaType)
+#set($columnName=$columnNameMap[$column.columnId])
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
 #if($column.query)
 #if($column.queryType == "EQ")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName = #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$table.tableId].$columnName = #{$javaField}</if>
 #elseif($queryType == "NE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName != #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$table.tableId].$columnName != #{$javaField}</if>
 #elseif($queryType == "GT")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt; #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$table.tableId].$columnName &gt; #{$javaField}</if>
 #elseif($queryType == "GTE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt;= #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$table.tableId].$columnName &gt;= #{$javaField}</if>
 #elseif($queryType == "LT")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt; #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$table.tableId].$columnName &lt; #{$javaField}</if>
 #elseif($queryType == "LTE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt;= #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$table.tableId].$columnName &lt;= #{$javaField}</if>
 #elseif($queryType == "LIKE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName like concat('%', #{$javaField}, '%')</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$table.tableId].$columnName like concat('%', #{$javaField}, '%')</if>
 #elseif($queryType == "BETWEEN")
-            <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> and $columnName between #{params.begin$AttrName} and #{params.end$AttrName}</if>
+            <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> and $tableAliasMap[$table.tableId].$columnName between #{params.begin$AttrName} and #{params.end$AttrName}</if>
+#end
+#end
+#end
+#if($joinColunms)
+#foreach($column in $joinColunms)
+#set($queryType=$column.queryType)
+#set($javaField=$column.javaField)
+#set($javaType=$column.javaType)
+#set($columnName=$columnNameMap[$column.columnId])
+#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+#if($column.query)
+#if($column.queryType == "EQ")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$column.tableId].$columnName = #{$javaField}</if>
+#elseif($queryType == "NE")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$column.tableId].$columnName != #{$javaField}</if>
+#elseif($queryType == "GT")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$column.tableId].$columnName &gt; #{$javaField}</if>
+#elseif($queryType == "GTE")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$column.tableId].$columnName &gt;= #{$javaField}</if>
+#elseif($queryType == "LT")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$column.tableId].$columnName &lt; #{$javaField}</if>
+#elseif($queryType == "LTE")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$column.tableId].$columnName &lt;= #{$javaField}</if>
+#elseif($queryType == "LIKE")
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $tableAliasMap[$column.tableId].$columnName like concat('%', #{$javaField}, '%')</if>
+#elseif($queryType == "BETWEEN")
+            <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> and $tableAliasMap[$column.tableId].$columnName between #{params.begin$AttrName} and #{params.end$AttrName}</if>
+#end
 #end
 #end
 #end

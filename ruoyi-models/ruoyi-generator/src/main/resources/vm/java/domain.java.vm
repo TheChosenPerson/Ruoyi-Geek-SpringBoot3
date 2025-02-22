@@ -29,7 +29,7 @@ public class ${ClassName} extends ${Entity}
 {
     private static final long serialVersionUID = 1L;
 
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if(!$table.isSuperColumn($column.javaField))
 
     /** $column.columnComment */
@@ -69,7 +69,7 @@ public class ${ClassName} extends ${Entity}
     private List<${subClassName}> ${subclassName}List;
 
 #end
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if(!$table.isSuperColumn($column.javaField))
 #if($column.javaField.length() > 2 && $column.javaField.substring(1,2).matches("[A-Z]"))
 #set($AttrName=$column.javaField)
@@ -121,7 +121,7 @@ public class ${ClassName} extends ${Entity}
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if($column.javaField.length() > 2 && $column.javaField.substring(1,2).matches("[A-Z]"))
 #set($AttrName=$column.javaField)
 #else

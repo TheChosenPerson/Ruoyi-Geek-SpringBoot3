@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-#foreach($column in $columns)
+#foreach($column in $allColumns)
 #if($column.query)
 #set($dictType=$column.dictType)
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
@@ -155,7 +155,7 @@
 
     <el-table v-loading="loading" :data="${businessName}List" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-#foreach($column in $columns)
+#foreach($column in $allColumns)
 #set($javaField=$column.javaField)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
@@ -469,9 +469,9 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if($column.query)
-        $column.javaField: null#if($foreach.count != $columns.size()),#end
+        $column.javaField: null#if($foreach.count != $allColumns.size()),#end
 #end
 #end
       },
@@ -502,13 +502,13 @@ export default {
     /** 查询${functionName}列表 */
     getList() {
       this.loading = true;
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if(($column.htmlType == "datetime" ||$column.htmlType == "date" || $column.htmlType == "time" ) && $column.queryType == "BETWEEN")
       this.queryParams.params = {};
 #break
 #end
 #end
-#foreach ($column in $columns)
+#foreach ($column in $allColumns)
 #if(($column.htmlType == "datetime" || $column.htmlType == "date" || $column.htmlType == "time") && $column.queryType == "BETWEEN")
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
       if (null != this.daterange${AttrName} && '' != this.daterange${AttrName}) {

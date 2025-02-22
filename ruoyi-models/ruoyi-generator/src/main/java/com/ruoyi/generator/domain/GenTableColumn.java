@@ -75,19 +75,24 @@ public class GenTableColumn extends BaseEntity {
     private Integer sort;
 
     /** 关联表名称 */
+    @Deprecated
     private String subColumnTableName;
 
     /** 关联字段名称 */
+    @Deprecated
     private String subColumnFkName;
 
     /** 映射字段名称 */
+    @Deprecated
     private String subColumnName;
 
 
     /** 映射字段Java字段名 */
+    @Deprecated
     private String subColumnJavaField;
 
     /** 映射字段Java类型 */
+    @Deprecated
     private String subColumnJavaType;
 
     public boolean isPk() {
