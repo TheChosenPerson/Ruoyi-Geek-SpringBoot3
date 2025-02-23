@@ -3,8 +3,6 @@ package com.ruoyi.middleware.minio.service;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -26,7 +24,6 @@ import com.ruoyi.middleware.minio.utils.MinioUtil;
 @Component("file:strategy:minio")
 @ConditionalOnProperty(prefix = "minio", name = { "enable" }, havingValue = "true", matchIfMissing = false)
 public class MinioFileService implements FileService {
-    private static final Logger logger = LoggerFactory.getLogger(MinioFileService.class);
 
     @Autowired
     private MinioConfig minioConfig;
