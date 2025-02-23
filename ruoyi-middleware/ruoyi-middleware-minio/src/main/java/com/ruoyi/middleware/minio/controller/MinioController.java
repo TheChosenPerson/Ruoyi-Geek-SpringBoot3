@@ -37,5 +37,5 @@ public class MinioController {
             @PathVariable("client") String client,
             @RequestBody MultipartFile file) throws Exception {
         return MinioUtil.uploadFile(client, file);
-    }
+    } 
 }

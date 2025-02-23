@@ -14,9 +14,7 @@ public class AliOssProperties {
 
     private OSSClient ossClient;
 
-    public AliOssProperties(){
-        
-    }
+    public AliOssProperties(){ }
     
     public AliOssProperties(String endpoint, String accessKeyId, String accessKeySecret, String bucketName) {
         this.endpoint = endpoint;

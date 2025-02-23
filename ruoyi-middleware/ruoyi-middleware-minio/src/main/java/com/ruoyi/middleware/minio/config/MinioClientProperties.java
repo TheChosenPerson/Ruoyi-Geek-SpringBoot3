@@ -6,7 +6,7 @@ public class MinioClientProperties {
     private String url;
     private String accessKey;
     private String secretKey;
-    private String buketName;
+    private String bucketName;
 
     private MinioClient client;
 
@@ -34,14 +34,6 @@ public class MinioClientProperties {
         this.secretKey = secretKey;
     }
 
-    public String getBuketName() {
-        return buketName;
-    }
-
-    public void setBuketName(String buketName) {
-        this.buketName = buketName;
-    }
-
     public MinioClient getClient() {
         return client;
     }
@@ -50,13 +42,21 @@ public class MinioClientProperties {
         this.client = client;
     }
 
-    public MinioClientProperties(String url, String accessKey, String secretKey, String buketName) {
+    public MinioClientProperties(String url, String accessKey, String secretKey, String bucketName) {
         this.url = url;
         this.accessKey = accessKey;
         this.secretKey = secretKey;
-        this.buketName = buketName;
+        this.bucketName = bucketName;
     }
 
     public MinioClientProperties() {
+    }
+
+    public String getBucketName() {
+        return bucketName;
+    }
+
+    public void setBucketName(String bucketName) {
+        this.bucketName = bucketName;
     }
 }

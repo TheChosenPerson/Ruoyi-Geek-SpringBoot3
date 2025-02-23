@@ -89,7 +89,7 @@ public class MinioBucket {
         MinioFileVO minioFileVO = new MinioFileVO();
 
         minioFileVO.setFileInputSteam(inputStream);
-        minioFileVO.setByteCount(Convert.toLong(inputStream.headers().get("Content-Length"),null));
+        minioFileVO.setByteCount(Convert.toLong(inputStream.headers().get("Content-Length"), null));
         minioFileVO.setFilePath(filePath);
         minioFileVO.setObject(inputStream.object());
         minioFileVO.setRegion(inputStream.region());

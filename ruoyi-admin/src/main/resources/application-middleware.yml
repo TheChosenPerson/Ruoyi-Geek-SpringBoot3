@@ -42,9 +42,9 @@ minio:
       url: http://localhost:9000
       accessKey:
       secretKey:
-      buketName: ruoyi
+      bucketName: ruoyi
     # SLAVE:
     #   url: http://127.0.0.1:9000
     #   accessKey:
     #   secretKey:
-    #   buketName: ry
+    #   bucketName: ry

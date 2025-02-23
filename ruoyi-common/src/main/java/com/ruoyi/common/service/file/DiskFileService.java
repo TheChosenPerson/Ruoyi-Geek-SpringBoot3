@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -16,16 +17,21 @@ import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.entity.FileEntity;
 import com.ruoyi.common.exception.file.FileNameLengthLimitExceededException;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileOperateUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.sign.Md5Utils;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 磁盘文件操作实现类
  */
 @Component("file:strategy:disk")
 public class DiskFileService implements FileService {
+
+    private static final long URL_EXPIRATION = 3600 * 1000; // URL有效期1小时
 
     @Override
     public String upload(String filePath, MultipartFile file) throws Exception {
@@ -46,15 +52,24 @@ public class DiskFileService implements FileService {
 
     @Override
     public InputStream downLoad(String filePath) throws Exception {
-        // 本地资源路径
+        // 标准化路径
+        String normalizedPath = normalizeFilePath(filePath);
+        
+        // 获取本地存储根路径
         String localPath = RuoYiConfig.getProfile();
-        // 数据库资源地址
-        String downloadPath = localPath + StringUtils.substringAfter(filePath, Constants.RESOURCE_PREFIX);
-        // 下载名称
-        File file = new File(downloadPath);
+        
+        // 拼接完整路径，确保分隔符正确
+        String fullPath = localPath + File.separator + normalizedPath;
+        
+        // 创建文件对象并检查
+        File file = new File(fullPath);
         if (!file.exists()) {
-            throw new FileNotFoundException("未找到文件");
+            throw new FileNotFoundException("文件不存在: " + fullPath);
         }
+        if (!file.isFile()) {
+            throw new FileNotFoundException("不是有效的文件: " + fullPath);
+        }
+        
         return new FileInputStream(file);
     }
 
@@ -88,5 +103,61 @@ public class DiskFileService implements FileService {
         fileEntity.setFileInputSteam(fileInputStream);
         fileEntity.setByteCount(file.length());
         return fileEntity;
-    };
+    }
+
+    @Override
+    public URL generatePresignedUrl(String filePath) throws Exception {
+        try {
+            // 生成临时访问凭证
+            String normalizedPath = normalizeFilePath(filePath);
+            long expireTime = System.currentTimeMillis() + URL_EXPIRATION;
+            String toHex = Md5Utils.hash(normalizedPath + expireTime);
+            
+            // 构建访问URL
+            String urlString = getUrl() + 
+                             "/common/download/resource?resource=" + 
+                             normalizedPath +
+                             "&toHex=" + toHex + 
+                             "&expires=" + expireTime;
+            return new URL(urlString);
+        } catch (Exception e) {
+            throw new RuntimeException("生成访问URL失败: " + e.getMessage(), e);
+        }
+    }
+
+     /**
+     * 标准化文件路径
+     */
+    private String normalizeFilePath(String filePath) {
+        if (StringUtils.isEmpty(filePath)) {
+            return "";
+        }
+        // 统一使用正斜杠并去除前缀
+        String normalizedPath = filePath.replace('\\', '/')
+                                      .replace("ruoyi/uploadPath/", "")
+                                      .replace("/profile/", "");
+        // 去除开头和结尾的斜杠
+        normalizedPath = StringUtils.strip(normalizedPath, "/");
+        // 处理文件存储重复的斜杠
+        normalizedPath = normalizedPath.replaceAll("/+", "/");
+        return normalizedPath;
+    }
+
+    /**
+     * 获取完整的请求路径，包括：域名，端口，上下文访问路径
+     *
+     * @return 服务地址
+     */
+    public String getUrl()
+    {
+        HttpServletRequest request = ServletUtils.getRequest();
+        return getDomain(request);
+    }
+
+    public static String getDomain(HttpServletRequest request)
+    {
+        StringBuffer url = request.getRequestURL();
+        String contextPath = request.getSession().getServletContext().getContextPath();
+        return url.delete(url.length() - request.getRequestURI().length(), url.length()).append(contextPath).toString();
+    }
 }

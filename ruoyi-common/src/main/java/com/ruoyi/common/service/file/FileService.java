@@ -2,6 +2,7 @@ package com.ruoyi.common.service.file;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -90,4 +91,13 @@ public interface FileService {
      * @throws Exception
      */
     public FileEntity getFile(String filePath) throws Exception;
+
+    /**
+     * 生成预签名URL
+     *
+     * @param filePath 文件路径
+     * @return 预签名URL
+     * @throws Exception 如果生成过程中出现错误
+     */
+    public URL generatePresignedUrl(String filePath) throws Exception;
 }
