@@ -2,7 +2,6 @@ package com.ruoyi.middleware.minio.service;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +19,6 @@ import com.ruoyi.middleware.minio.domain.MinioFileVO;
 import com.ruoyi.middleware.minio.exception.MinioClientErrorException;
 import com.ruoyi.middleware.minio.exception.MinioClientNotFundException;
 import com.ruoyi.middleware.minio.utils.MinioUtil;
-
-import io.minio.GetPresignedObjectUrlArgs;
-import io.minio.MinioClient;
-import io.minio.http.Method;
 
 /**
  * Minio文件操作实现类
@@ -79,24 +74,7 @@ public class MinioFileService implements FileService {
      * @throws MinioClientErrorException   如果在创建或获取预签名URL过程中发生错误时抛出
      */
     @Override
-    public URL generatePresignedUrl(String filePath) throws MinioClientNotFundException, MinioClientErrorException {
-        MinioClient minioClient = null; // 创建并且实例化
-        try {
-            minioClient = minioConfig.getPrimaryMinioClient(); // 调用封装好的MinioConfig中的方法获取Minio客户端
-            String bucketName = minioConfig.getClient().get(minioConfig.getPrimary()).getBucketName();
-            GetPresignedObjectUrlArgs request = GetPresignedObjectUrlArgs.builder()
-                    .method(Method.GET)
-                    .bucket(bucketName)
-                    .object(filePath)
-                    .expiry(1, TimeUnit.HOURS) // 设置过期时间为1小时
-                    .build();
-            // 生成预签名URL
-            String presignedUrl = minioClient.getPresignedObjectUrl(request);
-            URL url = new URL(presignedUrl); // 将字符串形式的预签名URL转换为URL对象并返回
-            return url;
-        } catch (Exception e) {
-            logger.error("生成Minio预签名URL失败: {}", e.getMessage(), e); // 添加日志记录
-            throw new MinioClientErrorException("生成Minio预签名URL失败: " + e.getMessage(), e);
-        }
+    public URL generatePresignedUrl(String filePath) throws Exception {
+        return MinioUtil.generatePresignedUrl(filePath);
     }
 }

@@ -1,6 +1,7 @@
 package com.ruoyi.middleware.minio.utils;
 
 import java.io.IOException;
+import java.net.URL;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,6 +10,7 @@ import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.common.utils.uuid.UUID;
 import com.ruoyi.middleware.minio.config.MinioConfig;
+import com.ruoyi.middleware.minio.domain.MinioBucket;
 import com.ruoyi.middleware.minio.domain.MinioFileVO;
 import com.ruoyi.middleware.minio.exception.MinioClientErrorException;
 
@@ -119,6 +121,18 @@ public class MinioUtil {
      */
     public static MinioFileVO getFile(String client, String filePath) throws Exception {
         return getMinioConfig().getBucket(client).get(filePath);
+    }
+
+
+
+    public static URL generatePresignedUrl(String filePath) throws Exception{
+        MinioBucket minioBucket = getMinioConfig().getMasterBucket();
+        return minioBucket.generatePresignedUrl(filePath);
+    }
+
+    public static URL generatePresignedUrl(String client, String filePath) throws Exception {
+        MinioBucket minioBucket = getMinioConfig().getBucket(client);
+        return minioBucket.generatePresignedUrl(filePath);
     }
 
 }

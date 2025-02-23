@@ -2,6 +2,8 @@ package com.ruoyi.middleware.minio.domain;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,37 +12,39 @@ import com.ruoyi.middleware.minio.exception.MinioClientErrorException;
 
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
+import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
+import io.minio.http.Method;
 
 public class MinioBucket {
 
     private MinioClient client;
-    private String buketName;
+    private String bucketName;
 
     public MinioBucket() {
     }
 
-    public MinioBucket(MinioClient client, String buketName) {
+    public MinioBucket(MinioClient client, String bucketName) {
         this.client = client;
-        this.buketName = buketName;
+        this.bucketName = bucketName;
     }
 
     public String getName() {
-        return buketName;
+        return bucketName;
     }
 
     public MinioClient getClient() {
         return client;
     }
 
-    public String getBuketName() {
-        return buketName;
+    public String getBucketName() {
+        return bucketName;
     }
 
-    public void setBuketName(String buketName) {
-        this.buketName = buketName;
+    public void setBucketName(String buketName) {
+        this.bucketName = bucketName;
     }
 
     public void setClient(MinioClient client) {
@@ -54,7 +58,7 @@ public class MinioBucket {
     public void put(String filePath, String contentType, InputStream inputStream) throws Exception {
         PutObjectArgs build = PutObjectArgs.builder().contentType(contentType)
                 .stream(inputStream, inputStream.available(), -1)
-                .bucket(this.buketName).object(filePath).build();
+                .bucket(bucketName).object(filePath).build();
         put(build);
     }
 
@@ -67,7 +71,7 @@ public class MinioBucket {
     }
 
     public void remove(String filePath) throws Exception {
-        RemoveObjectArgs build = RemoveObjectArgs.builder().object(filePath).bucket(buketName).build();
+        RemoveObjectArgs build = RemoveObjectArgs.builder().object(filePath).bucket(bucketName).build();
         remove(build);
     }
 
@@ -84,7 +88,7 @@ public class MinioBucket {
      * @throws IOException 比如读写文件出错时
      */
     public MinioFileVO get(String filePath) throws Exception {
-        GetObjectArgs getObjectArgs = GetObjectArgs.builder().object(filePath).bucket(buketName).build();
+        GetObjectArgs getObjectArgs = GetObjectArgs.builder().object(filePath).bucket(bucketName).build();
         GetObjectResponse inputStream = this.client.getObject(getObjectArgs);
         MinioFileVO minioFileVO = new MinioFileVO();
 
@@ -96,5 +100,15 @@ public class MinioBucket {
         minioFileVO.setBuket(inputStream.bucket());
         minioFileVO.setHeaders(inputStream.headers());
         return minioFileVO;
+    }
+
+    public URL generatePresignedUrl(String filePath) throws Exception {
+        GetPresignedObjectUrlArgs request = GetPresignedObjectUrlArgs.builder()
+                .method(Method.GET)
+                .bucket(bucketName)
+                .object(filePath)
+                .expiry(1, TimeUnit.HOURS) // 设置过期时间为1小时
+                .build();
+        return new URL(client.getPresignedObjectUrl(request));
     }
 }

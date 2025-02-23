@@ -1,6 +1,8 @@
 package com.ruoyi.alibaba.oss.domain;
 
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.DeleteObjectsRequest;
+import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
@@ -116,5 +119,12 @@ public class AliOssBucket {
         fileVO.setByteCount(ossObject.getObjectMetadata().getContentLength());
         fileVO.setFilePath(filePath);
         return fileVO;
+    }
+
+    public URL generatePresignedUrl(String filePath){
+        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, filePath);
+        Date expiration = new Date(System.currentTimeMillis() + 3600 * 1000); // 设置过期时间为1小时
+        request.setExpiration(expiration);
+        return ossClient.generatePresignedUrl(request);
     }
 }

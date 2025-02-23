@@ -54,20 +54,20 @@ public class MinioConfig implements InitializingBean {
     }
 
     private static void validateMinioBucket(MinioBucket minioBucket) {
-        BucketExistsArgs bucketExistArgs = BucketExistsArgs.builder().bucket(minioBucket.getBuketName()).build();
+        BucketExistsArgs bucketExistArgs = BucketExistsArgs.builder().bucket(minioBucket.getBucketName()).build();
         boolean b = false;
         try {
             b = minioBucket.getClient().bucketExists(bucketExistArgs);
             PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                     .object(FileUtils.getRelativePath(RuoYiConfig.getProfile()) + "/")
-                    .stream(EmptyInputStream.nullInputStream(), 0, -1).bucket(minioBucket.getBuketName()).build();
+                    .stream(EmptyInputStream.nullInputStream(), 0, -1).bucket(minioBucket.getBucketName()).build();
             minioBucket.getClient().putObject(putObjectArgs);
         } catch (Exception e) {
             logger.error("数据桶：{}  - 链接失败", minioBucket.getName());
             throw new RuntimeException(e.getMessage());
         }
         if (!b) {
-            throw new RuntimeException("Bucket " + minioBucket.getBuketName() + " does not exist");
+            throw new RuntimeException("Bucket " + minioBucket.getBucketName() + " does not exist");
         }
     }
 

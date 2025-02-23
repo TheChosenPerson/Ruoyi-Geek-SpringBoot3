@@ -1,8 +1,8 @@
 package com.ruoyi.alibaba.oss.utils;
 
 import java.io.IOException;
+import java.net.URL;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ruoyi.alibaba.oss.config.AliOssConfig;
@@ -17,7 +17,6 @@ import com.ruoyi.common.utils.uuid.UUID;
 /**
  * oss工具
  */
-@Component
 public class AliOssUtil {
 
     private static AliOssConfig aliOssConfig;
@@ -127,5 +126,15 @@ public class AliOssUtil {
             throw new AliOssClientErrorException("参数 \"bucketName\" 为空指针");
         }
         return ossBucket.get(filePath);
+    }
+
+    public static URL generatePresignedUrl(String filePath) {
+        AliOssBucket ossBucket = getAliOssConfig().getMasterBucket();
+        return ossBucket.generatePresignedUrl(filePath);
+    }
+
+    public static URL generatePresignedUrl(String client, String filePath) {
+        AliOssBucket ossBucket = getAliOssConfig().getBucket(client);
+        return ossBucket.generatePresignedUrl(filePath);
     }
 }
