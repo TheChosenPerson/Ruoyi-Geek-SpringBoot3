@@ -43,7 +43,7 @@ public class MinioBucket {
         return bucketName;
     }
 
-    public void setBucketName(String buketName) {
+    public void setBucketName(String bucketName) {
         this.bucketName = bucketName;
     }
 
