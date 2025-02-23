@@ -86,7 +86,6 @@ public class GenTableColumn extends BaseEntity {
     @Deprecated
     private String subColumnName;
 
-
     /** 映射字段Java字段名 */
     @Deprecated
     private String subColumnJavaField;
@@ -94,6 +93,10 @@ public class GenTableColumn extends BaseEntity {
     /** 映射字段Java类型 */
     @Deprecated
     private String subColumnJavaType;
+
+    public String getCapJavaField() {
+        return StringUtils.capitalize(javaField);
+    }
 
     public boolean isPk() {
         return isPk(this.isPk);
