@@ -64,15 +64,15 @@ public class GenTableVo extends BaseEntity {
         return allGenTableColumns;
     }
 
-    public Map<Long, String> getTableNameMap() {
-        Map<Long, String> tableMap = new HashMap<>();
+    public Map<Long, GenTable> getTableMap() {
+        Map<Long, GenTable> tableMap = new HashMap<>();
         if (table != null) {
-            tableMap.put(table.getTableId(), table.getTableName());
+            tableMap.put(table.getTableId(), table);
         }
         if (joinTables != null) {
             for (GenTable genTable : joinTables) {
                 if (genTable != null) {
-                    tableMap.put(genTable.getTableId(), genTable.getTableName());
+                    tableMap.put(genTable.getTableId(), genTable);
                 }
             }
         }
@@ -95,12 +95,12 @@ public class GenTableVo extends BaseEntity {
         return tableMap;
     }
 
-    public Map<Long, String> getColumnNameMap() {
-        Map<Long, String> columnMap = new HashMap<>();
+    public Map<Long, GenTableColumn> getColumnMap() {
+        Map<Long, GenTableColumn> columnMap = new HashMap<>();
         List<GenTable> genTables = getAllGenTables();
-        for(GenTable genTable : genTables){
-            for(GenTableColumn genTableColumn : genTable.getColumns()){
-                columnMap.put(genTableColumn.getColumnId(), genTableColumn.getColumnName());
+        for (GenTable genTable : genTables) {
+            for (GenTableColumn genTableColumn : genTable.getColumns()) {
+                columnMap.put(genTableColumn.getColumnId(), genTableColumn);
             }
         }
         return columnMap;

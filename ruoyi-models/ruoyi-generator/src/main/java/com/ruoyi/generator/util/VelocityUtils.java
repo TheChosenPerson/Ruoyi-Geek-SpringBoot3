@@ -64,9 +64,9 @@ public class VelocityUtils
         velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
         velocityContext.put("columns", genTable.getColumns());
         velocityContext.put("table", genTable);
-        velocityContext.put("tableNameMap", genTableVo.getTableNameMap());
+        velocityContext.put("tableMap", genTableVo.getTableMap());
         velocityContext.put("tableAliasMap", genTableVo.getTableAliasMap());
-        velocityContext.put("columnNameMap", genTableVo.getColumnNameMap());
+        velocityContext.put("columnMap", genTableVo.getColumnMap());
         velocityContext.put("allColumns", genTableVo.getAllGenTableColumns());
         velocityContext.put("joinColunms", genTableVo.getJoinColumns());
         velocityContext.put("joinTablesMate", genTableVo.getJoinTablesMate());
