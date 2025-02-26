@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="joinType" column="join_type" />
         <result property="orderNum" column="order_num"/>
         <result property="newTableId" column="new_table_id"/>
-        <result property="joinColumns" column="join_columns" typeHandler="com.ruoyi.generator.handler.ListStringTypeHandler"/>
+        <result property="joinColumns" column="join_columns" typeHandler="com.ruoyi.common.handler.GenericListTypeHandler$StringList"/>
     </resultMap>
 
     <sql id="selectGenJoinTableVo">
@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="leftTableFk != null">#{leftTableFk},</if>
             <if test="rightTableFk != null">#{rightTableFk},</if>
             <if test="joinType != null">#{joinType},</if>
-            <if test="joinColumns != null">#{joinColumns,typeHandler=com.ruoyi.generator.handler.ListStringTypeHandler},</if>
+            <if test="joinColumns != null">#{joinColumns,typeHandler=com.ruoyi.common.handler.GenericListTypeHandler$StringList},</if>
             <if test="orderNum != null">#{orderNum},</if>
             <if test="newTableId != null">#{newTableId},</if>
         </trim>
@@ -79,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="leftTableFk != null"> left_table_fk = #{leftTableFk},</if>
             <if test="rightTableFk != null"> right_table_fk = #{rightTableFk},</if>
             <if test="joinType != null">join_type = #{joinType},</if>
-            <if test="joinColumns != null">join_columns = #{joinColumns,typeHandler=com.ruoyi.generator.handler.ListStringTypeHandler},</if>
+            <if test="joinColumns != null">join_columns = #{joinColumns,typeHandler=com.ruoyi.common.handler.GenericListTypeHandler$StringList},</if>
             <if test="orderNum != null">order_num = #{orderNum},</if>
             <if test="newTableId != null">new_table_id = #{newTableId},</if>
         </trim>
